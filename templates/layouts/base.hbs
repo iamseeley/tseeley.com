@@ -3,17 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{metadata.title}}</title>
+  <title>{{metadata.title}} ✦ thomas seeley</title>
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
   {{> header siteTitle=siteTitle}}
+  <div class="section-break-container">
+    <div class="section-break-line"></div>
+    <span class="section-break-icon">✦</span>
+  </div>
   <main>
     {{{body}}}
   </main>
-  <footer>
-    <p>Powered by simpl-site</p>
-  </footer>
+  {{> footer }}
   <script src="/js/main.js"></script>
 </body>
 </html>
