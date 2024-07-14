@@ -295,3 +295,16 @@ pre[class*="language-"] > code[class*="language-"] {
 }
 
 
+.pixelated-flower-field {
+  width: 100%;
+  max-width: 624px;
+  height: 40px;
+  position: relative;
+  background-color: transparent;
+}
+
+.pixel {
+  width: 1px;
+  height: 1px;
+  position: absolute;
+}
