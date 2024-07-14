@@ -29,6 +29,7 @@ header em {
   color: #6B7C93;
 }
 
+
 header img {
  
   width: 2rem;
@@ -38,6 +39,12 @@ header img {
   
 }
 
+aside {
+  border-left: #6B7C93 .1rem solid;
+  padding-left: .6rem;
+  margin-top: .4rem;
+  margin-bottom: .4rem;
+}
 
 nav {
   margin-top: .6rem;
