@@ -2,16 +2,18 @@ import { WebsiteConfig } from "jsr:@iamseeley/simpl-site";
 import TableOfContentsPlugin from './plugins/TableOfContentsPlugin.ts';
 import LastModifiedPlugin from './plugins/LastModifiedPlugin.ts';
 import { registerPluginType } from 'jsr:@iamseeley/simpl-site/plugin-registry';
+import ContentListPlugin from "./plugins/ContentListPlugin.ts";
 
 // register your plugins
 registerPluginType("TableOfContentsPlugin", TableOfContentsPlugin);
-registerPluginType("LastModifiedPlugin", LastModifiedPlugin);
+// registerPluginType("LastModifiedPlugin", LastModifiedPlugin);
+registerPluginType("ContentListPlugin", ContentListPlugin);
 
 
 // configure your website
   export const config: WebsiteConfig = {
     contentSources: [
-      { path: "./content/blog", type: "blog", route: "blog/" },
+      { path: "./content/posts", type: "post", route: "posts/" },
       { path: "./content/projects", type: "project", route: "projects/" },
       { path: "./content", type: "page", route: "" },
     ],
@@ -25,11 +27,8 @@ registerPluginType("LastModifiedPlugin", LastModifiedPlugin);
         }
       },
       {
-        name: "LastModifiedPlugin",
-        options: {
-          contentTypes: ["blog"],
-          routes: ["/about"]
-        }
+        name: "ContentListPlugin",
+        options: {} 
       }
     ],
     defaultContentType: "page",

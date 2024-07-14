@@ -24,6 +24,7 @@ header img {
   width: 3rem;
   height: 3rem;
   border: solid .1rem #F0F8FF;
+  /* box-shadow: .2rem .4rem 0 rgba(0, 0, 0, .2); */
 }
 
 nav {
@@ -75,8 +76,13 @@ footer {
 }
 
 
-h2, h3, p {
+h2, h3 {
   margin: 0;
+}
+
+p {
+  margin-top: .4rem;
+  margin-bottom: .4rem;
 }
 
 .log-header h3, .log-header p {
@@ -102,10 +108,14 @@ h2  {
   font-style: normal;
 }
 
+main h2 {
+  margin-bottom: .4rem;
+}
+
 ul {
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: .4rem;
   list-style-type: none;
   padding: 0;
   margin: 0;
