@@ -25,6 +25,9 @@ header span {
   align-items: end;
 }
 
+header em {
+  color: #6B7C93;
+}
 
 header img {
  
