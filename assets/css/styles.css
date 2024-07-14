@@ -18,14 +18,23 @@ header {
   max-width: 624px;
 }
 
+header span {
+  display: flex;
+  flex-direction: row;
+  gap: .6rem;
+  align-items: center;
+}
+
 
 header img {
   border-radius: 100%;
-  width: 3rem;
-  height: 3rem;
+  width: 4rem;
+  height: 4rem;
   border: solid .1rem #F0F8FF;
   /* box-shadow: .2rem .4rem 0 rgba(0, 0, 0, .2); */
+  
 }
+
 
 nav {
   margin-top: .6rem;
@@ -115,7 +124,7 @@ main h2 {
 ul {
   display: flex;
   flex-direction: column;
-  gap: .4rem;
+  gap: .2rem;
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -301,6 +310,7 @@ pre[class*="language-"] > code[class*="language-"] {
   height: 40px;
   position: relative;
   background-color: transparent;
+  margin-bottom: 1rem;
 }
 
 .pixel {
