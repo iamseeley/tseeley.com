@@ -22,7 +22,7 @@ header span {
   display: flex;
   flex-direction: row;
   gap: .6rem;
-  align-items: center;
+  align-items: end;
 }
 
 
