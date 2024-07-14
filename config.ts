@@ -15,6 +15,7 @@ registerPluginType("ContentListPlugin", ContentListPlugin);
     contentSources: [
       { path: "./content/posts", type: "post", route: "posts/" },
       { path: "./content/projects", type: "project", route: "projects/" },
+      { path: "./content/logs", type: "log", route: "logs/" },
       { path: "./content", type: "page", route: "" },
     ],
     plugins: [

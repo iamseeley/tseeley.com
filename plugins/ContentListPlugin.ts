@@ -8,11 +8,13 @@ interface ContentItem {
   date: Date;
   slug: string;
   description?: string;
+  image?: string;
 }
 
 const routeToTypeMap: Record<string, string> = {
   "/posts": "post",
-  "/projects": "project"
+  "/projects": "project",
+  "/index": "log"
 };
 
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -64,6 +66,7 @@ export default class ContentListPlugin implements Plugin {
               date: new Date(metadata.date as string),
               slug: basename(entry.path, ".md"),
               description: metadata.description as string,
+              image: metadata.image as string
             });
           }
         }
@@ -96,6 +99,10 @@ export default class ContentListPlugin implements Plugin {
         listHtml += `<li>
           <a href="/${contentType}s/${item.slug}">${item.title}</a>
           ${item.description ? `<p>${item.description}</p>` : ''}
+        </li>\n`;
+    } else if (contentType === 'log') {
+        listHtml += `<li>
+          <a href="/${contentType}s/${item.slug}">${item.title}</a>
         </li>\n`;
       }
     });
