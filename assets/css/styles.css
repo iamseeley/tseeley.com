@@ -27,10 +27,10 @@ header span {
 
 
 header img {
-  border-radius: 100%;
-  width: 4rem;
-  height: 4rem;
-  border: solid .1rem #F0F8FF;
+ 
+  width: 2rem;
+  height: 2rem;
+  border: solid .1rem #e15a24;
   /* box-shadow: .2rem .4rem 0 rgba(0, 0, 0, .2); */
   
 }
