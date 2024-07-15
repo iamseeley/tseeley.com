@@ -14,10 +14,14 @@
 </head>
 <body>
   {{> header siteTitle=siteTitle}}
+   {{#with (getCurrentRoute this) as |currentRoute|}}
+  {{#if (eq currentRoute "/index")}}
   <div class="section-break-container">
     <div class="section-break-line"></div>
     <span class="section-break-icon">✦</span>
   </div>
+  {{/if}}
+  {{/with}}
   <main>
     {{{body}}}
   </main>

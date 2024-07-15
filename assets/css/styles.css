@@ -49,13 +49,12 @@ aside {
   margin-bottom: .4rem;
 }
 
-
-
 nav {
-  margin-top: .6rem;
-  margin-bottom: .6rem;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  gap: .6rem;
+  margin-top: .6rem;
+ 
 }
 
 nav a {

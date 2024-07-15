@@ -10,6 +10,7 @@ registerPluginType("TableOfContentsPlugin", TableOfContentsPlugin);
 registerPluginType("ContentListPlugin", ContentListPlugin);
 
 
+
 // configure your website
   export const config: WebsiteConfig = {
     contentSources: [
@@ -37,4 +38,13 @@ registerPluginType("ContentListPlugin", ContentListPlugin);
     customPluginsDir: "./plugins",
     assetsDir: "./assets",
     siteTitle: "tseeley",
+    templateHelpers: {
+      getCurrentRoute: function(context: any) {
+        const route = context.route || '/';        
+        return route;
+      },
+      eq: function(a: any, b: any) {
+        return a === b;
+      },
+    }
   };
