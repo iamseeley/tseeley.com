@@ -5,7 +5,7 @@ title: about
 
 <img  width='400'  src='/images/thomas.webp'>
 
-my name is thomas Seeley. i like building for the web and creating useful, fun software.
+my name is thomas seeley. i like building for the web and creating useful, fun software.
 
 i spend my time making things and trying to get better at making things.
 
