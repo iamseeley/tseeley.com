@@ -136,14 +136,19 @@ blockquote {
 }
 
 main h2 {
-  margin-bottom: .4rem;
+  margin-bottom: .8rem;
 }
 
 ul {
   display: flex;
   flex-direction: column;
-  gap: .2rem;
+  gap: .6rem;
   list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li p {
   padding: 0;
   margin: 0;
 }
