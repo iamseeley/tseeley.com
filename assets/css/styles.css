@@ -132,10 +132,9 @@ h2  {
   font-style: normal;
 }
 
-/* blockquote {
-  background-color: #2D3748;
-  padding: 1rem;
-} */
+blockquote {
+  margin-left: 0;
+}
 
 main h2 {
   margin-bottom: .4rem;
