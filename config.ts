@@ -3,12 +3,13 @@ import TableOfContentsPlugin from './plugins/TableOfContentsPlugin.ts';
 import LastModifiedPlugin from './plugins/LastModifiedPlugin.ts';
 import { registerPluginType } from 'jsr:@iamseeley/simpl-site/plugin-registry';
 import ContentListPlugin from "./plugins/ContentListPlugin.ts";
+import OGImageGeneratorPlugin from './plugins/OGImageGeneratorPlugin.ts';
 
 // register your plugins
 registerPluginType("TableOfContentsPlugin", TableOfContentsPlugin);
 // registerPluginType("LastModifiedPlugin", LastModifiedPlugin);
 registerPluginType("ContentListPlugin", ContentListPlugin);
-
+registerPluginType("OGImageGeneratorPlugin", OGImageGeneratorPlugin);
 
 
 // configure your website
@@ -30,6 +31,10 @@ registerPluginType("ContentListPlugin", ContentListPlugin);
       },
       {
         name: "ContentListPlugin",
+        options: {} 
+      },
+      {
+        name: "OGImageGeneratorPlugin",
         options: {} 
       }
     ],
