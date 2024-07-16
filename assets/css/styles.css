@@ -334,10 +334,22 @@ pre[class*="language-"] > code[class*="language-"] {
   position: relative;
   background-color: transparent;
   margin-bottom: 1rem;
+  touch-action: none;
 }
 
 .pixel {
   width: 1px;
   height: 1px;
   position: absolute;
+}
+
+
+.log-content img {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+}
+
+.date {
+  font-size: .8em;
+  margin-left: .2rem;
 }

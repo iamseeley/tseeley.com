@@ -1,6 +1,8 @@
 ---
 title: hello resume
-description: resume builder using the json resume standard, hosted on val.town
+date: 2024-06-10
+description: a resume builder that uses the json resume standard, hosted on val.town
+url:
 ---
 
 ## hello resume
