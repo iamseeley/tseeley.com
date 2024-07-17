@@ -281,58 +281,12 @@ p {
 
 /* Code block container */
 pre[class*="language-"] {
-  background-color: #2D3748 !important;  /* Lighter version of #1A202C */
+  background-color: #1A202C !important;  /* Lighter version of #1A202C */
   border-radius: 6px;
   margin: 1rem 0;
   padding: 1rem;
   overflow-x: auto;
-}
-
-pre[class*="language-"] > code[class*="language-"] {
-  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
-  font-size: 14px;
-  line-height: 1.5;
-  color: #F0F8FF !important;
-  background-color: transparent !important;
-}
-
-/* Highlight.js theme */
-.hljs-keyword,
-.hljs-operator,
-.hljs-tag,
-.hljs-name {
-  color: #54A9E6 !important;  /* Lighter blue */
-}
-
-.hljs-string,
-.hljs-attr-value {
-  color: #68D391 !important;  /* Light green */
-}
-
-.hljs-title,
-.hljs-function,
-.hljs-attr-name {
-  color: #4FD1C5 !important;  /* Teal */
-}
-
-.hljs-comment {
-  color: #A0AEC0 !important;  /* Lighter grayish blue for better contrast */
-}
-
-.hljs-number,
-.hljs-literal {
-  color: #F6AD55 !important;  /* Orange */
-}
-
-.hljs-variable,
-.hljs-params {
-  color: #ED64A6 !important;  /* Pink */
-}
-
-/* Override any potential white background */
-.hljs {
-  background-color: transparent !important;
-  color: #F0F8FF !important;
+  font-size: 1em;
 }
 
 
