@@ -54,7 +54,7 @@ nav {
   flex-direction: row;
   gap: .6rem;
   margin-top: .6rem;
- margin-bottom: .6rem;
+  margin-bottom: .6rem;
 }
 
 nav a {
@@ -78,14 +78,6 @@ nav a:hover, nav a.active {
 }
 
 
-
-#elsewhere {
-  display: flex;
-  flex-direction: column;
-
-}
-
-
 #content {
   display: flex;
   flex-direction: column;
@@ -96,6 +88,13 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+#elsewhere {
+  display: flex;
+  flex-direction: row;
+  gap: 0.6rem;
+  flex-wrap: wrap;
 }
 
 
@@ -148,10 +147,20 @@ ul {
   margin: 0;
 }
 
-li p {
+
+.project-list p, .post-list p {
   padding: 0;
   margin: 0;
 }
+
+.log-list img {
+  margin-top: .6rem;
+}
+
+/* li p {
+  padding: 0;
+  margin: 0;
+} */
 
 .log-header {
     display: flex;
@@ -346,7 +355,6 @@ pre[class*="language-"] > code[class*="language-"] {
 
 .log-content img {
   margin-top: .5rem;
-  margin-bottom: .5rem;
 }
 
 .date {

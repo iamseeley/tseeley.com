@@ -122,19 +122,19 @@ export default class ContentListPlugin implements Plugin {
           currentListYear = itemYear;
         }
 
-        listHtml += `<li>
+        listHtml += `<li class="post-list">
           <a href="/${contentType}s/${item.slug}">${item.title}</a>
           <span class="date"><em>${formattedDate}</em></span>
         </li>\n`;
       } else if (contentType === 'project') {
-        listHtml += `<li>
+        listHtml += `<li class="project-list">
           <a href="/${contentType}s/${item.slug}">${item.title}</a>
           ${item.description ? `<p>${item.description}</p>` : ''}
         </li>\n`;
       } else if (contentType === 'log') {
-        listHtml += `<li>
+        listHtml += `<li class="log-list">
           <h3>${item.title} <span class="date"><em>${formattedDate}</em></span></h3>
-          <div class="log-content">
+          <div class="">
             ${item.htmlContent || 'No content available'}
             ${item.isTruncated ? `<a href="/logs/${item.slug}">...</a>` : ''}
           </div>
@@ -143,7 +143,7 @@ export default class ContentListPlugin implements Plugin {
     });
 
     console.log(`ContentListPlugin: Generated HTML list with ${items.length} items`);
-    return `<ul class="content-list">\n${listHtml}</ul>`;
+    return `<ul class="">\n${listHtml}</ul>`;
   }
 
   private truncateMarkdown(markdown: string, maxLength: number): { truncatedMarkdown: string, isTruncated: boolean } {
