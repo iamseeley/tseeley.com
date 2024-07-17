@@ -3,7 +3,7 @@ title: about
 ---
 ## about
 
-<img  width='400'  src='/images/thomas.webp'>
+<img  width='300'  src='/images/stand.jpg'>
 
 my name is thomas seeley. i like building for the web and creating useful, fun software.
 
