@@ -286,7 +286,7 @@ pre[class*="language-"] {
   margin: 1rem 0;
   padding: 1rem;
   overflow-x: auto;
-  font-size: 1em;
+  font-size: .85em;
 }
 
 
