@@ -9,6 +9,7 @@ interface ContentItem {
   date: Date;
   slug: string;
   description?: string;
+  url?: string;
   image?: string;
   markdown?: string;
   htmlContent?: string;
@@ -91,6 +92,7 @@ export default class ContentListPlugin implements Plugin {
               date: new Date(metadata.date as string),
               slug: basename(entry.path, ".md"),
               description: metadata.description as string,
+              url: metadata.url as string,
               image: metadata.image as string,
               markdown: markdownBody,
               htmlContent: htmlContent,
@@ -128,7 +130,7 @@ export default class ContentListPlugin implements Plugin {
         </li>\n`;
       } else if (contentType === 'project') {
         listHtml += `<li class="project-list">
-          <a href="/${contentType}s/${item.slug}">${item.title}</a>
+          <a target="_blank" href="${item.url}">${item.title}</a>
           ${item.description ? `<p>${item.description}</p>` : ''}
         </li>\n`;
       } else if (contentType === 'log') {
@@ -158,6 +160,6 @@ export default class ContentListPlugin implements Plugin {
   }
 
   async extendTemplate(templateContext: TemplateContext): Promise<TemplateContext> {
-    return templateContext; // We're not modifying the template context
+    return templateContext;
   }
 }
