@@ -4,7 +4,7 @@ description: a bit about thomas seeley
 ---
 ## about
 
-<img  width='300'  src='/images/stand.jpg'>
+<img  width='300'  src='https://res.cloudinary.com/dcwnusepx/image/upload/v1721414549/tseeley/profile.jpg'> 
 
 my name is thomas seeley. i like building for the web and creating useful, fun software.
 
