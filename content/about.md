@@ -1,5 +1,6 @@
 ---
 title: about
+description: a bit about thomas seeley
 ---
 ## about
 
