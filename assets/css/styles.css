@@ -78,7 +78,7 @@ nav a:hover, nav a.active {
 }
 
 .intro {
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
 
 }
 
@@ -188,7 +188,7 @@ main img {
 
 
 a {
-  color: #148ce2;
+  color: #0082df;
 }
 
 a:not(nav a) {
