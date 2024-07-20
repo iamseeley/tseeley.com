@@ -1,25 +1,19 @@
 <header>
     {{!-- <div class="pixelated-flower-field"></div> --}}
-    
-    {{#with (getCurrentRoute this) as |currentRoute|}}
-    {{#if (eq currentRoute "/index")}}
-      <div>
-        
-        {{!-- <a href='/'><img src='/images/profile.png'></img></a> --}}
-        <span><h2>thomas seeley</h2></span>
-        <h3>hi there, my name is thomas. i'm a <a href="/posts/serial-tinkerer">serial tinkerer</a> and <a href="/posts/curious-human">curious human</a>. i make <a href="/posts/websites">websites</a> and <a href="/posts/software">software</a>.</h3>
-        <blockquote><em>programming as creative self-expression</em></blockquote>
-       
-      </div>
-       
-    {{/if}}
-  
   <nav> 
     <a href='/'>home</a>
     <a href='/posts'>posts</a>
     <a href='/projects'>projects</a>
     <a href='/about'>about</a>
   </nav>
+    
+    {{#with (getCurrentRoute this) as |currentRoute|}}
+    {{#if (eq currentRoute "/index")}}
+      
+       
+    {{/if}}
+  
+  
 
   {{/with}}
 </header>
