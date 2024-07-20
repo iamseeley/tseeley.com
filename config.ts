@@ -4,6 +4,7 @@ import LastModifiedPlugin from './plugins/LastModifiedPlugin.ts';
 import { registerPluginType } from 'jsr:@iamseeley/simpl-site/plugin-registry';
 import ContentListPlugin from "./plugins/ContentListPlugin.ts";
 
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 // register your plugins
 registerPluginType("TableOfContentsPlugin", TableOfContentsPlugin);
@@ -47,5 +48,12 @@ registerPluginType("ContentListPlugin", ContentListPlugin);
       eq: function(a: any, b: any) {
         return a === b;
       },
+      formatDate: function(dateString: string) {
+      const date = new Date(dateString);
+      const monthName = monthNames[date.getMonth()];
+      const day = date.getDate();
+      const year = date.getFullYear();
+      return `${monthName} ${day}, ${year}`;
+    }
     }
   };

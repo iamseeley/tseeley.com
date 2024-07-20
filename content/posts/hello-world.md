@@ -4,8 +4,6 @@ date: 2024-07-15
 draft: false
 ---
 
-## hello world
-
 soooo. i've never been great at writing. 
 
 i regret it, but writing is something i've avoided. i thought it wasn't for me, so i didn't bother to work on it. i would make things instead! 
