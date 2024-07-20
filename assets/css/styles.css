@@ -66,6 +66,8 @@ nav a:hover, nav a.active {
   color: #181818;
 }
 
+
+
 #socials button {
   border-radius: .2rem;
   background-color: #54A9E6;
@@ -260,6 +262,8 @@ p {
    width: 100%; 
    text-align: center;
    position: relative;
+   padding-top: 1.5rem;
+   padding-bottom: 1.3rem;
 }
 
 .section-break-line {
@@ -269,7 +273,7 @@ p {
 
 .section-break-icon {
     position: absolute;
-    background: #1A202C;
+    background: #fff;
     padding: 0 1.1rem;
     color: #54A9E6;
     border-radius: 100%;
