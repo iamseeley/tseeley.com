@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   setActiveLink();
   // const allFlowers = createFlowerField();
-  applyGlow();
+  // applyGlow();
   // setupFloatingEffect(allFlowers);
 });
 

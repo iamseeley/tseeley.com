@@ -9,6 +9,7 @@ interface ContentItem {
   date: Date;
   slug: string;
   description?: string;
+  draft?: boolean;
   url?: string;
   image?: string;
   markdown?: string;
@@ -92,6 +93,7 @@ export default class ContentListPlugin implements Plugin {
               date: new Date(metadata.date as string),
               slug: basename(entry.path, ".md"),
               description: metadata.description as string,
+              draft: metadata.draft as boolean,
               url: metadata.url as string,
               image: metadata.image as string,
               markdown: markdownBody,
@@ -117,7 +119,7 @@ export default class ContentListPlugin implements Plugin {
 
     items.forEach(item => {
       const formattedDate = `${monthNames[item.date.getMonth()]} ${item.date.getDate()}`;
-      if (contentType === 'post') {
+      if (contentType === 'post' && item.draft !== true ) {
         const itemYear = item.date.getFullYear();
         if (itemYear !== currentListYear && itemYear !== currentYear) {
           listHtml += `<h2>${itemYear}</h2>\n`;
@@ -135,7 +137,7 @@ export default class ContentListPlugin implements Plugin {
         </li>\n`;
       } else if (contentType === 'log') {
         listHtml += `<li class="log-list">
-          <h3>${item.title} <span class="date"><em>${formattedDate}</em></span></h3>
+          <h4>${item.title} <span class="date"><em>${formattedDate}</em></span></h4>
           <div class="">
             ${item.htmlContent || 'No content available'}
             ${item.isTruncated ? `<a href="/logs/${item.slug}">...</a>` : ''}
