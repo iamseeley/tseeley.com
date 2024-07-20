@@ -1,5 +1,6 @@
 ---
 title: home
+description: the personal website of thomas seeley
 ---
 
 <div class="intro">

@@ -2,7 +2,7 @@
 title: websites
 date: 2024-07-20
 description: what's a website? 
-draft: true
+draft: false
 ---
 
 don't mind me. i'm just a little document.
