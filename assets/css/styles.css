@@ -141,6 +141,19 @@ h2  {
   font-style: normal;
 }
 
+.posts-header {
+  display: flex;
+  flex-direction: row;
+  gap: .6rem;
+  align-items: baseline;
+}
+
+.posts-header span {
+  font-size: .8em;
+  font-style: italic;
+  color: #6B7C93;
+}
+
 blockquote {
   margin-left: 0;
 }

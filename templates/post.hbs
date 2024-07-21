@@ -1,5 +1,6 @@
 <article class="blog-content">
-  <h2>{{metadata.title}}</h2>
+  <div class="posts-header"><h2>{{metadata.title}}</h2></div>
+  {{!-- <span>by thomas</span> --}}
   <span class="date"><em>{{formatDate metadata.date}}</em></span>
   {{{content}}}
 </article>
