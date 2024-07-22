@@ -160,3 +160,6 @@ const setupFloatingEffect = (allFlowers) => {
   document.addEventListener('scroll', () => stopAnimationWithDelay());
   document.addEventListener('touchmove', () => stopAnimationWithDelay());
 };
+
+
+

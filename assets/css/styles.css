@@ -61,10 +61,13 @@ header img {
 }
 
 aside {
-  border-left: #6B7C93 .1rem solid;
+  border-left: #cdd4de 2px solid;
+  color: #6B7C93;
   padding-left: .6rem;
   margin-top: .4rem;
+  padding: .6rem;
   margin-bottom: .4rem;
+  background-color: #fafafa;
 }
 
 nav {
@@ -330,12 +333,11 @@ p {
 
 /* Code block container */
 pre[class*="language-"] {
-  background-color: #1A202C !important;  /* Lighter version of #1A202C */
-  border-radius: 6px;
-  margin: 1rem 0;
-  padding: 1rem;
+  background-color: hsl(230, 1%, 90%);  /* Lighter version of #1A202C */
+  padding: .6rem;
+  border: 1px solid #cdd4de;
   overflow-x: auto;
-  font-size: .85em;
+ 
 }
 
 

@@ -1,4 +1,4 @@
-import { WebsiteConfig } from "jsr:@iamseeley/simpl-site";
+import { WebsiteConfig } from "jsr:@iamseeley/simpl-site@1.4.1";
 import TableOfContentsPlugin from './plugins/TableOfContentsPlugin.ts';
 import LastModifiedPlugin from './plugins/LastModifiedPlugin.ts';
 import { registerPluginType } from 'jsr:@iamseeley/simpl-site/plugin-registry';
@@ -35,6 +35,10 @@ registerPluginType("ContentListPlugin", ContentListPlugin);
         options: {} 
       },
     ],
+    caching: {
+      enabled: true,
+      excludedRoutes: ['/plugin-example', '/dynamic-content']
+    },   
     defaultContentType: "page",
     templateDir: "./templates",
     customPluginsDir: "./plugins",

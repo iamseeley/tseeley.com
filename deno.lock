@@ -2,7 +2,8 @@
   "version": "3",
   "packages": {
     "specifiers": {
-      "jsr:@iamseeley/simpl-site": "jsr:@iamseeley/simpl-site@1.0.4",
+      "jsr:@iamseeley/simpl-site": "jsr:@iamseeley/simpl-site@1.4.1",
+      "jsr:@iamseeley/simpl-site@1.4.1": "jsr:@iamseeley/simpl-site@1.4.1",
       "jsr:@std/assert@^0.218.2": "jsr:@std/assert@0.218.2",
       "jsr:@std/assert@^0.224.0": "jsr:@std/assert@0.224.0",
       "jsr:@std/fs@0.224.0": "jsr:@std/fs@0.224.0",
@@ -20,6 +21,17 @@
     "jsr": {
       "@iamseeley/simpl-site@1.0.4": {
         "integrity": "a9ae5e2ca97f3d0f3d003f70335e9a7e34f0fc1f8e861eb71547c637583950cc",
+        "dependencies": [
+          "jsr:@std/fs@0.224.0",
+          "jsr:@std/media-types@0.224.0",
+          "jsr:@std/path@0.224.0",
+          "npm:@types/handlebars@4.1.0",
+          "npm:handlebars@4.7.8",
+          "npm:marked@4.0.0"
+        ]
+      },
+      "@iamseeley/simpl-site@1.4.1": {
+        "integrity": "a26a9b4482df292f7a38554a0eed2be0b5ffde2dc52e735441b120936f961b86",
         "dependencies": [
           "jsr:@std/fs@0.224.0",
           "jsr:@std/media-types@0.224.0",
