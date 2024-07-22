@@ -102,4 +102,4 @@ caching?: {
 
 this might end up turning into a full post on server-side / client-side caching strategies.
 
-i'll probably end up adding static asset caching next.
+i'll probably add static asset caching next!
