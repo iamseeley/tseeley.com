@@ -31,6 +31,12 @@ body {
   .posts-header span {
     font-size: 1em;
   }
+  pre[class*="language-"] {
+    font-size: .8em; 
+    
+  }
+
+
 }
 
 header {
@@ -337,7 +343,7 @@ pre[class*="language-"] {
   padding: .6rem;
   border: 1px solid #cdd4de;
   overflow-x: auto;
- 
+  
 }
 
 
