@@ -14,18 +14,9 @@ i implemented a page cache in the [simplSite](https://github.com/iamseeley/simpl
 
 also, i added template caching to the templateEngine class to cache the handlebars templates!
 
-after testing the response times with and without caching and learning caching provided a 5.69x speedup on average i decided to add caching configuration to simpl-site.
+with the help of claude i made a benchmark script that ran 1000 iterations for both cached and uncached scenarios. without caching the average response time was 0.444ms, with caching enabled the average response time dropped to 0.078ms.
 
-```typescript
-caching?: {
-  enabled: boolean;
-  excludedRoutes?: string[];
-};
-```
-
-the benchmark script ran 1000 iterations for both cached and uncached scenarios. without caching the average response time was 0.444ms, with caching enabled the average response time dropped to 0.078ms.
-
-here's the benchmark script claude helped me write:
+here's the script: 
 
 ```typescript
 import { SimplSite } from "../mod.ts";
@@ -98,6 +89,15 @@ async function main() {
 }
 
 main();
+```
+
+after learning caching provided a 5.69x speedup on average i decided to add caching configuration to simpl-site.
+
+```typescript
+caching?: {
+  enabled: boolean;
+  excludedRoutes?: string[];
+};
 ```
 
 this might end up turning into a full post on server-side / client-side caching strategies.
