@@ -6,7 +6,7 @@ image: https://cdn.mos.cms.futurecdn.net/SMDYhDUZcKuX9YV9vCrvEk-1200-80.jpg
 
 playing around with caching pages and templates for this site. 
 
-<aside>this site uses [simpl-site](https://github.com/iamseeley/simpl-site). simpl-site is a server-side rendered website builder. it enables the creation of dynamic websites using markdown content, handlebars templates, and a plugin system. this website is powered by simpl-site.</aside>
+<aside>this site uses <a href="https://github.com/iamseeley/simpl-site" target="_blank">simpl-site</a>. simpl-site is a server-side rendered website builder. it enables the creation of dynamic websites using markdown content, handlebars templates, and a plugin system. this website is powered by simpl-site.</aside>
 
 it seems silly to go through the process of retrieving the handlebars template and markdown content then rendering the html on every page load.
 
