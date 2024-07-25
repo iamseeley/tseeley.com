@@ -17,7 +17,7 @@ quick update on the web analytics service!
 
 ✦ added some bar charts for the browser, os, screen size, location, and views overall data.
 
-✦ added a timestamps table to record time data for specific paths (it's made it easier to calculate sites' daily, weekly, and monthly view percentages).
+✦ added a timestamps table to record time data for specific paths (making it easier to calculate sites' daily, weekly, and monthly view percentages).
 
 i'm going to add a site page view to show all the data for specific sites!
 
