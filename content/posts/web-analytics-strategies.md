@@ -7,7 +7,7 @@ draft: true
 
 ### the dilemma: balancing insights and privacy
 
-as i continue to work on my web analytics solution, the big question that keeps coming up in my mind is how do i gather meaningful data while respecting user privacy.
+as i continue to work on my web analytics service, the big question that keeps coming up in my mind is how do i gather meaningful data while respecting user privacy.
 
 to address this, i'm exploring different strategies to understand their benefits and privacy implications. here are some common approaches to web analytics, including the one i'm developing:
 
@@ -111,7 +111,7 @@ url parameter tracking adds unique identifiers to urls to track users across dif
 
 ### my approach (no cookies)
 
-my approach uses a javascript-based tracking method that collects site url, path, referrer, browser user agent, os, screen size, language, and a generic "unknown" country, sending this data to the server without using cookies, uids, or fingerprinting. this method respects the "do not track" setting and avoids persistent identifiers while collecting useful analytics data.
+my approach uses a javascript-based tracking method that collects site url, path, referrer, browser user agent, os, screen size, language, and a generic "unknown" country, sending this data to the server without using cookies, uids, or fingerprinting. this method respects the "do not track" setting and avoids persistent identifiers.
 
 ```javascript
 // my web analytics script

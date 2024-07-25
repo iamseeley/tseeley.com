@@ -237,6 +237,13 @@ main img {
   margin-top: 1rem;
 }
 
+main video {
+  /* box-shadow: .3rem .4rem 0 rgba(0, 0, 0, .2); */
+  border-radius: .18rem;
+  height: auto;
+  max-width: 100%;
+  margin-top: 1rem;
+}
 
 a {
   color: #0082df;
