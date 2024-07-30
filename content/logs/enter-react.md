@@ -69,7 +69,7 @@ const setupDataStream = useCallback(() => {
 ```
 
 **organizing dashboard into components**:
-the home page and site page dashboards contain a lot of code that can be shared between them. by creating a few reusable dashboard components it makes the code much more manageable. 
+the home page and site page dashboards contain a lot of code that can be shared between them. by creating a few reusable dashboard components it made the code much more manageable. 
 
 
  **chart rendering**:
