@@ -14,10 +14,10 @@ i also used [globe.gl](https://globe.gl/) to render a globe displaying visitor o
 some key use cases that made react well-suited for the project:
 
 **managing connection status and error states**: 
-useState manages the connectionStatus and error states, so there is real-time feedback on the SSE connection's health.
+useState manages the connectionStatus and error states, so there is real-time feedback on the server-sent events (SSE) connection's health.
 
 **real-time updates for analytics data**:
-useState and useEffect hooks manage the server-sent events (SSE) connection. so, the dashboard can recieve and display live updates from the analytics stream.
+useState and useEffect hooks manage the SSE connection. so, the dashboard can recieve and display live updates from the analytics stream.
 
 ```javascript
 const setupDataStream = useCallback(() => {
