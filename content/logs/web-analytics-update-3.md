@@ -5,7 +5,7 @@ date: 2024-08-01
 
 after some bumps in the road, mainly me trying to wrap my head around when to use react suspense and lazy loading, my current thinking is that for a real-time dashboard where data needs to be displayed immediately across all components, i should opt for minimal loading states while the site connects to the data stream. so, that's what i've implemented.
 
-<video controls><source src="https://res.cloudinary.com/dcwnusepx/video/upload/v1722547609/tseeley/1loadingstate_zp2v5q.mp4"></video>
+<video controls><source src="https://res.cloudinary.com/dcwnusepx/video/upload/v1722547609/tseeley/1loadingstate_zp2v5q.mp4#t=0.001"></video>
 
 rather than managing the dashboard state and data within the home dashboard component, i decided to use the react context api to create an analytics provider. it centralizes the data management for the dashboards (fetching, processing, and distribution), and it's where we connect to the http data stream. the analytics provider fetches and processes the data once, making it available to all its child components. if i have other routes that use the analytics data there's no need to refetch the data.
 
@@ -17,4 +17,4 @@ slowly making progress! over the next day or two, i'm going to focus more on imp
 
 current state:
 
-<video controls><source src="https://res.cloudinary.com/dcwnusepx/video/upload/v1722544665/tseeley/4webdashdemo_sip7ll.mp4"></video>
+<video controls><source src="https://res.cloudinary.com/dcwnusepx/video/upload/v1722544665/tseeley/4webdashdemo_sip7ll.mp4#t=0.001"></video>
