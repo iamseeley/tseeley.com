@@ -151,6 +151,14 @@ font-family: "Aleo", serif;
   font-size: 1em;
 }
 
+.log-list h4 {
+  font-weight: bold;
+}
+
+.log-list {
+  margin-bottom: 1.2rem;
+}
+
 h4 {
   font-size: 1em;
   font-style: normal;
@@ -189,6 +197,27 @@ h2  {
 
 blockquote {
   margin-left: 0;
+}
+
+.log-content {
+  display: block;
+  width: 100%;
+}
+
+.log-text {
+  display: inline;
+}
+
+.ellipsis-link {
+  display: inline;
+  white-space: nowrap;
+}
+
+.ellipsis-link a {
+  display: inline-block;
+  vertical-align: bottom;
+  line-height: 1;
+  margin-left: 0.2em;
 }
 
 main h2 {

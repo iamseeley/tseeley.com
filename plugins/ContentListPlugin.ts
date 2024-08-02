@@ -20,6 +20,7 @@ interface ContentItem {
 const routeToTypeMap: Record<string, string> = {
   "/posts": "post",
   "/projects": "project",
+  "/logs": "log",
   "/index": "log"
 };
 
@@ -59,7 +60,7 @@ export default class ContentListPlugin implements Plugin {
       try {
         const items = await this.getContentItems(contentDir);
         console.log(`ContentListPlugin: Retrieved ${items.length} items`);
-        const listHtml = this.generateListHtml(items, contentType);
+        const listHtml = this.generateListHtml(items, contentType, context.route);
         content = `${content}\n${listHtml}`;
       } catch (error) {
         console.error(`ContentListPlugin: Error processing ${contentType}:`, error);
@@ -109,57 +110,78 @@ export default class ContentListPlugin implements Plugin {
     return items;
   }
 
-  private generateListHtml(items: ContentItem[], contentType: string): string {
-    console.log(`ContentListPlugin: Generating HTML for ${items.length} ${contentType} items`);
+  private generateListHtml(items: ContentItem[], contentType: string, route: string): string {
+    console.log(`ContentListPlugin: Generating HTML for ${items.length} ${contentType} items on route ${route}`);
     const currentYear = new Date().getFullYear();
     let currentListYear: number | null = null;
-    let listHtml = '';
-
+    let listHtml = '<ul>\n';
     items.sort((a, b) => b.date.getTime() - a.date.getTime());
 
-    items.forEach(item => {
-      const formattedDate = `${monthNames[item.date.getMonth()]} ${item.date.getDate()}`;
-      if (contentType === 'post' && item.draft !== true ) {
-        const itemYear = item.date.getFullYear();
-        if (itemYear !== currentListYear && itemYear !== currentYear) {
-          listHtml += `<h2>${itemYear}</h2>\n`;
-          currentListYear = itemYear;
-        }
-
-        listHtml += `<li class="post-list">
-          <a href="/${contentType}s/${item.slug}">${item.title}</a>
-          <span class="date"><em>${formattedDate}</em></span>
-        </li>\n`;
-      } else if (contentType === 'project') {
-        listHtml += `<li class="project-list">
-          <a target="_blank" href="${item.url}">${item.title}</a>
-          ${item.description ? `<p>${item.description}</p>` : ''}
-        </li>\n`;
-      } else if (contentType === 'log') {
+    if (contentType === 'log') {
+      const logsToShow = route === '/index' ? items.slice(0, 4) : items;
+      logsToShow.forEach(item => {
+        const formattedDate = `${monthNames[item.date.getMonth()]} ${item.date.getDate()}`;
         listHtml += `<li class="log-list">
           <h4>${item.title} <span class="date"><em>${formattedDate}</em></span></h4>
-          <div class="">
-            ${item.htmlContent || 'No content available'}
-            ${item.isTruncated ? `<a href="/logs/${item.slug}">...</a>` : ''}
-          </div>
+          <div class="log-content">
+          <span class="log-text">${item.htmlContent ? item.htmlContent.replace(/>\s+</g, '><').trim() : 'No content available'}</span>${item.isTruncated ? `<span class="ellipsis-link"><a href="/logs/${item.slug}">...</a></span>` : ''}
+        </div>
         </li>\n`;
+      });
+
+      if (route === '/index' && items.length > 4) {
+        listHtml += `<li class="log-list"><a href="/logs">View all logs</a></li>\n`;
       }
-    });
-
-    console.log(`ContentListPlugin: Generated HTML list with ${items.length} items`);
-    return `<ul class="">\n${listHtml}</ul>`;
-  }
-
-  private truncateMarkdown(markdown: string, maxLength: number): { truncatedMarkdown: string, isTruncated: boolean } {
-    if (markdown.length <= maxLength) {
-      return { truncatedMarkdown: markdown, isTruncated: false };
+    } else {
+      items.forEach(item => {
+        const formattedDate = `${monthNames[item.date.getMonth()]} ${item.date.getDate()}`;
+        if (contentType === 'post' && item.draft !== true) {
+          const itemYear = item.date.getFullYear();
+          if (itemYear !== currentListYear && itemYear !== currentYear) {
+            listHtml += `</ul><h2>${itemYear}</h2>\n<ul>\n`;
+            currentListYear = itemYear;
+          }
+          listHtml += `<li class="post-list">
+            <a href="/${contentType}s/${item.slug}">${item.title}</a>
+            <span class="date"><em>${formattedDate}</em></span>
+          </li>\n`;
+        } else if (contentType === 'project') {
+          listHtml += `<li class="project-list">
+            <a target="_blank" href="${item.url}">${item.title}</a>
+            ${item.description ? `<p>${item.description}</p>` : ''}
+          </li>\n`;
+        }
+      });
     }
-    
-    let truncated = markdown.slice(0, maxLength);
-    // Ensure we don't cut off in the middle of a word
-    truncated = truncated.slice(0, truncated.lastIndexOf(' '));
-    return { truncatedMarkdown: truncated, isTruncated: true };
+
+    listHtml += '</ul>';
+    return listHtml;
   }
+
+private truncateMarkdown(markdown: string, maxLength: number): { truncatedMarkdown: string, isTruncated: boolean } {
+  if (markdown.length <= maxLength) {
+    return { truncatedMarkdown: markdown, isTruncated: false };
+  }
+  
+  let truncated = markdown.slice(0, maxLength);
+  // Ensure we don't cut off in the middle of a word
+  truncated = truncated.slice(0, truncated.lastIndexOf(' '));
+  
+  // Ensure we don't cut off in the middle of an HTML tag
+  const lastOpenBracket = truncated.lastIndexOf('<');
+  const lastCloseBracket = truncated.lastIndexOf('>');
+  if (lastOpenBracket > lastCloseBracket) {
+    truncated = truncated.slice(0, lastOpenBracket);
+  }
+  
+  // Ensure we close any open tags
+  const openTags = (truncated.match(/<[^/][^>]*>/g) || []).map(tag => tag.match(/<([^ >]+)/)[1]);
+  const closedTags = (truncated.match(/<\/[^>]+>/g) || []).map(tag => tag.match(/<\/([^>]+)>/)[1]);
+  const unclosedTags = openTags.filter(tag => !closedTags.includes(tag));
+  truncated += unclosedTags.reverse().map(tag => `</${tag}>`).join('');
+
+  return { truncatedMarkdown: truncated, isTruncated: true };
+}
 
   async extendTemplate(templateContext: TemplateContext): Promise<TemplateContext> {
     return templateContext;
