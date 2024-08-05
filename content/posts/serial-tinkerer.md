@@ -16,9 +16,9 @@ prefers a do-it-yourself approach.
 
 always picks up new skills through their projects.
 
-motivated from genuine interest and excitement.
+is motivated from genuine interest and excitement.
 
-comfortable with trial and error (the work gets better over time).
+is comfortable with trial and error (the work gets better over time).
 
 
 
