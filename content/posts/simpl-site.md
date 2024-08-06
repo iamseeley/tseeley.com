@@ -1,16 +1,18 @@
 ---
 title: a simple website builder
-date: 2024-07-14
+date: 2024-08-06
 description: simpl site is a dynamic website builder built on deno that features markdown, handlebars, and a plugin system for transforming content and extending templates.
 draft: true
 ---
 
+after a month or two of tinkering on [val.town](https://val.town), i've found myself really enjoying working with deno (val.town uses the deno runtime to run your js/ts). i've emjoyed deno so much that i decided to create a website builder with it.
 
+enter [simpl-site](https://github.com/iamseeley/simpl-site): a server-side rendered website builder that let's you create dynamic websites with markdown content, handlebars templates, and a plugin system for transforming content and extending templates. 
 
+it's my first [JSR](https://jsr.io/) package [@iamseeley/simpl-site](https://jsr.io/@iamseeley/simpl-site), and this is my first "technical" blog post hehe!
 
-after a month or two of making things on [val.town](https://val.town) i've come to enjoy working with deno (val.town uses the deno runtime to run your code). i've enjoyed working with deno so much that i decided to create a website builder with it.
+in this post i want to share a little background on the project, then dive into the code to explore how it all works. i'll wrap it up with next steps for the project.
 
-**what is it**
 
 ### i like building the thing that builds the thing
 
