@@ -130,7 +130,7 @@ export default class ContentListPlugin implements Plugin {
       });
 
       if (route === '/index' && items.length > 4) {
-        listHtml += `<li class="log-list"><a href="/logs">View all logs</a></li>\n`;
+        listHtml += `<li class="log-list"><a href="/logs">view all logs</a></li>\n`;
       }
     } else {
       items.forEach(item => {
