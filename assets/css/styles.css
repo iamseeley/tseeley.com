@@ -421,4 +421,17 @@ pre[class*="language-"] {
   border-radius: .3em;
   border: 1px solid #cdd4de;
   /* color: hsl(221, 87%, 60%); */
+  /* Flexbox layout */
+  display: inline-flex;
+  flex-wrap: wrap;
+  
+  /* Ensure inline behavior */
+  vertical-align: middle;
+  
+  /* Word breaking */
+  word-break: break-word;
+  overflow-wrap: break-word;
+  
+  /* Preserve white space */
+  white-space: pre-wrap;
 }

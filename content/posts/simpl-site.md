@@ -5,9 +5,11 @@ description: simpl site is a dynamic website builder built on deno that features
 draft: true
 ---
 
-after a month or two of tinkering on [val.town](https://val.town), i found myself really enjoying working with deno (val.town uses the deno runtime to run your js/ts). i've emjoyed deno so much that i decided to create a website builder with it.
+after a month or two of tinkering on [val.town](https://val.town), i found myself really enjoying working with deno (val.town uses the deno runtime to run your js/ts). i've enjoyed deno so much that i decided to create a website builder with it.
 
-it's called [simpl-site](https://github.com/iamseeley/simpl-site): a server-side rendered website builder that let's you create dynamic websites with markdown content, handlebars templates, and a plugin system for transforming content and extending templates. 
+it's called [simpl-site](https://github.com/iamseeley/simpl-site): a server-side rendered website builder that let's you create dynamic websites with markdown content, handlebars templates, and a plugin system for transforming content and extending templates.
+
+<aside>this website is powered by simpl-site!</aside>
 
 it's my first [JSR](https://jsr.io/) package [@iamseeley/simpl-site](https://jsr.io/@iamseeley/simpl-site), and this is my first "technical" blog post!
 
@@ -16,171 +18,350 @@ in this post i want to share a little background on the project, then dive into 
 
 ### i like building the thing that builds the thing
 
-i have a confession to make. sometimes (almost every time), when i decide to redo my personal website i end up making a new website builder for it. so, i spend all my time building the thing to build the thing. i admit this might not be the healthiest / most effective pattern, but i do think it can be pretty rewarding when it all comes together, and you have your website running on something you created.
+i have a confession to make. sometimes (almost every time), when i decide to redo my personal website i end up making a new website builder for it. i spend more of my time building the thing that builds the thing. i admit this might not be the healthiest / most effective pattern, but i think it can be pretty rewarding when it all comes together, and you have your website running on something you created.
 
 for this project, what started as a website refresh turned into a journey of exploring server-side rendering, the deno ecosystem, and publishing modules via JavaScript Registry (jsr).
 
 ### static site generation to server-side rendering
 
-before diving into simpl-site, i think it's worth mentioning its predecessor: [go-forth](https://github.com/iamseeley/go-forth), a static site generator i wrote in Go. go-forth was my first foray into creating a website builder, and it laid the groundwork for many of the ideas I've implemented in simpl-site. 
+before diving into simpl-site, i think it's worth mentioning its predecessor: [go-forth](https://github.com/iamseeley/go-forth), a static site generator i wrote in Go. go-forth was my first adventure in creating a website builder, and it laid the groundwork for many of the ideas I've implemented in simpl-site. 
 
 go-forth taught me a lot about structuring a site generator, handling markdown content, and managing templates. 
 
-it uses a similar concept of collections for organizing content and uses Go's html/template package for templating. while go-forth is a static site generator, simpl-site takes things a step further by introducing server-side rendering and a more robust plugin system.
+it uses a similar concept of collections for organizing content and uses Go's html/template package for templating. while go-forth is a static site generator, simpl-site takes things a step further by introducing server-side rendering and a plugin system.
 
-### code deep dive
+### code deep dive: anatomy of a page request
 
-at the heart of the project is the SimplSite class, which sets up the entire process of building and serving a website.
+let's walk through the lifecycle of a page request in simpl-site, following the process from initial request to final rendered output. this will take us through the key components of the `SimplSite` class and show how they work together to build a dynamic website.
 
-here's a simplified view of its structure:
+#### 1. handling the incoming request
 
-```javascript
-export class SimplSite {
-  private plugins: Map<string, Plugin>;
-  private contentSources: ContentSource[];
-  private markdownProcessor: MarkdownProcessor;
-  private templateEngine: TemplateEngine;
-  private pageCache: Map<string, { content: string; contentType: string; status: number; lastModified: number }>;
+when a request comes in, it's first handled by the `handleRequest` method:
 
-  constructor(private config: WebsiteConfig) {
-    // Initialize components
+```typescript
+async handleRequest(path: string): Promise<{ content: string | Uint8Array; contentType: string; status: number }> {
+  console.log(`Handling request for path: ${path}`);
+
+  path = path.replace(/^\//, '');
+  if (path === '') {
+    path = 'index';
   }
 
-  // Core methods
-  async getContent(path: string, type: string): Promise<string> { /* ... */ }
-  async processContent(content: string, type: string, route: string): Promise<{ content: string; metadata: Metadata }> { /* ... */ }
-  async renderContent(path: string, type: string, route: string): Promise<{ content: string; contentType: string; status: number }> { /* ... */ }
-  async handleRequest(path: string): Promise<{ content: string | Uint8Array; contentType: string; status: number }> { /* ... */ }
+  const staticFile = await this.serveStaticFile(path);
+  if (staticFile) {
+    console.log(`Serving static file: ${path}`);
+    return { ...staticFile, status: 200 };
+  }
 
-  // Helper methods
-  private initializePlugins(pluginConfigs: PluginConfig[]) { /* ... */ }
-  private shouldUseCache(path: string): boolean { /* ... */ }
-  private async serveStaticFile(path: string): Promise<{ content: Uint8Array; contentType: string } | null> { /* ... */ }
+  console.log(`Rendering content for path: ${path}`);
+  const originalPath = path;
+  path = path.endsWith('.md') ? path : path + '.md';
 
-  // Utility methods
-  clearCache() { /* ... */ }
-  getCacheStats(): { cacheSize: number; cachedRoutes: string[] } { /* ... */ }
+  let result;
+  for (const source of this.contentSources) {
+    if (originalPath.startsWith(source.route)) {
+      const contentPath = path.slice(source.route.length);
+      result = await this.renderContent(contentPath, source.type, '/' + originalPath);
+      break;
+    }
+  }
+
+  if (!result) {
+    result = await this.renderContent(path, this.defaultContentType, '/' + originalPath);
+  }
+
+  return result;
 }
 ```
 
-the SimplSite class handles all aspects of website generation, from content processing to request handling. it also includes methods for plugin management, template rendering, and caching.
+this method first checks if the request is for a static file. if it is, it serves the file directly. if not, it determines the appropriate content source and calls `renderContent` to generate the dynamic content.
 
-### key components of the SimplSite class and their interactions
+#### **2. retrieving the content**
 
-**Plugin System** Managed through the plugins map and initialized in the constructor:
+if the request is for dynamic content, the next step is to retrieve the raw content:
 
-```javascript
-private initializePlugins(pluginConfigs: PluginConfig[]) {
-  for (const pluginConfig of pluginConfigs) {
-    const PluginClass = getPluginClass(pluginConfig.name);
-    const plugin = new PluginClass(pluginConfig.options);
-    this.plugins.set(pluginConfig.name, plugin);
+```typescript
+async getContent(path: string, type: string): Promise<string> {
+  const source = this.contentSources.find(src => src.type === type);
+  if (!source) {
+    throw new Error(`Unknown content type: ${type}`);
   }
+  const fullPath = join(source.path, path);
+  return await Deno.readTextFile(fullPath);
 }
 ```
 
-plugins are applied in the content processing pipeline, allowing for content transformation and template extensions.
+this method finds the appropriate content source based on the content type and reads the file from the filesystem.
 
-**contentpProcessing** handled by the `processContent` method which utilizes both the `MarkdownProcessor` and the plugin system:
+#### **3. processing the content**
 
-```javascript
+once we have the raw content, it's time to process it:
+
+```typescript
 async processContent(content: string, type: string, route: string): Promise<{ content: string; metadata: Metadata }> {
   let { content: processedContent, metadata } = await this.markdownProcessor.execute(content);
   
-  // Apply plugin transformations
+  const context: PluginContext = {
+    contentType: type,
+    route: route,
+    templateDir: this.templateDir,
+    contentSources: Object.fromEntries(
+      this.contentSources.map(source => [source.type, source.path])
+    ),
+    siteUrl: this.siteUrl 
+  };
+  
   for (const plugin of this.plugins.values()) {
     if (plugin.transform) {
       const result = await plugin.transform(processedContent, context);
       processedContent = result.content;
-      metadata = { ...metadata, ...result.metadata };
+      if (result.metadata) {
+        metadata = { ...metadata, ...result.metadata };
+      }
     }
   }
-
+  
   return { content: processedContent, metadata };
 }
 ```
 
-**template rendering** for template rendering, simpl-site uses handlebars, an html templating engine. the `templateEngine` class encapsulates all the logic for compliling and rendering templates:
+this method first processes the markdown content, then applies each plugin's transform function in sequence. this allows plugins to modify both the content and metadata, providing a way to extend the site's functionality.
 
-```javascript
-import Handlebars from "npm:handlebars@4.7.8";
-import { TemplateEngineConfig, HelperDelegate, RuntimeOptions } from '../types.ts';
-import { join } from "jsr:@std/path@0.224.0";
-import { exists } from "jsr:@std/fs@0.224.0";
+#### **4. rendering the content**
 
-export class TemplateEngine {
-  private handlebars: typeof Handlebars;
-  private config: TemplateEngineConfig;
-  private compiledTemplates: Map<string, Handlebars.TemplateDelegate> = new Map();
+with the processed content in hand, we're ready to render it using our handlebars templates:
 
-  constructor(config: Partial<TemplateEngineConfig>) {
-    this.config = {
-      baseDir: 'templates',
-      extname: '.hbs',
-      layoutsDir: 'layouts/',
-      partialsDir: 'partials/',
-      defaultLayout: 'base',
-      ...config,
-    };
-    this.handlebars = Handlebars.create();
-    this.registerHelpers();
-    this.registerPartials();
+```typescript
+async renderContent(path: string, type: string, route: string): Promise<{ content: string; contentType: string; status: number }> {
+  // ... (caching logic)
+
+  const content = await this.getContent(path, type);
+  const { content: processedContent, metadata } = await this.processContent(content, type, route);
+
+  let templateContext: TemplateContext = {
+    content: processedContent,
+    metadata: metadata,
+    route: route,
+    siteTitle: this.siteTitle,
+  };
+
+  // Allow plugins to extend template context
+  for (const plugin of this.plugins.values()) {
+    if (plugin.extendTemplate) {
+      templateContext = await plugin.extendTemplate(templateContext);
+    }
   }
 
-  // ... other methods ...
+  const renderedContent = await this.templateEngine.render(type, templateContext);
+  
+  // ... (caching and return logic)
+}
+```
 
-  async render(templateName: string, context: Record<string, unknown>): Promise<string> {
-    console.log(`Rendering template: ${templateName}`);
-    try {
-      const templatePath = join(this.config.baseDir, `${templateName}${this.config.extname}`);
-      const layoutPath = join(this.config.baseDir, this.config.layoutsDir, `${this.config.defaultLayout}${this.config.extname}`);
-      
-      if (!await exists(templatePath)) {
-        throw new Error(`Template not found: ${templatePath}`);
-      }
-      const template = await this.getCompiledTemplate(templatePath);
-      let result = template(context);
-      if (await exists(layoutPath)) {
-        const layout = await this.getCompiledTemplate(layoutPath);
-        result = layout({ ...context, body: result });
-      }
-      console.log(`Template rendered successfully: ${templateName}`);
-      return result;
-    } catch (error) {
-      console.error(`Error rendering template ${templateName}:`, error);
-      throw error;
+this method brings everything together. it retrieves the content, processes it, prepares the template context (including any extensions from plugins), and then renders the final HTML using the template engine.
+
+#### **5. template rendering**
+
+the actual rendering of templates is handled by the `TemplateEngine` class:
+
+```typescript
+async render(templateName: string, context: Record<string, unknown>): Promise<string> {
+  console.log(`Rendering template: ${templateName}`);
+  try {
+    const templatePath = join(this.config.baseDir, `${templateName}${this.config.extname}`);
+    const layoutPath = join(this.config.baseDir, this.config.layoutsDir, `${this.config.defaultLayout}${this.config.extname}`);
+    
+    if (!await exists(templatePath)) {
+      throw new Error(`Template not found: ${templatePath}`);
     }
+    const template = await this.getCompiledTemplate(templatePath);
+    let result = template(context);
+    if (await exists(layoutPath)) {
+      const layout = await this.getCompiledTemplate(layoutPath);
+      result = layout({ ...context, body: result });
+    }
+    console.log(`Template rendered successfully: ${templateName}`);
+    return result;
+  } catch (error) {
+    console.error(`Error rendering template ${templateName}:`, error);
+    throw error;
   }
 }
 ```
 
-the `templateEngine` class allows for customization of template directories, file extensions, and default layouts through simpl-site's config. compiled templates are cached in the `compiledTemplates` map, improving performance for frequently used templates. we don't have to recompile the template on every route change if the content type is the same. 
+this method compiles the template (or retrieves it from cache), renders it with the provided context, and then wraps it in a layout if one is specified. it also includes error handling to provide feedback if something goes wrong during the rendering process.
 
-it also supports handlebar's layout system where content can be wrapped in layout templates.
+#### **6. caching for performance**
 
-some other useful features of handlebars are template partials and helpers. they allow for modular template design and custom template functions like `getCurrentRoute` that i use in my personal site in the main layout template to conditionally render the header:
+to improve performance, simpl-site implements a caching system:
 
-```html
-<!-- templates/layouts/base.hbs -->
-
-<body>
-  {{> header siteTitle=siteTitle}}
-   {{#with (getCurrentRoute this) as |currentRoute|}}
-  {{#if (eq currentRoute "/index")}}
-
-
-<!-- ... -->
+```typescript
+private shouldUseCache(path: string): boolean {
+  if (!this.config.caching?.enabled) {
+    return false;
+  }
+  if (this.config.caching.excludedRoutes) {
+    return !this.config.caching.excludedRoutes.some(route => path.startsWith(route));
+  }
+  return true;
+}
 ```
 
-i can define template helpers in the simpl-site configuration that will make the functions available to all templates:
+this method determines whether a particular path should be cached based on the configuration. it allows for fine-grained control over caching, including the ability to exclude specific routes.
 
-```javascript
-import { WebsiteConfig } from "jsr:@iamseeley/simpl-site@1.4.1";
-// ... other imports and plugin registrations ...
+by following this process for each request, simpl-site can efficiently handle requests, generate dynamic content, apply plugins, render templates, and serve the resulting pages. the modular design allows for easy customization and extension at each step of the process.
+
+
+### extending simpl-site: plugins and template helpers
+
+one of the most useful features (i think) of simpl-site is its extensibility through plugins and template helpers. here's some more information on how you can use these to extend your website.
+
+#### **what can plugins do?**
+
+plugins in simpl-site can:
+1. transform content: modify your markdown content before it's rendered
+
+2. extend templates: add new data or functions to you handlebars templates
+
+#### **plugin system**
+
+simpl-site uses a plugin registry to manage and load plugins dynamically. here's how it works:
+
+```typescript
+import type { Plugin } from "../types.ts";
+
+const pluginRegistry: Record<string, new (options?: Record<string, unknown>) => Plugin> = {};
+
+export function registerPluginType(name: string, pluginClass: new (options?: Record<string, unknown>) => Plugin) {
+  pluginRegistry[name] = pluginClass;
+}
+
+export function getPluginClass(name: string): new (options?: Record<string, unknown>) => Plugin {
+  const pluginClass = pluginRegistry[name];
+  if (!pluginClass) {
+    throw new Error(`Plugin ${name} not found in registry`);
+  }
+  return pluginClass;
+}
+```
+
+this system allows you to register plugins and retrieve them by name, enabling a flexible and extensible architecture.
+
+#### **creating a plugin**
+
+
+let's look at an example of a plugin i use in this website. the `ContentListPlugin` generates HTML lists of content items.
+
+here's the full code for the `ContentListPlugin`:
+
+```typescript
+import type { Plugin, Metadata, PluginContext, TemplateContext } from "jsr:@iamseeley/simpl-site";
+import { walk } from "https://deno.land/std/fs/mod.ts";
+import { extname, basename } from "https://deno.land/std/path/mod.ts";
+import { parse as parseYaml } from "https://deno.land/std/yaml/mod.ts";
+import { marked } from "npm:marked@4.0.0";
+
+interface ContentItem {
+  title: string;
+  date: Date;
+  slug: string;
+  description?: string;
+  draft?: boolean;
+  url?: string;
+  image?: string;
+  markdown?: string;
+  htmlContent?: string;
+  isTruncated: boolean;
+}
+
+const routeToTypeMap: Record<string, string> = {
+  "/posts": "post",
+  "/projects": "project",
+  "/logs": "log",
+  "/index": "log"
+};
+
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+export default class ContentListPlugin implements Plugin {
+  name = "ContentListPlugin";
+  private customRenderer: marked.Renderer;
+
+  constructor() {
+    this.customRenderer = new marked.Renderer();
+    this.customRenderer.paragraph = (text: any) => {
+      if (text.trim().startsWith('<img') && text.trim().endsWith('>')) {
+        return text;
+      }
+      return `<p>${text}</p>`;
+    };
+  }
+
+  async transform(content: string, context: PluginContext): Promise<{ content: string; metadata?: Metadata }> {
+    const contentType = routeToTypeMap[context.route];
+
+    if (contentType) {
+      const contentDir = context.contentSources[contentType];
+
+      if (!contentDir) {
+        console.error(`ContentListPlugin: Content source not found for ${contentType}`);
+        return { content };
+      }
+
+      try {
+        const items = await this.getContentItems(contentDir);
+        const listHtml = this.generateListHtml(items, contentType, context.route);
+        content = `${content}\n${listHtml}`;
+      } catch (error) {
+        console.error(`ContentListPlugin: Error processing ${contentType}:`, error);
+      }
+    }
+
+    return { content };
+  }
+
+  // ... (other methods like getContentItems, generateListHtml, and truncateMarkdown)
+
+  async extendTemplate(templateContext: TemplateContext): Promise<TemplateContext> {
+    return templateContext;
+  }
+}
+```
+
+this plugin does several important things:
+
+1. it maps routes to content types, allowing different handling for posts, projects, and logs.
+2. it reads and parses markdown files from the appropriate content directory.
+3. it generates HTML lists of content items, formatting them differently based on the content type.
+4. it handles truncation of content for preview purposes.
+
+i use this plugin in this website to generate lists of posts, projects, and log entries. it's particularly useful for creating index pages that display summaries or links to my content.
+
+to use this plugin, you would register it and add it to your configuration:
+
+```typescript
+import ContentListPlugin from "./plugins/ContentListPlugin.ts";
+registerPluginType("ContentListPlugin", ContentListPlugin);
 
 export const config: WebsiteConfig = {
-  // ... other configuration options ...
+  // ... other config options ...
+  plugins: [
+    {
+      name: "ContentListPlugin",
+      options: {} 
+    },
+  ],
+  // ... more config options ...
+};
+```
 
+#### **template helpers**
+
+template helpers are functions you can use in your handlebars templates to perform operations or fetch data. here's an example of defining template helpers:
+
+```typescript
+export const config: WebsiteConfig = {
+  // ... other config options ...
   templateHelpers: {
     getCurrentRoute: function(context: any) {
       const route = context.route || '/';        
@@ -199,6 +380,240 @@ export const config: WebsiteConfig = {
   }
 };
 ```
+
+you can then use these helpers in your templates. for example, here's how you might use the `getCurrentRoute` helper in a header partial:
+
+```html
+<header>
+  <h4><strong>tseeley.com</strong></h4>
+  <nav> 
+    <a href='/'>home</a>
+    <a href='/posts'>posts</a>
+    <a href='/projects'>projects</a>
+    <a href='/about'>about</a>
+  </nav>
+    
+  {{#with (getCurrentRoute this) as |currentRoute|}}
+    {{#if (eq currentRoute "/index")}}
+      <!-- Special content for the index page -->
+    {{/if}}
+  {{/with}}
+</header>
+```
+
+this example uses the `getCurrentRoute` helper to determine the current route and potentially display different content based on that route.
+
+by leveraging plugins and template helpers, you can significantly extend the functionality of your simpl-site project, customizing it to meet your specific needs.
+
+### getting started with simpl-site
+
+now that we've explored the inner workings of simpl-site, let's look at how you can get started with it for your own projects. setting up simpl-site is straightforward, and its flexible configuration options allow you to tailor it to your specific needs.
+
+#### **installation**
+
+to use simpl-site, you first need to have deno installed on your system. once you have deno, you can install simpl-site globally:
+
+```bash
+deno install --allow-read --allow-write --allow-net --allow-run -n simpl-site jsr:@iamseeley/simpl-site/cli
+```
+
+#### **creating a new simpl-site project**
+
+after installing simpl-site globally, you can create a new project by running:
+
+```bash
+simpl-site my-website
+```
+
+this command will create a new simpl-site project in a directory called `my-website` in your current location. if you want to create the project in your current directory, you can just run:
+
+```bash
+simpl-site .
+```
+
+#### **project structure**
+
+after initializing a new simpl-site project, your directory structure will look something like this:
+
+```
+my-website/
+├── assets/
+├── content/
+├── plugins/
+├── templates/
+├── config.ts
+└── deno.json
+```
+
+#### **configuring your simpl-site**
+
+the simpl-site configuration lives in the `config.ts` file. this is where you define your website's structure and behavior. 
+
+let's look at the key configuration options:
+
+```typescript
+import { WebsiteConfig } from "jsr:@iamseeley/simpl-site@1.4.1";
+
+export const config: WebsiteConfig = {
+  contentSources: [
+    { path: "./content", type: "page", route: "" },
+    { path: "./content/posts", type: "post", route: "posts/" },
+    { path: "./content/projects", type: "project", route: "projects/" },
+  ],
+  plugins: [
+    // Your plugins configuration
+  ],
+  defaultContentType: "page",
+  templateDir: "./templates",
+  customPluginsDir: "./plugins",
+  assetsDir: "./assets",
+  siteTitle: "My Awesome Site",
+  templateHelpers: {
+    // Your custom template helpers
+  },
+  caching: {
+    enabled: true,
+    excludedRoutes: ['/dynamic-content']
+  }
+};
+```
+
+*note how the `contentSources` are configured:*
+
+- `{ path: "./content", type: "page", route: "" }` this means that files directly in the `./content` directory will be served at the root of your site. for example, `./content/index.md` would be your home page, and `./content/about.md` would be served at `/about`.
+- the other content sources for posts and projects are nested under their respective routes.
+
+*here's what each of these options does:*
+
+- `contentSources` defines where your content is located and how it should be routed.
+- `plugins` specifies which plugins to use and their configurations.
+- `defaultContentType` sets the default type for content if not specified otherwise.
+- `templateDir` points to the directory containing your handlebars templates.
+- `customPluginsDir` specifies a directory for custom plugins.
+- `assetsDir` points to the directory containing static assets.
+- `siteTitle` sets a global site title.
+- `templateHelpers` allows you to define custom handlebars helpers.
+- `caching` configures the caching behavior.
+
+<br/>
+
+#### **adding content**
+
+with simpl-site, you create content using markdown files in the `content/` directory. for example:
+
+- `content/index.md` will be your home page
+- `content/about.md` will be served at `/about`
+- `content/posts/first-post.md` will be served at `/posts/first-post`
+
+*you can use frontmatter to add metadata to your content:*
+
+```markdown
+---
+title: Welcome to My Site
+date: 2023-07-08
+tags: [welcome, intro]
+---
+
+# Welcome to My Site
+
+This is the content of my home page.
+```
+
+#### **creating templates**
+
+simpl-site uses handlebars for templating. 
+
+here's an example of a base layout:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{metadata.title}} | {{siteTitle}}</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  {{> header}}
+  <main>
+    {{{content}}}
+  </main>
+  {{> footer}}
+</body>
+</html>
+```
+
+#### **running your site**
+
+once you've created your project, navigate into the project directory:
+
+```bash
+cd my-website
+```
+
+to start the development server, run:
+
+```bash
+deno task dev
+```
+
+this will start a local development server, at `http://localhost:8000`, where you can view your site.
+
+#### **deploying your simpl-site**
+
+once you've built your site, you'll want to deploy it. there are several options for deploying your simpl-site project to production:
+
+1. **deno deploy**
+
+   deno deploy is the easiest and fastest way to deploy your deno applications. it's specifically designed for deno and offers seamless integration. to deploy your simpl-site project on deno deploy:
+
+   - sign up for a deno deploy account if you haven't already.
+   - create a new project in the deno deploy dashboard.
+   - link your github repository or upload your project files.
+   - set the entry point to your `server.ts` file.
+   - configure any necessary environment variables.
+
+   deno deploy will automatically handle the deployment and provide you with a url for your site.
+
+2. **other cloud platforms**
+
+   you can also deploy your simpl-site project to various cloud platforms that support deno:
+
+   - digital ocean: use a droplet or app platform to host your deno application.
+   - aws lightsail: set up a vps instance to run your deno server.
+   - google cloud run: deploy your deno app as a containerized application.
+   - cloudflare workers: with some adjustments, you can run your simpl-site project on cloudflare's edge network.
+   - kinsta: offers deno hosting as part of their application hosting services.
+
+   for these platforms, you'll typically need to:
+   
+   - set up a server or container environment.
+   - install deno on the server.
+   - copy your project files to the server.
+   - run your `server.ts` file using a command like:
+     ```typescript
+     deno run --allow-read --allow-write --allow-net server.ts
+     ```
+   - set up a reverse proxy (like nginx) if needed.
+   - configure any necessary environment variables.
+
+3. **self-hosting**
+
+   if you prefer to self-host, you can run your simpl-site project on any vps or dedicated server that allows you to install deno. follow these general steps:
+
+   - set up your server and ssh access.
+   - install deno on the server.
+   - clone or copy your project files to the server.
+   - install and configure a process manager like pm2 to keep your app running:
+ 
+    ```typescript
+     npm install -g pm2
+     pm2 start --interpreter="deno" --interpreter-args="run --allow-read 
+     --allow-write --allow-net" server.ts
+    ```
+   - set up a reverse proxy with nginx or apache to handle https and domain routing.
+
 
 ### simplified dependency management
 
