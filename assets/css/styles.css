@@ -414,3 +414,11 @@ pre[class*="language-"] {
   font-size: .8em;
   margin-left: .2rem;
 }
+
+:not(pre) > code {
+  background: hsl(230, 1%, 98%);
+  padding: .2rem;
+  border-radius: .3em;
+  border: 1px solid #cdd4de;
+  /* color: hsl(221, 87%, 60%); */
+}
