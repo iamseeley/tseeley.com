@@ -33,7 +33,7 @@ if we were to run `sqrt-iter` it would recursively call itself indefintely and n
 
 this happens because of the `cond` special form's evaluation method. `cond` evaluates its conditions one by one (applicative order) and returns the result of the first true condition. 
 
-when new-if is called, all its arguments are evaluated before the `cond` expression is executed. this causes `sqrt-iter` to recursively call itself even when the base condition is met. 
+when `new-if` is called, all its arguments are evaluated before the `cond` expression is executed. this causes `sqrt-iter` to recursively call itself even when the base condition is met. 
 
 in scheme the `if` special form only evaluates either the `alternative` or the `consequent` based on the result of the `predicate`.
 
@@ -41,7 +41,7 @@ in scheme the `if` special form only evaluates either the `alternative` or the `
 
 it was "Products of Array Except Self". The goal was to return an array where each element is the product of all other elements in the given integer array. You have to do this in O(n) without using division. 
 
-My solution involved creating two arrays `left` and `right`, to store the cumulative products from the left and right sides of the array. I initialized the two arrays to 1, so we compute the `left` and `right` products in two separate passes. 
+My solution involved creating two arrays `left` and `right`, to store the cumulative products from the left and right sides of the array. I initialized the arrays to 1, and we compute the `left` and `right` products in two separate passes. 
 
 Then, in a third pass we generate the output array by multiplying the corresponding elements from the `left` and `right` arrays.
 
