@@ -41,7 +41,7 @@ in scheme the `if` special form only evaluates either the `alternative` or the `
 
 it was "Products of Array Except Self". The goal was to return an array where each element is the product of all other elements in the given integer array. You have to do this in O(n) without using division. 
 
-My solution involved creating two arrays `left` and `right`, to store the cumulative products from the left and right sides of the array. I initialized the two arrays to one, so we compute the `left` and `right` products in two separate passes. 
+My solution involved creating two arrays `left` and `right`, to store the cumulative products from the left and right sides of the array. I initialized the two arrays to 1, so we compute the `left` and `right` products in two separate passes. 
 
 Then, in a third pass we generate the output array by multiplying the corresponding elements from the `left` and `right` arrays.
 
