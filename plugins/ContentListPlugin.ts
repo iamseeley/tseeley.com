@@ -159,29 +159,49 @@ export default class ContentListPlugin implements Plugin {
   }
 
 private truncateMarkdown(markdown: string, maxLength: number): { truncatedMarkdown: string, isTruncated: boolean } {
-  if (markdown.length <= maxLength) {
-    return { truncatedMarkdown: markdown, isTruncated: false };
-  }
-  
-  let truncated = markdown.slice(0, maxLength);
-  // Ensure we don't cut off in the middle of a word
-  truncated = truncated.slice(0, truncated.lastIndexOf(' '));
-  
-  // Ensure we don't cut off in the middle of an HTML tag
-  const lastOpenBracket = truncated.lastIndexOf('<');
-  const lastCloseBracket = truncated.lastIndexOf('>');
-  if (lastOpenBracket > lastCloseBracket) {
-    truncated = truncated.slice(0, lastOpenBracket);
-  }
-  
-  // Ensure we close any open tags
-  const openTags = (truncated.match(/<[^/][^>]*>/g) || []).map(tag => tag.match(/<([^ >]+)/)[1]);
-  const closedTags = (truncated.match(/<\/[^>]+>/g) || []).map(tag => tag.match(/<\/([^>]+)>/)[1]);
-  const unclosedTags = openTags.filter(tag => !closedTags.includes(tag));
-  truncated += unclosedTags.reverse().map(tag => `</${tag}>`).join('');
+    const codeBlockRegex = /```[\s\S]*?```/g;
+    const codeBlocks = markdown.match(codeBlockRegex) || [];
+    const textParts = markdown.split(codeBlockRegex);
 
-  return { truncatedMarkdown: truncated, isTruncated: true };
-}
+    let truncated = '';
+    let currentLength = 0;
+    let isTruncated = false;
+
+    for (let i = 0; i < textParts.length; i++) {
+      let part = textParts[i];
+      if (currentLength + part.length <= maxLength) {
+        truncated += part;
+        currentLength += part.length;
+        if (i < codeBlocks.length) {
+          if (currentLength + codeBlocks[i].length <= maxLength) {
+            truncated += codeBlocks[i];
+            currentLength += codeBlocks[i].length;
+          } else {
+            isTruncated = true;
+            break;
+          }
+        }
+      } else {
+        const remainingLength = maxLength - currentLength;
+        if (remainingLength > 0) {
+          // Truncate the text part
+          let partialPart = part.slice(0, remainingLength);
+          partialPart = partialPart.slice(0, partialPart.lastIndexOf(' '));
+          truncated += partialPart;
+        }
+        isTruncated = true;
+        break;
+      }
+    }
+
+    // Ensure we close any open tags
+    const openTags = (truncated.match(/<[^/][^>]*>/g) || []).map(tag => tag.match(/<([^ >]+)/)[1]);
+    const closedTags = (truncated.match(/<\/[^>]+>/g) || []).map(tag => tag.match(/<\/([^>]+)>/)[1]);
+    const unclosedTags = openTags.filter(tag => !closedTags.includes(tag));
+    truncated += unclosedTags.reverse().map(tag => `</${tag}>`).join('');
+
+    return { truncatedMarkdown: truncated, isTruncated };
+  }
 
   async extendTemplate(templateContext: TemplateContext): Promise<TemplateContext> {
     return templateContext;
