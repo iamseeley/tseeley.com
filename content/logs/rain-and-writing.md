@@ -35,7 +35,7 @@ this happens because of the `cond` special form's evaluation method. `cond` eval
 
 when new-if is called, all its arguments are evaluated before the `cond` expression is executed. this causes `sqrt-iter` to recursively call itself even when the base condition is met. 
 
-in scheme the `if` special form only evaluates either the <alternative> or the <consequent> based on the result of the <predicate>.
+in scheme the `if` special form only evaluates either the `alternative` or the `consequent` based on the result of the `predicate`.
 
 **the coding problem of the day was pretty challenging :/**
 
