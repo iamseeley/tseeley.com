@@ -278,7 +278,7 @@ this system allows you to register plugins and retrieve them by name, enabling a
 #### **creating a plugin**
 
 
-let's look at an example of a plugin i use in this website. the `ContentListPlugin` generates HTML lists of content items.
+let's look at a plugin i use in this website. the `ContentListPlugin` generates HTML lists of content items.
 
 here's the full code for the `ContentListPlugin`:
 
@@ -592,7 +592,7 @@ this will start a local development server, at `http://localhost:8000`, where yo
 
 #### **deploying your simpl-site**
 
-once you've built your site, you'll want to deploy it. there are several options for deploying your simpl-site project to production:
+once you've created your site, you might want to deploy it. there are several options for deploying your simpl-site project to production:
 
 1. **deno deploy**
 
