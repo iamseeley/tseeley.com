@@ -18,9 +18,11 @@ in this post i want to share a little background on the project, then dive into 
 
 ### i like building the thing that builds the thing
 
-i have a confession to make. sometimes (almost every time), when i decide to redo my personal website i end up making a new website builder for it. i spend more of my time building the thing that builds the thing. i admit this might not be the healthiest / most effective pattern, but i think it can be pretty rewarding when it all comes together, and you have your website running on something you created.
+i have a confession to make. 
 
-for this project, what started as a website refresh turned into a journey of exploring server-side rendering, the deno ecosystem, and publishing modules via JavaScript Registry (jsr).
+i redo my personal website way too often. sometimes, when i redo it i end up making the tool that builds the site. i spend all my time building the 'thing' that builds the 'thing.' i admit this might not be the healthiest / most effective pattern, but i think it can be pretty rewarding when it all comes together, and you get your website running with something you created.
+
+for this project, what started as a website refresh turned into a journey of exploring server-side rendering, the deno ecosystem, and publishing modules via JavaScript Registry (jsr). 
 
 ### static site generation to server-side rendering
 
@@ -34,7 +36,7 @@ it uses a similar concept of collections for organizing content and uses Go's ht
 
 let's walk through the lifecycle of a page request in simpl-site, following the process from initial request to final rendered output. this will take us through the key components of the `SimplSite` class and show how they work together to build a dynamic website.
 
-#### 1. handling the incoming request
+#### **1. handling the incoming request**
 
 when a request comes in, it's first handled by the `handleRequest` method:
 
