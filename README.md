@@ -1,4 +1,4 @@
-![ufo image board](https://res.cloudinary.com/dcwnusepx/image/upload/v1721484366/tseeley/flying_ww6ynv.jpg)
+<!-- ![ufo image board](https://res.cloudinary.com/dcwnusepx/image/upload/v1721484366/tseeley/flying_ww6ynv.jpg) -->
 
 
 # tseeley.com
@@ -12,6 +12,6 @@ this site and myself are both works in progress, so things might be a bit rough 
 i'm always welcome to any feedback on content, design, or anything else!
 
 
->this site uses a website builder i made called [simpl-site](https://github.com/iamseeley/simpl-site)
+>this site uses a website builder i made called [simpl-site](https://github.com/iamseeley/simpl-site).
 >check it out!
 
