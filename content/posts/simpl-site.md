@@ -26,11 +26,37 @@ for this project, what started as a website refresh turned into a journey of exp
 
 ### static site generation to server-side rendering
 
-before diving into simpl-site, i think it's worth mentioning its predecessor: [go-forth](https://github.com/iamseeley/go-forth), a static site generator i wrote in Go. go-forth was my first adventure in creating a website builder, and it laid the groundwork for many of the ideas I've implemented in simpl-site. 
+i think it's worth mentioning simpl-site's predecessor: [go-forth](https://github.com/iamseeley/go-forth), a static site generator i wrote in Go. go-forth was my first adventure in creating a website builder, and it laid the groundwork for many of the ideas I've implemented in simpl-site. 
 
 go-forth taught me a lot about structuring a site generator, handling markdown content, and managing templates. 
 
 it uses a similar concept of collections for organizing content and uses Go's html/template package for templating. while go-forth is a static site generator, simpl-site takes things a step further by introducing server-side rendering and a plugin system.
+
+### simpl-site overview
+
+before we get into the code specifics, let's take a high-level look at how simpl-site is built and how it leverages lots of Deno's features.
+
+**key components and technologies:**
+
+1. deno: simpl-site is built on deno, which provides a secure runtime for JavaScript and TypeScript. This allows us to use modern ES6+ features and TypeScript out of the box, without need for transpilation.
+
+2. deno.serve: simpl-site uses deno's serve function, which provides a minimal way to create an HTTP server. this function handles incoming requests and routes them to the appropriate handler in our application.
+
+3. file system operations: simpl-site uses deno's built-in apis for file system operations (Deno.readTextFile, Deno.writeTextFile, etc.) to read markdown content, templates, and other assets.
+
+4. markdown processing: simpl-site uses marked, for markdown parsing and compiling.
+
+5. handlebars templating: for HTML templating, simpl-site uses handlebars. this allows for dynamic content insertion and reusable template components.
+
+6. plugin system: simpl-site implements a plugin architecture, allowing users to extend functionality. plugins can transform content or extend templates, providing a flexible way to customize the site generation process.
+
+7. caching: To improve performance, simpl-site includes a caching system. this reduces the need to re-process unchanged content on every request.
+
+8. static file serving: for assets like CSS, JavaScript, and images, simpl-site includes functionality to serve static files.
+
+9. TypeScript: simpl-site is written in TypeScript.
+
+the architecture of simpl-site is designed to be extensible. each request goes through a pipeline of processing steps: routing, content retrieval, markdown processing with marked, plugin transformations, template rendering, and finally, response sending.
 
 ### code deep dive: anatomy of a page request
 
@@ -383,7 +409,7 @@ export const config: WebsiteConfig = {
 };
 ```
 
-you can then use these helpers in your templates. for example, here's how you might use the `getCurrentRoute` helper in a header partial:
+you can then use these helpers in your templates. here's how you might use the `getCurrentRoute` helper in a header partial:
 
 ```html
 <header>
@@ -501,7 +527,9 @@ export const config: WebsiteConfig = {
 
 #### **adding content**
 
-with simpl-site, you create content using markdown files in the `content/` directory. for example:
+with simpl-site, you create content using markdown files in the `content/` directory. 
+
+for example:
 
 - `content/index.md` will be your home page
 - `content/about.md` will be served at `/about`
