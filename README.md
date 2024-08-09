@@ -11,8 +11,7 @@ this site and myself are both works in progress, so things might be a bit rough 
 
 i'm always welcome to any feedback on content, design, or anything else!
 
-<aside>
-this site uses a website builder i made called [simpl-site](https://github.com/iamseeley/simpl-site)
-<br/>
-check it out!
-</aside>
+
+>this site uses a website builder i made called [simpl-site](https://github.com/iamseeley/simpl-site)
+>check it out!
+
