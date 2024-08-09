@@ -237,12 +237,12 @@ private shouldUseCache(path: string): boolean {
 
 this method determines whether a particular path should be cached based on the configuration. it allows for fine-grained control over caching, including the ability to exclude specific routes.
 
-by following this process for each request, simpl-site can efficiently handle requests, generate dynamic content, apply plugins, render templates, and serve the resulting pages. the modular design allows for easy customization and extension at each step of the process.
+by following this process for each request, simpl-site can efficiently handle requests, generate dynamic content, apply plugins, render templates, and serve the resulting pages.
 
 
 ### extending simpl-site: plugins and template helpers
 
-one of the most useful features (i think) of simpl-site is its extensibility through plugins and template helpers. here's some more information on how you can use these to extend your website.
+one of the most useful features (i think) of simpl-site is its extensibility through plugins and template helpers.
 
 #### **what can plugins do?**
 
