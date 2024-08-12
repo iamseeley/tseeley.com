@@ -5,9 +5,9 @@ description: simpl site is a dynamic website builder built on deno that features
 draft: true
 ---
 
-after a month or two of tinkering on [val.town](https://val.town), i found myself really enjoying working with deno (val.town uses the deno runtime to run your js/ts). i've enjoyed deno so much that i decided to create a website builder with it.
+after a month or two of tinkering on [val.town](https://val.town), i found myself really enjoying working with deno (val.town uses the deno runtime to run your js/ts). i've enjoyed deno so much, i decided to create a website builder with it.
 
-it's called [simpl-site](https://github.com/iamseeley/simpl-site): a server-side rendered website builder that let's you create dynamic websites with markdown content, handlebars templates, and a plugin system for transforming content and extending templates.
+it's called [simpl-site](https://github.com/iamseeley/simpl-site): it lets you create dynamic websites with markdown content, handlebars templates, and a plugin system for transforming content and extending templates.
 
 <aside>this website is powered by simpl-site!</aside>
 
@@ -20,43 +20,52 @@ in this post i want to share a little background on the project, then dive into 
 
 i have a confession to make. 
 
-i redo my personal website way too often. sometimes, when i redo it i end up making the tool that builds the site. i spend all my time building the 'thing' that builds the 'thing.' i admit this might not be the healthiest / most effective pattern, but i think it can be pretty rewarding when it all comes together, and you get your website running with something you created.
+i redo my personal website way too often, and sometimes when i do... i end up making the tool that builds the site. i spend all my time building the 'thing' that builds the 'thing.' i admit this might not be the healthiest / most efficient use of my time, but i think it can be pretty rewarding when it all comes together, and you get your website running with something you've created.
 
-for this project, what started as a website refresh turned into a journey of exploring server-side rendering, the deno ecosystem, and publishing modules via JavaScript Registry (jsr). 
+for this project, what started as a website refresh turned into an exploration of server-side rendering, the deno ecosystem, and publishing modules via JavaScript Registry (jsr). 
 
 ### static site generation to server-side rendering
 
-i think it's worth mentioning simpl-site's predecessor: [go-forth](https://github.com/iamseeley/go-forth), a static site generator i wrote in Go. go-forth was my first adventure in creating a website builder, and it laid the groundwork for many of the ideas I've implemented in simpl-site. 
+i think it's worth mentioning simpl-site's predecessor: [go-forth](https://github.com/iamseeley/go-forth), a static site generator i wrote in Go. go-forth was my first adventure in creating a website builder, and it laid the groundwork for many of the ideas i've implemented in simpl-site. 
 
 go-forth taught me a lot about structuring a site generator, handling markdown content, and managing templates. 
 
-it uses a similar concept of collections for organizing content and uses Go's html/template package for templating. while go-forth is a static site generator, simpl-site takes things a step further by introducing server-side rendering and a plugin system.
+it uses a similar concept of collections for organizing content and uses Go's [html/template package](https://pkg.go.dev/html/template) for templating. while go-forth is a static site generator, simpl-site takes a different approach by implementing server-side rendering and a plugin system.
 
 ### simpl-site overview
 
-before we get into the code specifics, let's take a high-level look at how simpl-site is built and how it leverages lots of Deno's features.
+before we get into the code specifics, let's take a high-level look at how simpl-site is built and how it leverages some of Deno's features.
 
 **key components and technologies:**
 
-1. deno: simpl-site is built on deno, which provides a secure runtime for JavaScript and TypeScript. This allows us to use modern ES6+ features and TypeScript out of the box, without need for transpilation.
+1. **deno**:
+ simpl-site is built on [deno](https://deno.com/), which provides a secure runtime for JavaScript and TypeScript. this allows us to use modern ES6+ features and TypeScript out of the box, without need for transpilation.
 
-2. deno.serve: simpl-site uses deno's serve function, which provides a minimal way to create an HTTP server. this function handles incoming requests and routes them to the appropriate handler in our application.
+2. **deno.serve**: 
+simpl-site uses [deno's serve function](https://docs.deno.com/api/deno/~/Deno.serve), which provides a minimal way to create an HTTP server. this function handles incoming requests and routes them to the appropriate handler in our application.
 
-3. file system operations: simpl-site uses deno's built-in apis for file system operations (Deno.readTextFile, Deno.writeTextFile, etc.) to read markdown content, templates, and other assets.
+3. **file system operations**:
+ simpl-site uses deno's built-in apis for file system operations ([Deno.readTextFile](https://docs.deno.com/api/deno/~/Deno.readTextFile), [Deno.writeTextFile](https://docs.deno.com/api/deno/~/Deno.writeTextFile), etc.) to read markdown content, templates, and other assets.
 
-4. markdown processing: simpl-site uses marked, for markdown parsing and compiling.
+4. **markdown processing**: 
+simpl-site uses [marked](https://github.com/markedjs/marked) for markdown parsing and compiling.
 
-5. handlebars templating: for HTML templating, simpl-site uses handlebars. this allows for dynamic content insertion and reusable template components.
+5. **handlebars templating**:
+ for HTML templating, simpl-site uses [handlebars](https://handlebarsjs.com/). this allows for dynamic content insertion and reusable template components.
 
-6. plugin system: simpl-site implements a plugin architecture, allowing users to extend functionality. plugins can transform content or extend templates, providing a flexible way to customize the site generation process.
+6. **plugin system**:
+ simpl-site implements a plugin architecture that allows users to transform content or extend templates, providing a flexible way to customize the site generation process.
 
-7. caching: To improve performance, simpl-site includes a caching system. this reduces the need to re-process unchanged content on every request.
+7. **caching**: 
+to improve performance, simpl-site includes a caching system. this reduces the need to re-process unchanged content on every request.
 
-8. static file serving: for assets like CSS, JavaScript, and images, simpl-site includes functionality to serve static files.
+8. **static file serving**:
+ for assets like CSS, JavaScript, and images, simpl-site includes functionality to serve static files.
 
-9. TypeScript: simpl-site is written in TypeScript.
+9. **TypeScript**:
+ simpl-site is written in TypeScript.
 
-the architecture of simpl-site is designed to be extensible. each request goes through a pipeline of processing steps: routing, content retrieval, markdown processing with marked, plugin transformations, template rendering, and finally, response sending.
+each request goes through a pipeline of processing steps: routing, content retrieval, markdown processing with marked, plugin transformations, template rendering, and finally, response sending.
 
 ### code deep dive: anatomy of a page request
 
@@ -242,14 +251,14 @@ by following this process for each request, simpl-site can efficiently handle re
 
 ### extending simpl-site: plugins and template helpers
 
-one of the most useful features (i think) of simpl-site is its extensibility through plugins and template helpers.
+one of the most useful features of simpl-site is its extensibility through plugins and template helpers.
 
 #### **what can plugins do?**
 
 plugins in simpl-site can:
-1. transform content: modify your markdown content before it's rendered
+1. **transform content**: modify your markdown content before it's rendered
 
-2. extend templates: add new data or functions to you handlebars templates
+2. **extend templates**: add new data or functions to you handlebars templates
 
 #### **plugin system**
 
@@ -470,6 +479,7 @@ my-website/
 ├── plugins/
 ├── templates/
 ├── config.ts
+├── server.ts
 └── deno.json
 ```
 
@@ -480,7 +490,7 @@ the simpl-site configuration lives in the `config.ts` file. this is where you de
 let's look at the key configuration options:
 
 ```typescript
-import { WebsiteConfig } from "jsr:@iamseeley/simpl-site@1.4.1";
+import { WebsiteConfig } from "jsr:@iamseeley/simpl-site";
 
 export const config: WebsiteConfig = {
   contentSources: [
@@ -495,7 +505,7 @@ export const config: WebsiteConfig = {
   templateDir: "./templates",
   customPluginsDir: "./plugins",
   assetsDir: "./assets",
-  siteTitle: "My Awesome Site",
+  siteTitle: "My Simpl Site",
   templateHelpers: {
     // Your custom template helpers
   },
@@ -592,63 +602,47 @@ this will start a local development server, at `http://localhost:8000`, where yo
 
 #### **deploying your simpl-site**
 
-once you've created your site, you might want to deploy it. there are several options for deploying your simpl-site project to production:
+once you've created your site, you might want to deploy it. there are several options for deploying your simpl-site project to production.
 
-1. **deno deploy**
-
-   deno deploy is the easiest and fastest way to deploy your deno applications. it's specifically designed for deno and offers seamless integration. to deploy your simpl-site project on deno deploy:
-
-   - sign up for a deno deploy account if you haven't already.
-   - create a new project in the deno deploy dashboard.
-   - link your github repository or upload your project files.
-   - set the entry point to your `server.ts` file.
-   - configure any necessary environment variables.
-
-   deno deploy will automatically handle the deployment and provide you with a url for your site.
-
-2. **other cloud platforms**
-
-   you can also deploy your simpl-site project to various cloud platforms that support deno:
-
-   - digital ocean: use a droplet or app platform to host your deno application.
-   - aws lightsail: set up a vps instance to run your deno server.
-   - google cloud run: deploy your deno app as a containerized application.
-   - cloudflare workers: with some adjustments, you can run your simpl-site project on cloudflare's edge network.
-   - kinsta: offers deno hosting as part of their application hosting services.
-
-   for these platforms, you'll typically need to:
-   
-   - set up a server or container environment.
-   - install deno on the server.
-   - copy your project files to the server.
-   - run your `server.ts` file using a command like:
-     ```typescript
-     deno run --allow-read --allow-write --allow-net server.ts
-     ```
-   - set up a reverse proxy (like nginx) if needed.
-   - configure any necessary environment variables.
-
-3. **self-hosting**
-
-   if you prefer to self-host, you can run your simpl-site project on any vps or dedicated server that allows you to install deno. follow these general steps:
-
-   - set up your server and ssh access.
-   - install deno on the server.
-   - clone or copy your project files to the server.
-   - install and configure a process manager like pm2 to keep your app running:
- 
-    ```typescript
-     npm install -g pm2
-     pm2 start --interpreter="deno" --interpreter-args="run --allow-read 
-     --allow-write --allow-net" server.ts
-    ```
-   - set up a reverse proxy with nginx or apache to handle https and domain routing.
+check out the readme for detailed [deployment instructions](https://github.com/iamseeley/simpl-site/tree/main?tab=readme-ov-file#deployment)!
 
 
-### simplified dependency management
+### jsr for distribution
 
+i published the simpl-site module to [JSR](https://jsr.io/) because it simplifies the development and distribution process for TypeScript projects. JSR is designed to work with multiple runtimes, including Node.js, Deno, and browsers, but still maintains backwards compatibility with npm.
 
-### jsr
+with JSR, I can publish my TypeScript source directly without having to transpile to JavaScript first, which eliminates a lot of build-time complexity. 
+
+the combination of TypeScript-first development, multi-runtime support, and npm compatibility made JSR an ideal choice for distributing simpl-site.
+
+### smallweb
+
+i'm a big fan of [pomdtr's](https://github.com/pomdtr) project [smallweb](https://github.com/pomdtr/smallweb). it's a web server based on deno, that lets you create your own little self-hosted serverless platform. you "host websites from your internet folders" (smallweb maps domains to folders in your filesystem). 
+
+i made simpl-site compatible with smallweb! by adding the --smallweb flag to simpl-site's init commands, you initialize a simpl-site project with a `main.ts` file that's structured appropriately for serving a website via smallweb. 
+
+in a smallweb simpl-site, the `main.ts` file differs from the `server.ts` file you'd typically see in a standard simpl-site instance. the key difference is that `main.ts` exports a default object with a fetch method which takes a request object as an argument and returns a response object. this structure aligns with smallweb's expectations and makes your simpl-site project ready for the smallweb environment. 
+
+in contrast, the standard `server.ts` file doesn't export anything and instead starts a deno server immediately.
+
+pomdtr simplified the integration further and made simpl-site a smallweb plugin.
+
+if you already have smallweb installed you can navigate to your smallweb folder, and run the following command:
+
+```bash
+deno install -Agf jsr:@iamseeley/simpl-site/smallweb-simpl-site
+smallweb simpl-site
+```
+
+this sets up a simpl-site project within your smallweb environment.
+
+to learn more about smallweb check out the [intro](https://www.smallweb.run/)!
 
 
 ### what's next?
+
+simpl-site is mostly a personal project, but it's also a tool i hope others will find useful. i'd love for people to try it and give me feedback so i can improve it! 
+
+moving forward, i'm planning on experimenting with new plugins, more complex sites, more advanced ssr techniques, and implementing a testing suite.
+
+stay tuned for updates!
