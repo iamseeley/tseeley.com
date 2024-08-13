@@ -97,13 +97,15 @@ contentType: string; status: number; size?: number }> {
     for (const source of this.contentSources) {
       if (originalPath.startsWith(source.route)) {
         const contentPath = path.slice(source.route.length);
-        result = await this.renderContent(contentPath, source.type, '/' + originalPath);
+        result = await this.renderContent(contentPath, source.type,
+        '/' + originalPath);
         break;
       }
     }
 
     if (!result) {
-      result = await this.renderContent(path, this.defaultContentType, '/' + originalPath);
+      result = await this.renderContent(path, this.defaultContentType, 
+      '/' + originalPath);
     }
 
     return result;
@@ -227,6 +229,7 @@ async processContent(content: string, type: string, route: string): Promise<{ co
 
 this method first processes the markdown content, then applies each plugin's transform function in sequence. this allows plugins to modify both the content and metadata, providing a way to extend the site's functionality.
 
+
 #### **3.3 rendering the template**
 
 after processing the content, `renderContent` calls the `render` method of the TemplateEngine class to render the final HTML:
@@ -284,6 +287,10 @@ this method determines whether a particular path should be cached based on the c
 
 by following this process for each request, simpl-site can efficiently handle requests for both static and dynamic content, apply plugins, render templates, and serve the resulting pages or files.
 
+*for more visual readers, here's a diagram depicting the process*
+
+<iframe src="https://iamseeley-simplsiterequestgraph.web.val.run/"></iframe>
+
 
 ### extending simpl-site: plugins and template helpers
 
@@ -325,7 +332,7 @@ this system allows you to register plugins and retrieve them by name, enabling a
 
 let's look at a plugin i use in this website. the `ContentListPlugin` generates HTML lists of content items.
 
-here's the full code for the `ContentListPlugin`:
+here's some of the code for the `ContentListPlugin`:
 
 ```typescript
 import type { Plugin, Metadata, PluginContext, TemplateContext } from "simpl-site";
@@ -354,7 +361,8 @@ const routeToTypeMap: Record<string, string> = {
   "/index": "log"
 };
 
-const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", 
+"Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 export default class ContentListPlugin implements Plugin {
   name = "ContentListPlugin";
@@ -619,32 +627,24 @@ this will start a local development server, at `http://localhost:8000`, where yo
 
 i published the simpl-site module to [JSR](https://jsr.io/) because it simplifies the development and distribution process for TypeScript projects. JSR is designed to work with multiple runtimes, including Node.js, Deno, and browsers, but still maintains backwards compatibility with npm.
 
-with JSR, I can publish my TypeScript source directly without having to transpile to JavaScript first, which eliminates a lot of build-time complexity. 
-
 the combination of TypeScript-first development, multi-runtime support, and npm compatibility made JSR an ideal choice for distributing simpl-site.
 
-### smallweb
+### Smallweb
 
-i'm a big fan of [pomdtr's](https://github.com/pomdtr) project [smallweb](https://github.com/pomdtr/smallweb). it's a web server based on deno, that lets you create your own little self-hosted serverless platform. you "host websites from your internet folders" (smallweb maps domains to folders in your filesystem). 
+i'm a big fan of [pomdtr's](https://github.com/pomdtr) project [Smallweb](https://github.com/pomdtr/smallweb). it's a web server based on deno, that lets you create your own little self-hosted serverless platform. you "host websites from your internet folders" (Smallweb maps domains to folders in your filesystem). 
 
-i made simpl-site compatible with smallweb! by adding the --smallweb flag to simpl-site's init commands, you initialize a simpl-site project with a `main.ts` file that's structured appropriately for serving a website via smallweb. 
+simpl-site is compatible with Smallweb! by adding the --smallweb flag to simpl-site's init commands, you initialize a simpl-site project with a `main.ts` file that's structured appropriately for serving a website via Smallweb. 
 
-in a smallweb simpl-site, the `main.ts` file differs from the `server.ts` file you'd typically see in a standard simpl-site instance. the key difference is that `main.ts` exports a default object with a fetch method which takes a request object as an argument and returns a response object. this structure aligns with smallweb's expectations and makes your simpl-site project ready for the smallweb environment. 
+pomdtr simplified the integration further and made simpl-site a Smallweb plugin.
 
-in contrast, the standard `server.ts` file doesn't export anything and instead starts a deno server immediately.
-
-pomdtr simplified the integration further and made simpl-site a smallweb plugin.
-
-if you already have smallweb installed you can navigate to your smallweb folder, and run the following command:
+if you already have Smallweb installed you can navigate to your Smallweb folder, and run the following command:
 
 ```bash
 deno install -Agf jsr:@iamseeley/simpl-site/smallweb-simpl-site
 smallweb simpl-site
 ```
 
-this sets up a simpl-site project within your smallweb environment.
-
-to learn more about smallweb check out the [intro](https://www.smallweb.run/)!
+this sets up a simpl-site project within your Smallweb environment.
 
 
 ### what's next?
