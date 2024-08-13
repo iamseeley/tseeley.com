@@ -42,7 +42,7 @@ before we get into the code specifics, let's take a high-level look at how simpl
  simpl-site is built on [Deno](https://deno.com/), which provides a secure runtime for JavaScript and TypeScript. this allows us to use modern ES6+ features and TypeScript out of the box, without need for transpilation.
 
 2. **Deno.serve**: 
-simpl-site uses [Deno's serve function](https://docs.deno.com/api/deno/~/Deno.serve), which provides a minimal way to create an HTTP server. this function handles incoming requests and routes them to the appropriate handler in our application.
+simpl-site uses [Deno's serve function](https://docs.deno.com/api/deno/~/Deno.serve), which provides a minimal way to create an HTTP server. this function handles incoming requests and routes them to the appropriate handler.
 
 3. **file system operations**:
  simpl-site uses deno's built-in apis for file system operations ([Deno.readTextFile](https://docs.deno.com/api/deno/~/Deno.readTextFile), [Deno.writeTextFile](https://docs.deno.com/api/deno/~/Deno.writeTextFile), etc.) to read markdown content, templates, and other assets.
@@ -50,7 +50,7 @@ simpl-site uses [Deno's serve function](https://docs.deno.com/api/deno/~/Deno.se
 4. **markdown processing**: 
 simpl-site uses [Marked](https://github.com/markedjs/marked) for markdown parsing and compiling.
 
-5. **handlebars templating**:
+5. **Handlebars templating**:
  for HTML templating, simpl-site uses [Handlebars](https://handlebarsjs.com/). this allows for dynamic content insertion and reusable template components.
 
 6. **plugin system**:
@@ -294,7 +294,7 @@ one of the most useful features of simpl-site is its extensibility through plugi
 plugins in simpl-site can:
 1. **transform content**: modify your markdown content before it's rendered
 
-2. **extend templates**: add new data or functions to you handlebars templates
+2. **extend templates**: add new data or functions to your handlebars templates
 
 #### **plugin system**
 
@@ -328,7 +328,7 @@ let's look at a plugin i use in this website. the `ContentListPlugin` generates 
 here's the full code for the `ContentListPlugin`:
 
 ```typescript
-import type { Plugin, Metadata, PluginContext, TemplateContext } from "jsr:@iamseeley/simpl-site";
+import type { Plugin, Metadata, PluginContext, TemplateContext } from "simpl-site";
 import { walk } from "https://deno.land/std/fs/mod.ts";
 import { extname, basename } from "https://deno.land/std/path/mod.ts";
 import { parse as parseYaml } from "https://deno.land/std/yaml/mod.ts";
@@ -504,7 +504,7 @@ the simpl-site configuration lives in the `config.ts` file. this is where you de
 let's look at the key configuration options:
 
 ```typescript
-import { WebsiteConfig } from "jsr:@iamseeley/simpl-site";
+import { WebsiteConfig } from "simpl-site";
 
 export const config: WebsiteConfig = {
   contentSources: [
