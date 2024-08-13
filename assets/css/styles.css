@@ -241,6 +241,7 @@ article ol {
   padding-left: 1.5em; /* Consistent left padding for both ul and ol */
   margin: 0;
   margin-left: .4em;
+  margin-bottom: .8em;
 }
 
 /* Specific styles for ul */

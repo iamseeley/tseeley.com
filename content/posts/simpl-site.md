@@ -45,7 +45,7 @@ before we get into the code specifics, let's take a high-level look at how simpl
 simpl-site uses [Deno's serve function](https://docs.deno.com/api/deno/~/Deno.serve), which provides a minimal way to create an HTTP server. this function handles incoming requests and routes them to the appropriate handler.
 
 3. **file system operations**:
- simpl-site uses deno's built-in apis for file system operations ([Deno.readTextFile](https://docs.deno.com/api/deno/~/Deno.readTextFile), [Deno.writeTextFile](https://docs.deno.com/api/deno/~/Deno.writeTextFile), etc.) to read markdown content, templates, and other assets.
+ simpl-site uses deno's built-in APIs for file system operations ([Deno.readTextFile](https://docs.deno.com/api/deno/~/Deno.readTextFile), [Deno.writeTextFile](https://docs.deno.com/api/deno/~/Deno.writeTextFile), etc.) to read markdown content, templates, and other assets.
 
 4. **markdown processing**: 
 simpl-site uses [Marked](https://github.com/markedjs/marked) for markdown parsing and compiling.
@@ -329,112 +329,80 @@ this system allows you to register plugins and retrieve them by name, enabling a
 
 #### **creating a plugin**
 
+let's look at how to create a plugin. we'll use a simplified version of the `ContentListPlugin` that i use in this website as an example. this plugin generates HTML lists of content items.
 
-let's look at a plugin i use in this website. the `ContentListPlugin` generates HTML lists of content items.
-
-here's some of the code for the `ContentListPlugin`:
+here's a basic implementation of the `ContentListPlugin`:
 
 ```typescript
-import type { Plugin, Metadata, PluginContext, TemplateContext } from "simpl-site";
-import { walk } from "https://deno.land/std/fs/mod.ts";
-import { extname, basename } from "https://deno.land/std/path/mod.ts";
-import { parse as parseYaml } from "https://deno.land/std/yaml/mod.ts";
-import { marked } from "npm:marked@4.0.0";
-
-interface ContentItem {
-  title: string;
-  date: Date;
-  slug: string;
-  description?: string;
-  draft?: boolean;
-  url?: string;
-  image?: string;
-  markdown?: string;
-  htmlContent?: string;
-  isTruncated: boolean;
-}
-
-const routeToTypeMap: Record<string, string> = {
-  "/posts": "post",
-  "/projects": "project",
-  "/logs": "log",
-  "/index": "log"
-};
-
-const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", 
-"Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+import type { Plugin, PluginContext } from "simpl-site";
 
 export default class ContentListPlugin implements Plugin {
   name = "ContentListPlugin";
-  private customRenderer: marked.Renderer;
 
-  constructor() {
-    this.customRenderer = new marked.Renderer();
-    this.customRenderer.paragraph = (text: any) => {
-      if (text.trim().startsWith('<img') && text.trim().endsWith('>')) {
-        return text;
-      }
-      return `<p>${text}</p>`;
-    };
-  }
-
-  async transform(content: string, context: PluginContext): Promise<{ content: string; metadata?: Metadata }> {
-    const contentType = routeToTypeMap[context.route];
-
-    if (contentType) {
-      const contentDir = context.contentSources[contentType];
-
-      if (!contentDir) {
-        console.error(`ContentListPlugin: Content source not found for ${contentType}`);
-        return { content };
-      }
-
-      try {
-        const items = await this.getContentItems(contentDir);
-        const listHtml = this.generateListHtml(items, contentType, context.route);
-        content = `${content}\n${listHtml}`;
-      } catch (error) {
-        console.error(`ContentListPlugin: Error processing ${contentType}:`, error);
-      }
+  async transform(content: string, context: PluginContext): Promise<{ content: string }> {
+    // Check if we're on a route that should display a content list
+    if (context.route === "/posts" || context.route === "/projects") {
+      // Generate a list of content items (simplified for this example)
+      const listHtml = this.generateListHtml(context.route);
+      
+      // Append the list to the existing content
+      content = `${content}\n${listHtml}`;
     }
-
     return { content };
   }
 
-  // ... (other methods like getContentItems, generateListHtml, and truncateMarkdown)
+  private generateListHtml(route: string): string {
+    // This is a simplified example. In a real plugin, you'd fetch and process actual content.
+    const items = [
+      { title: "Item 1", date: new Date() },
+      { title: "Item 2", date: new Date() },
+    ];
 
-  async extendTemplate(templateContext: TemplateContext): Promise<TemplateContext> {
-    return templateContext;
+    let html = "<ul>";
+    for (const item of items) {
+      html += `<li>${item.title} - ${item.date.toDateString()}</li>`;
+    }
+    html += "</ul>";
+
+    return html;
   }
 }
 ```
 
-this plugin does several important things:
+this plugin demonstrates several key concepts:
 
-1. it maps routes to content types, allowing different handling for posts, projects, and logs.
-2. it reads and parses markdown files from the appropriate content directory.
-3. it generates HTML lists of content items, formatting them differently based on the content type.
-4. it handles truncation of content for preview purposes.
+1. **implementing the plugin interface**: the class implements the `Plugin` interface from `SimplSite`, which requires a `name` property and a `transform` method.
 
-i use this plugin in this website to generate lists of posts, projects, and log entries. it's particularly useful for creating index pages that display summaries or links to my content.
+2. **the transform method**: it receives the current content and a context object, and returns modified content. here's what it does:
+   - it checks the current route to decide whether to add a content list.
+   - if appropriate, it generates an HTML list and appends it to the existing content.
+   - it returns an object with the modified content.
 
-to use this plugin, you would register it and add it to your configuration:
+3. **using the context**: the `PluginContext` provides information about the current request, including the route. in a more complex plugin, you could use other properties of the context, such as `contentSources` to access actual content files.
+
+4. **generating Ccntent**: the `generateListHtml` method is a simplified example of how you might generate HTML to inject into the page. in a real plugin, this would involve reading and processing actual content files.
+
+to use this plugin, you would register it and add it to your simpl-site configuration:
 
 ```typescript
 import ContentListPlugin from "./plugins/ContentListPlugin.ts";
+import { registerPluginType } from "simpl-site";
+
 registerPluginType("ContentListPlugin", ContentListPlugin);
 
-export const config: WebsiteConfig = {
+export const config = {
   // ... other config options ...
   plugins: [
     {
       name: "ContentListPlugin",
-      options: {} 
+      options: {}
     },
   ],
   // ... more config options ...
 };
 ```
+
+this example demonstrates the basic structure of a simpl-site plugin. the `transform` method is called for each page, allowing you to modify or extend the content as needed. by implementing more complex logic in the `transform` method and utilizing the full `PluginContext`, you can create even more powerful plugins!
 
 #### **template helpers**
 
@@ -538,12 +506,6 @@ export const config: WebsiteConfig = {
 };
 ```
 
-*note how the `contentSources` are configured:*
-
-`{ path: "./content", type: "page", route: "" }` this means that files directly in the `./content` directory will be served at the root of your site. for example, `./content/index.md` would be your home page, and `./content/about.md` would be served at `/about`.
-
-the other content sources for posts and projects are nested under their respective routes.
-
 *here's what each of these options does:*
 
 - `contentSources` defines where your content is located and how it should be routed.
@@ -556,13 +518,18 @@ the other content sources for posts and projects are nested under their respecti
 - `templateHelpers` allows you to define custom handlebars helpers.
 - `caching` configures the caching behavior.
 
-<br/>
+*note how the `contentSources` are configured:*
+
+simpl-site uses content sources to define how files are served. for example:
+`{ path: "./content", type: "page", route: "" }` means that files directly in the `./content` directory will be served at the root of your site. 
+
+other content sources, for different content types like posts and projects, can be nested under their respective routes.
 
 #### **adding content**
 
-with simpl-site, you create content using markdown files in the `content/` directory. 
+to create content add markdown files in the `content/` directory. 
 
-for example:
+here are some examples:
 
 - `content/index.md` will be your home page
 - `content/about.md` will be served at `/about`
@@ -606,22 +573,6 @@ here's an example of a base layout:
 </body>
 </html>
 ```
-
-#### **running your site**
-
-once you've created your project, navigate into the project directory:
-
-```bash
-cd my-website
-```
-
-to start the development server, run:
-
-```bash
-deno task dev
-```
-
-this will start a local development server, at `http://localhost:8000`, where you can view your site.
 
 ### JSR for distribution
 
