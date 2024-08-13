@@ -30,7 +30,7 @@ i think it's worth mentioning simpl-site's predecessor: [go-forth](https://githu
 
 go-forth taught me a lot about structuring a site generator, handling markdown content, and managing templates. 
 
-it uses a similar concept of collections for organizing content and uses Go's [html/template package](https://pkg.go.dev/html/template) for templating. while go-forth is a static site generator, simpl-site takes a different approach by implementing server-side rendering and a plugin system.
+it uses a similar concept of collections for organizing content and uses Go's [html/template](https://pkg.go.dev/html/template) package for templating. while go-forth is a static site generator, simpl-site takes a different approach by implementing server-side rendering and a plugin system.
 
 ### simpl-site overview
 
