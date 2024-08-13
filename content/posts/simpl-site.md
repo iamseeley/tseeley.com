@@ -39,7 +39,7 @@ before we get into the code specifics, let's take a high-level look at how simpl
 **key components and technologies:**
 
 1. **Deno**:
- simpl-site is built on [deno](https://deno.com/), which provides a secure runtime for JavaScript and TypeScript. this allows us to use modern ES6+ features and TypeScript out of the box, without need for transpilation.
+ simpl-site is built on [Deno](https://deno.com/), which provides a secure runtime for JavaScript and TypeScript. this allows us to use modern ES6+ features and TypeScript out of the box, without need for transpilation.
 
 2. **Deno.serve**: 
 simpl-site uses [Deno's serve function](https://docs.deno.com/api/deno/~/Deno.serve), which provides a minimal way to create an HTTP server. this function handles incoming requests and routes them to the appropriate handler in our application.
