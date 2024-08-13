@@ -1,4 +1,4 @@
-import { WebsiteConfig } from "jsr:@iamseeley/simpl-site@1.4.1";
+import { WebsiteConfig } from "jsr:@iamseeley/simpl-site";
 import TableOfContentsPlugin from './plugins/TableOfContentsPlugin.ts';
 import LastModifiedPlugin from './plugins/LastModifiedPlugin.ts';
 import { registerPluginType } from 'jsr:@iamseeley/simpl-site/plugin-registry';

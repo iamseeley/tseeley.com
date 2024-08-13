@@ -5,13 +5,13 @@ description: simpl site is a dynamic website builder built on deno that features
 draft: true
 ---
 
-after a month or two of tinkering on [val.town](https://val.town), i found myself really enjoying working with deno (val.town uses the deno runtime to run your js/ts). i've enjoyed deno so much, i decided to create a website builder with it.
+after a month or two of tinkering on [val.town](https://val.town), i found myself really enjoying working with Deno (val.town uses the Deno runtime to run your JS/TS). i've enjoyed Deno so much, i decided to create a website builder with it.
 
 it's called [simpl-site](https://github.com/iamseeley/simpl-site): it lets you create dynamic websites with markdown content, handlebars templates, and a plugin system for transforming content and extending templates.
 
-<aside>this website is powered by simpl-site!</aside>
+this website is powered by simpl-site!
 
-it's my first [JSR](https://jsr.io/) package [@iamseeley/simpl-site](https://jsr.io/@iamseeley/simpl-site), and this is my first "technical" blog post!
+it's my first [JavaScript Registrty](https://jsr.io/) (JSR) package: [@iamseeley/simpl-site](https://jsr.io/@iamseeley/simpl-site). also, this is my first "technical" blog post!
 
 in this post i want to share a little background on the project, then dive into the code to explore how it all works. i'll wrap it up with next steps for the project.
 
@@ -22,7 +22,7 @@ i have a confession to make.
 
 i redo my personal website way too often, and sometimes when i do... i end up making the tool that builds the site. i spend all my time building the 'thing' that builds the 'thing.' i admit this might not be the healthiest / most efficient use of my time, but i think it can be pretty rewarding when it all comes together, and you get your website running with something you've created.
 
-for this project, what started as a website refresh turned into an exploration of server-side rendering, the deno ecosystem, and publishing modules via JavaScript Registry (jsr). 
+for this project, what started as a website refresh turned into an exploration of server-side rendering, the Deno ecosystem, and publishing modules via JSR. 
 
 ### static site generation to server-side rendering
 
@@ -38,20 +38,20 @@ before we get into the code specifics, let's take a high-level look at how simpl
 
 **key components and technologies:**
 
-1. **deno**:
+1. **Deno**:
  simpl-site is built on [deno](https://deno.com/), which provides a secure runtime for JavaScript and TypeScript. this allows us to use modern ES6+ features and TypeScript out of the box, without need for transpilation.
 
-2. **deno.serve**: 
-simpl-site uses [deno's serve function](https://docs.deno.com/api/deno/~/Deno.serve), which provides a minimal way to create an HTTP server. this function handles incoming requests and routes them to the appropriate handler in our application.
+2. **Deno.serve**: 
+simpl-site uses [Deno's serve function](https://docs.deno.com/api/deno/~/Deno.serve), which provides a minimal way to create an HTTP server. this function handles incoming requests and routes them to the appropriate handler in our application.
 
 3. **file system operations**:
  simpl-site uses deno's built-in apis for file system operations ([Deno.readTextFile](https://docs.deno.com/api/deno/~/Deno.readTextFile), [Deno.writeTextFile](https://docs.deno.com/api/deno/~/Deno.writeTextFile), etc.) to read markdown content, templates, and other assets.
 
 4. **markdown processing**: 
-simpl-site uses [marked](https://github.com/markedjs/marked) for markdown parsing and compiling.
+simpl-site uses [Marked](https://github.com/markedjs/marked) for markdown parsing and compiling.
 
 5. **handlebars templating**:
- for HTML templating, simpl-site uses [handlebars](https://handlebarsjs.com/). this allows for dynamic content insertion and reusable template components.
+ for HTML templating, simpl-site uses [Handlebars](https://handlebarsjs.com/). this allows for dynamic content insertion and reusable template components.
 
 6. **plugin system**:
  simpl-site implements a plugin architecture that allows users to transform content or extend templates, providing a flexible way to customize the site generation process.
@@ -62,7 +62,7 @@ to improve performance, simpl-site includes a caching system. this reduces the n
 8. **static file serving**:
  for assets like CSS, JavaScript, and images, simpl-site includes functionality to serve static files.
 
-9. **TypeScript**:
+9. **TypeScript**: 
  simpl-site is written in TypeScript.
 
 each request goes through a pipeline of processing steps: routing, content retrieval, markdown processing with marked, plugin transformations, template rendering, and finally, response sending.
@@ -76,46 +76,109 @@ let's walk through the lifecycle of a page request in simpl-site, following the 
 when a request comes in, it's first handled by the `handleRequest` method:
 
 ```typescript
-async handleRequest(path: string): Promise<{ content: string | Uint8Array; contentType: string; status: number }> {
-  console.log(`Handling request for path: ${path}`);
-
-  path = path.replace(/^\//, '');
-  if (path === '') {
-    path = 'index';
-  }
-
-  const staticFile = await this.serveStaticFile(path);
-  if (staticFile) {
-    console.log(`Serving static file: ${path}`);
-    return { ...staticFile, status: 200 };
-  }
-
-  console.log(`Rendering content for path: ${path}`);
-  const originalPath = path;
-  path = path.endsWith('.md') ? path : path + '.md';
-
-  let result;
-  for (const source of this.contentSources) {
-    if (originalPath.startsWith(source.route)) {
-      const contentPath = path.slice(source.route.length);
-      result = await this.renderContent(contentPath, source.type, '/' + originalPath);
-      break;
+async handleRequest(path: string): Promise<{ content: string | ReadableStream<Uint8Array>; 
+contentType: string; status: number; size?: number }> {
+    // Check for static file first
+    const staticFile = await this.serveStaticFile(path);
+    if (staticFile) {
+      return { ...staticFile, status: 200 };
     }
+
+    // If not a static file, proceed with content rendering
+    path = path.replace(/^\//, '');
+    if (path === '') {
+      path = 'index';
+    }
+
+    const originalPath = path;
+    path = path.endsWith('.md') ? path : path + '.md';
+
+    let result;
+    for (const source of this.contentSources) {
+      if (originalPath.startsWith(source.route)) {
+        const contentPath = path.slice(source.route.length);
+        result = await this.renderContent(contentPath, source.type, '/' + originalPath);
+        break;
+      }
+    }
+
+    if (!result) {
+      result = await this.renderContent(path, this.defaultContentType, '/' + originalPath);
+    }
+
+    return result;
+  }
+```
+
+this method first checks if the request is for a static file using the `serveStaticFile` method. if it is, it serves the file directly. if not, it determines the appropriate content source and calls `renderContent` to generate the dynamic content.
+
+#### **2. serving static files**
+
+the `serveStaticFile` method efficiently handles static file requests:
+
+```typescript
+private async serveStaticFile(path: string): Promise<{ content: ReadableStream<Uint8Array>; contentType: string; size: number } | null> {
+  const relativePath = path.startsWith('/') ? path.slice(1) : path;
+  if (!this.staticFilePaths.has(relativePath)) {
+    return null;
   }
 
-  if (!result) {
-    result = await this.renderContent(path, this.defaultContentType, '/' + originalPath);
+  const fullPath = join(this.assetsDir, relativePath);
+  try {
+    const file = await Deno.open(fullPath, { read: true });
+    const fileInfo = await file.stat();
+    const mimeType = contentType(extname(fullPath)) || "application/octet-stream";
+    
+    return { 
+      content: file.readable, 
+      contentType: mimeType,
+      size: fileInfo.size
+    };
+  } catch (error) {
+    console.error(`Error opening static file ${fullPath}:`, error);
+    return null;
   }
-
-  return result;
 }
 ```
 
-this method first checks if the request is for a static file. if it is, it serves the file directly. if not, it determines the appropriate content source and calls `renderContent` to generate the dynamic content.
+this method checks if the requested file exists in the pre-cached `staticFilePaths` set. if it does, it opens the file as a readable stream, determines its MIME type, and returns the necessary information for serving the file.
 
-#### **2. retrieving the content**
+#### **3. rendering content**
 
-if the request is for dynamic content, the next step is to retrieve the raw content:
+if the request is for dynamic content, the `renderContent` method is called. this method orchestrates the entire process of retrieving, processing, and rendering the content:
+
+```typescript
+async renderContent(path: string, type: string, route: string): Promise<{ content: string; contentType: string; status: number }> {
+  // ... (caching logic)
+
+  const content = await this.getContent(path, type);
+  const { content: processedContent, metadata } = await this.processContent(content, type, route);
+
+  let templateContext: TemplateContext = {
+    content: processedContent,
+    metadata: metadata,
+    route: route,
+    siteTitle: this.siteTitle,
+  };
+
+  // Allow plugins to extend template context
+  for (const plugin of this.plugins.values()) {
+    if (plugin.extendTemplate) {
+      templateContext = await plugin.extendTemplate(templateContext);
+    }
+  }
+
+  const renderedContent = await this.templateEngine.render(type, templateContext);
+  
+  // ... (caching and return logic)
+}
+```
+
+within `renderContent`, three crucial steps occur:
+
+#### **3.1 retrieving the content**
+
+the `getContent` method is called to fetch the raw content:
 
 ```typescript
 async getContent(path: string, type: string): Promise<string> {
@@ -130,9 +193,9 @@ async getContent(path: string, type: string): Promise<string> {
 
 this method finds the appropriate content source based on the content type and reads the file from the filesystem.
 
-#### **3. processing the content**
+#### **3.2 processing the content**
 
-once we have the raw content, it's time to process it:
+once the raw content is retrieved, the `processContent` method is called to process it:
 
 ```typescript
 async processContent(content: string, type: string, route: string): Promise<{ content: string; metadata: Metadata }> {
@@ -164,42 +227,15 @@ async processContent(content: string, type: string, route: string): Promise<{ co
 
 this method first processes the markdown content, then applies each plugin's transform function in sequence. this allows plugins to modify both the content and metadata, providing a way to extend the site's functionality.
 
-#### **4. rendering the content**
+#### **3.3 rendering the template**
 
-with the processed content in hand, we're ready to render it using our handlebars templates:
+after processing the content, `renderContent` calls the `render` method of the TemplateEngine class to render the final HTML:
 
 ```typescript
-async renderContent(path: string, type: string, route: string): Promise<{ content: string; contentType: string; status: number }> {
-  // ... (caching logic)
-
-  const content = await this.getContent(path, type);
-  const { content: processedContent, metadata } = await this.processContent(content, type, route);
-
-  let templateContext: TemplateContext = {
-    content: processedContent,
-    metadata: metadata,
-    route: route,
-    siteTitle: this.siteTitle,
-  };
-
-  // Allow plugins to extend template context
-  for (const plugin of this.plugins.values()) {
-    if (plugin.extendTemplate) {
-      templateContext = await plugin.extendTemplate(templateContext);
-    }
-  }
-
-  const renderedContent = await this.templateEngine.render(type, templateContext);
-  
-  // ... (caching and return logic)
-}
+const renderedContent = await this.templateEngine.render(type, templateContext);
 ```
 
-this method brings everything together. it retrieves the content, processes it, prepares the template context (including any extensions from plugins), and then renders the final HTML using the template engine.
-
-#### **5. template rendering**
-
-the actual rendering of templates is handled by the `TemplateEngine` class:
+the TemplateEngine's `render` method handles the actual rendering:
 
 ```typescript
 async render(templateName: string, context: Record<string, unknown>): Promise<string> {
@@ -228,7 +264,7 @@ async render(templateName: string, context: Record<string, unknown>): Promise<st
 
 this method compiles the template (or retrieves it from cache), renders it with the provided context, and then wraps it in a layout if one is specified. it also includes error handling to provide feedback if something goes wrong during the rendering process.
 
-#### **6. caching for performance**
+#### **4. caching for performance**
 
 to improve performance, simpl-site implements a caching system:
 
@@ -246,7 +282,7 @@ private shouldUseCache(path: string): boolean {
 
 this method determines whether a particular path should be cached based on the configuration. it allows for fine-grained control over caching, including the ability to exclude specific routes.
 
-by following this process for each request, simpl-site can efficiently handle requests, generate dynamic content, apply plugins, render templates, and serve the resulting pages.
+by following this process for each request, simpl-site can efficiently handle requests for both static and dynamic content, apply plugins, render templates, and serve the resulting pages or files.
 
 
 ### extending simpl-site: plugins and template helpers
@@ -442,31 +478,9 @@ this example uses the `getCurrentRoute` helper to determine the current route an
 
 by leveraging plugins and template helpers, you can significantly extend the functionality of your simpl-site project, customizing it to meet your specific needs.
 
-### getting started with simpl-site
+### a simplSite instance
 
-now that we've explored the inner workings of simpl-site, let's look at how you can get started with it for your own projects. setting up simpl-site is straightforward, and its flexible configuration options allow you to tailor it to your specific needs.
-
-#### **installation**
-
-to use simpl-site, you first need to have deno installed on your system. once you have deno, you can install simpl-site globally:
-
-```bash
-deno install --allow-read --allow-write --allow-net --allow-run -n simpl-site jsr:@iamseeley/simpl-site/cli
-```
-
-#### **creating a new simpl-site project**
-
-after installing simpl-site globally, you can create a new project by running:
-
-```bash
-simpl-site my-website
-```
-
-this command will create a new simpl-site project in a directory called `my-website` in your current location. if you want to create the project in your current directory, you can just run:
-
-```bash
-simpl-site .
-```
+you can visit the [README](https://github.com/iamseeley/simpl-site) for detailed setup and deployment instructions!
 
 #### **project structure**
 
@@ -518,8 +532,9 @@ export const config: WebsiteConfig = {
 
 *note how the `contentSources` are configured:*
 
-- `{ path: "./content", type: "page", route: "" }` this means that files directly in the `./content` directory will be served at the root of your site. for example, `./content/index.md` would be your home page, and `./content/about.md` would be served at `/about`.
-- the other content sources for posts and projects are nested under their respective routes.
+`{ path: "./content", type: "page", route: "" }` this means that files directly in the `./content` directory will be served at the root of your site. for example, `./content/index.md` would be your home page, and `./content/about.md` would be served at `/about`.
+
+the other content sources for posts and projects are nested under their respective routes.
 
 *here's what each of these options does:*
 
@@ -600,14 +615,7 @@ deno task dev
 
 this will start a local development server, at `http://localhost:8000`, where you can view your site.
 
-#### **deploying your simpl-site**
-
-once you've created your site, you might want to deploy it. there are several options for deploying your simpl-site project to production.
-
-check out the readme for detailed [deployment instructions](https://github.com/iamseeley/simpl-site/tree/main?tab=readme-ov-file#deployment)!
-
-
-### jsr for distribution
+### JSR for distribution
 
 i published the simpl-site module to [JSR](https://jsr.io/) because it simplifies the development and distribution process for TypeScript projects. JSR is designed to work with multiple runtimes, including Node.js, Deno, and browsers, but still maintains backwards compatibility with npm.
 
