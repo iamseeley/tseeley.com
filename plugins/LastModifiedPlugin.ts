@@ -1,4 +1,4 @@
-import type { Plugin, Metadata, PluginContext } from "jsr:@iamseeley/simpl-site";
+import type { Plugin, Metadata, PluginContext } from "simpl-site";
 import { join, basename } from "jsr:@std/path@0.218.2";
 
 interface LastModifiedConfig {

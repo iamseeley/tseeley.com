@@ -1,4 +1,4 @@
-import type { Plugin, Metadata, PluginContext, TemplateContext } from "jsr:@iamseeley/simpl-site";
+import type { Plugin, Metadata, PluginContext, TemplateContext } from "simpl-site";
 import { walk } from "https://deno.land/std/fs/mod.ts";
 import { extname, basename } from "https://deno.land/std/path/mod.ts";
 import { parse as parseYaml } from "https://deno.land/std/yaml/mod.ts";

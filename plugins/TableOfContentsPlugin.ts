@@ -1,4 +1,4 @@
-import type { Plugin, Metadata, PluginContext } from "jsr:@iamseeley/simpl-site";
+import type { Plugin, Metadata, PluginContext } from "simpl-site";
 
 interface TOCItem {
   level: number;

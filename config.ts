@@ -1,7 +1,7 @@
-import { WebsiteConfig } from "jsr:@iamseeley/simpl-site";
+import { WebsiteConfig } from "simpl-site";
 import TableOfContentsPlugin from './plugins/TableOfContentsPlugin.ts';
 import LastModifiedPlugin from './plugins/LastModifiedPlugin.ts';
-import { registerPluginType } from 'jsr:@iamseeley/simpl-site/plugin-registry';
+import { registerPluginType } from 'simpl-site/plugin-registry';
 import ContentListPlugin from "./plugins/ContentListPlugin.ts";
 
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

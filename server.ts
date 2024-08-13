@@ -1,4 +1,4 @@
-import { SimplSite } from "jsr:@iamseeley/simpl-site";
+import { SimplSite } from "simpl-site";
 import { config } from "./config.ts";
   
 const website = new SimplSite(config);

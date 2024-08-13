@@ -1,4 +1,8 @@
 {
+  "imports": {
+    "simpl-site": "jsr:@iamseeley/simpl-site",
+    "simpl-site/plugin-registry": "jsr:@iamseeley/simpl-site/plugin-registry"
+  },
   "tasks": {
     "dev": "deno run --allow-read --allow-write --allow-net server.ts"
   }
