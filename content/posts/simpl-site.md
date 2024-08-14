@@ -2,7 +2,7 @@
 title: a simple website builder
 date: 2024-08-06
 description: simpl site is a dynamic website builder built on deno that features markdown, handlebars, and a plugin system for transforming content and extending templates.
-draft: true
+draft: false
 ---
 
 after a month or two of tinkering on [val.town](https://val.town), i found myself really enjoying working with Deno (val.town uses the Deno runtime to run your JS/TS). i've enjoyed Deno so much, i decided to make a website builder with it.
