@@ -552,7 +552,7 @@ This is the content of my home page.
 
 #### **creating templates**
 
-simpl-site uses handlebars for templating. 
+simpl-site uses Handlebars for templating. 
 
 here's an example of a base layout:
 
