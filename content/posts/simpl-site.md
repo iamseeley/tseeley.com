@@ -1,6 +1,6 @@
 ---
 title: a simple website builder
-date: 2024-08-06
+date: 2024-08-14
 description: simpl site is a dynamic website builder built on deno that features markdown, handlebars, and a plugin system for transforming content and extending templates.
 draft: false
 ---
