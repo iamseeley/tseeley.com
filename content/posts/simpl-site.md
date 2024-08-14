@@ -385,12 +385,13 @@ this plugin demonstrates several key concepts:
 to use this plugin, you would register it and add it to your simpl-site configuration:
 
 ```typescript
+import { WebsiteConfig } from "simpl-site";
+import { registerPluginType } from "simpl-site/plugin-registry";
 import ContentListPlugin from "./plugins/ContentListPlugin.ts";
-import { registerPluginType } from "simpl-site";
 
 registerPluginType("ContentListPlugin", ContentListPlugin);
 
-export const config = {
+export const config: WebsiteConfig = {
   // ... other config options ...
   plugins: [
     {
