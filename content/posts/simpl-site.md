@@ -45,7 +45,7 @@ before we get into the code specifics, let's take a high-level look at how simpl
 simpl-site uses [Deno's serve function](https://docs.deno.com/api/deno/~/Deno.serve), which provides a minimal way to create an HTTP server. this function handles incoming requests and routes them to the appropriate handler.
 
 3. **file system operations**:
- simpl-site uses deno's built-in APIs for file system operations ([Deno.readTextFile](https://docs.deno.com/api/deno/~/Deno.readTextFile), [Deno.writeTextFile](https://docs.deno.com/api/deno/~/Deno.writeTextFile), etc.) to read markdown content, templates, and other assets.
+ simpl-site uses Deno's built-in APIs for file system operations ([Deno.readTextFile](https://docs.deno.com/api/deno/~/Deno.readTextFile), [Deno.writeTextFile](https://docs.deno.com/api/deno/~/Deno.writeTextFile), etc.) to read markdown content, templates, and other assets.
 
 4. **markdown processing**: 
 simpl-site uses [Marked](https://github.com/markedjs/marked) for markdown parsing and compiling.
