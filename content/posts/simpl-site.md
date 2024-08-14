@@ -407,7 +407,7 @@ this example demonstrates the basic structure of a simpl-site plugin. the `trans
 
 #### **template helpers**
 
-template helpers are functions you can use in your handlebars templates to perform operations or fetch data. here's an example of defining template helpers:
+template helpers are functions you can use in your Handlebars templates to perform operations or fetch data. here's an example of defining template helpers:
 
 ```typescript
 export const config: WebsiteConfig = {
