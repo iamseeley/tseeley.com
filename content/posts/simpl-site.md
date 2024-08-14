@@ -380,7 +380,7 @@ this plugin demonstrates several key concepts:
 
 3. **using the context**: the `PluginContext` provides information about the current request, including the route. in a more complex plugin, you could use other properties of the context, such as `contentSources` to access actual content files.
 
-4. **generating Ccntent**: the `generateListHtml` method is a simplified example of how you might generate HTML to inject into the page. in a real plugin, this would involve reading and processing actual content files.
+4. **generating content**: the `generateListHtml` method is a simplified example of how you might generate HTML to inject into the page. in a real plugin, this would involve reading and processing actual content files.
 
 to use this plugin, you would register it and add it to your simpl-site configuration:
 
