@@ -9,7 +9,7 @@ got caught up with my sicp readings, so i watched the next lecture in brian harv
 
 i started vannevar bush's [*As We May Think*](https://www.w3.org/History/1945/vbush/vbush.shtml) essay.
 
-i took a small detour and worked on a maze generation playground site that was inspired by andrew healey's recent blog post [*Generating Mazes*](https://healeycodes.com/generating-mazes).
+then took a small detour and worked on a maze generation playground site that was inspired by andrew healey's recent blog post [*Generating Mazes*](https://healeycodes.com/generating-mazes).
 
 it turns out mazes are very cool. 
 
