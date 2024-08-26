@@ -23,7 +23,7 @@ the key vals in the project are:
 
 ✦ the server for the dashboard: this serves the actual web analytics dashboard.
 
-it would be nice if in a val's execution context there existed a user object that you could access to get your own user data. i think there's been discussion about this within the community, and it doesn't exist because of security concerns.
+it would be nice if a val's execution context contained a user object that you could access to get your own user data. i think there's been discussion about this within the community, and it doesn't exist because of security concerns.
 
 i was trying to think of some workarounds that would make my project more dynamic. i decided to create a `valTownUser` object. the idea is that when users fork the server or other vals, they won’t need to hardcode their usernames or specific URLs. 
 
