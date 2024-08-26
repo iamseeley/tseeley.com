@@ -11,7 +11,9 @@ i'm back home now and i'm ready to write some code.
 
 ~ 
 
-it's happening. i'm going to share the web analytics tracker this week. i've been trying to come up with the most pracitcal way to organize the project so val town users only have to fork a few vals and change a few lines of configuration. 
+it's happening. i'm going to share the web analytics tracker this week. i've been trying to come up with a way to organize the project so val town users only have to fork a few vals and change a few lines of configuration. 
+
+i imagine this will get easier when val town introduces a ["projects"](https://github.com/val-town/val-town-product/discussions/139) concept for organizing vals to be shared.
 
 the key vals in the project are:
 
