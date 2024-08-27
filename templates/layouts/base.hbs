@@ -54,6 +54,15 @@
   import { initializeValComponents } from "https://esm.town/v/iamseeley/valPreview";
   document.addEventListener('DOMContentLoaded', initializeValComponents);
 </script>
-<script type="module" src="https://esm.town/v/iamseeley/trackingScript"></script>
+<script>
+(function() {
+  var script = document.createElement('script');
+  script.async = true;
+  script.src = 'https://iamseeley-webanalyticstracking.web.val.run/trackingScript';
+  var firstScript = document.getElementsByTagName('script')[0];
+  firstScript.parentNode.insertBefore(script, firstScript);
+})();
+</script>
+
 </body>
 </html>

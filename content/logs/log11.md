@@ -35,4 +35,6 @@ now i actually need to implement the methods in the key vals that will be forked
 
 here's the `valTownUser` object: [valTownUser](https://www.val.town/v/iamseeley/valTownUser)
 
+i think it could be useful if someone's val town project includes endpoints that depend on the user's specific vt environment (like personal API endpoints or database connections), the valTownUser object can dynamically generate these URLs. so the endpoints automatically adapt to whoever is running the code.
+
 <!-- <div id="valTownUser" data-val-id="b6022d92-63c4-11ef-87c3-de64eea55b61"></div> -->
