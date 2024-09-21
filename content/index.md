@@ -10,5 +10,4 @@ description: the personal website of thomas seeley
 
 </div>
 
-## captain's log
 

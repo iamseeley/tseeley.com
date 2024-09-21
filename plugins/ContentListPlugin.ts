@@ -21,7 +21,7 @@ const routeToTypeMap: Record<string, string> = {
   "/posts": "post",
   "/projects": "project",
   "/logs": "log",
-  "/index": "log"
+  
 };
 
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
