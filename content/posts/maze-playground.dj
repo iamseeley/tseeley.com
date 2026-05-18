@@ -1,0 +1,75 @@
++++
+title = "Maze Playground"
+date = "2024-08-22"
+draft = false
+tags = ["typescript", "algos"]
++++
+
+I read Andrew Healey's [Generating Mazes](https://healeycodes.com/generating-mazes) and wanted to see the algorithms work. Not just the finished maze, but each step of the generation. Walls getting removed one at a time, the path carving through the grid.
+
+So I built a [small playground](https://github.com/iamseeley/maze-playground) for it. Deno, TypeScript, and a `<canvas>`.
+
+## The Data Model
+
+A maze is a grid of cells. Each cell has four walls and knows whether it's been visited.
+
+```typescript
+export class Cell implements CellInterface {
+  position: Position;
+  hasTopWall: boolean;
+  hasRightWall: boolean;
+  hasBottomWall: boolean;
+  hasLeftWall: boolean;
+  visited: boolean;
+
+  removeWall(neighbor: CellInterface): void {
+    const dx = neighbor.position.x - this.position.x;
+    const dy = neighbor.position.y - this.position.y;
+
+    if (dx === 1) {
+      this.hasRightWall = false;
+      neighbor.hasLeftWall = false;
+    }
+    // ... and so on for each direction
+  }
+}
+```
+
+`removeWall` figures out which direction the neighbor is in and removes the wall on both sides. That's the core operation of maze generation: two cells become connected.
+
+## Generators for Stepping
+
+The part I liked most was using [JavaScript generators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_generators) for the algorithms. DFS yields after each step, which means the UI can consume it at whatever pace it wants.
+
+```typescript
+*generateSteps(maze: MazeInterface, startCell: CellInterface): Generator<{ currentCell: CellInterface }> {
+  const stack: CellInterface[] = [startCell];
+  startCell.visited = true;
+
+  while (stack.length > 0) {
+    const currentCell = stack[stack.length - 1];
+    yield { currentCell };
+
+    const unvisitedNeighbors = maze.getNeighbors(currentCell)
+      .filter(neighbor => !neighbor.visited);
+
+    if (unvisitedNeighbors.length > 0) {
+      const randomIndex = Math.floor(Math.random() * unvisitedNeighbors.length);
+      const chosenNeighbor = unvisitedNeighbors[randomIndex];
+      currentCell.removeWall(chosenNeighbor);
+      chosenNeighbor.visited = true;
+      stack.push(chosenNeighbor);
+    } else {
+      stack.pop();
+    }
+  }
+}
+```
+
+The UI runs a `setInterval` at 50ms that calls `generator.next()`, snapshots the maze state, and renders it. After generation is done, a slider lets you scrub back through every step. You can watch the algorithm think.
+
+## What's There, What's Not
+
+Right now only [DFS](https://en.wikipedia.org/wiki/Depth-first_search) is implemented. The dropdown lists [Aldous-Broder](https://en.wikipedia.org/wiki/Maze_generation_algorithm#Aldous-Broder_algorithm), [Prim's](https://en.wikipedia.org/wiki/Maze_generation_algorithm#Randomized_Prim's_algorithm), and [Kruskal's](https://en.wikipedia.org/wiki/Maze_generation_algorithm#Randomized_Kruskal's_algorithm) but they're stubs. I'd like to add them eventually because the interesting thing about maze algorithms is how different the mazes _feel_. DFS creates long winding corridors with few branches. Aldous-Broder creates more uniform, random-looking mazes. Same grid, different character.
+
+The rendering is simple Canvas drawing. Visited cells get a gray fill, the current cell gets a blue highlight, and walls are just lines. Nothing fancy, but it's enough to see what's happening.

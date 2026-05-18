@@ -1,0 +1,17 @@
++++
+title = "Hello"
+date = "2026-01-15"
+tags = ["rust", "ssg"]
++++
+
+First post with inline `code` and a code block.
+
+## A section
+
+```rust
+fn main() {
+    println!("hello");
+}
+```
+
+A [local link](/about/) and an [external link](https://example.com).

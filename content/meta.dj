@@ -1,0 +1,96 @@
++++
+title = "Site Notes"
++++
+
+```=html
+<aside>Also known as a <a href="https://indieweb.org/colophon" target="_blank" rel="noopener">colophon</a> or <a href="https://en.wikipedia.org/wiki/Style_guide" target="_blank" rel="noopener">style guide</a>.</aside>
+```
+
+Built with my own [static site generator](https://github.com/iamseeley/tseeley.com), written in Rust. It uses [jotdown](https://crates.io/crates/jotdown) for content, [maud](https://crates.io/crates/maud) for templates, and [axum](https://crates.io/crates/axum) for the dev server. Hosted on [Cloudflare Pages](https://pages.cloudflare.com/).
+
+## Design
+
+Designed and built by me. Everything is intentionally simple: plain HTML, CSS, and minimal JavaScript. Much of the design inspiration comes from the sites in my [blogroll](/blogroll/).
+
+### Mascot
+
+The site's mascot is Sally, a [Blue Ridge Gray-cheeked Salamander](https://auth1.dpr.ncparks.gov/amphibians/view.php?sciName=Plethodon+amplus) (_Plethodon amplus_). She's native to the Southern Appalachian mountains of North Carolina. You'll spot her around the site.
+
+### Typography
+
+Headers are set in [Georgia](<https://en.wikipedia.org/wiki/Georgia_(typeface)>) and body copy is set in [Verdana](https://en.wikipedia.org/wiki/Verdana).
+
+### Links
+
+Links are styled to indicate their destination:
+
+- **Internal links** have solid underlines, like [this link to posts](/posts/)
+- **External links** have dashed underlines, like [this link to djot](https://djot.net/)
+
+### Code
+
+Inline code like `fn main()` and code blocks are set in [Lilex](https://github.com/mishamyrt/Lilex). Code blocks show a language label in the top right corner.
+
+```rust
+fn main() {
+    println!("Language labels use the code font.");
+}
+```
+
+### Dinkus
+
+Section breaks use a centered dinkus (three spaced asterisks).
+
+---
+
+Like that.
+
+### Feeds
+
+The main [posts feed](/atom.xml) includes the full post content. Each [tag page](/tags/) also has its own feed.
+
+### Layout
+
+Single column on small screens. On wider viewports the nav moves to a sidebar column on the right. The content area is capped at 640px.
+
+### Elements
+
+The site uses a few recurring content patterns. Since djot doesn't pass raw HTML through by default, these are written as `` ```=html `` blocks.
+
+**Aside**: a callout with a left border, same style as blockquotes.
+
+```=html
+<aside>This is what an aside looks like.</aside>
+```
+
+**Blockquote**: a styled quote with attribution.
+
+```=html
+<blockquote>
+    <q>The computer is the first metamedium, and as such it has degrees of freedom for representation and expression never before encountered.</q>
+    <cite>Alan Kay</cite>
+</blockquote>
+```
+
+**Figure**: an image with a caption.
+
+```=html
+<figure style="max-width: 200px">
+  <img src="/images/cute-ferris.png" alt="Cute Ferris the crab">
+  <figcaption>Ferris by <a href="https://rustacean.net/">Karen Rustad Tölva</a>, CC0.</figcaption>
+</figure>
+```
+
+## AI
+
+I write everything here myself. The ideas, opinions, and structure are mine.
+
+I use AI tools for research, but I do the drafting and editing myself.
+
+I don't publish anything I haven't read, edited, and stand behind. If my practice changes significantly, I'll update this page.
+
+## Privacy
+
+This site doesn't use cookies, doesn't track you across the web, and doesn't collect personal data.
+
+I use [Umami](https://umami.is/) for basic, privacy-respecting analytics (page views, referrers). It's self-hosted, collects no personal information, and is fully compliant with [GDPR](https://gdpr-info.eu/), [CCPA](https://oag.ca.gov/privacy/ccpa), and [PECR](https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guide-to-pecr/what-are-pecr/) without requiring a cookie banner.

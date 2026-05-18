@@ -1,0 +1,39 @@
+title = "Thomas Seeley"
+description = "Posts about software and making things."
+author = "Thomas Seeley"
+base_url = "https://www.tseeley.com"
+language = "en"
+theme_color = "#111111"
+og_image = "/images/flying.jpg"
+profile_image = "/images/profile.jpg"
+twitter_handle = "@iamseeley"
+bookmarks_url = "https://bookmarks.seeley.me/"
+generator = "tseeley.com"
+dev_addr = "127.0.0.1:1111"
+show_drafts = false
+
+rel_me = [
+    "https://github.com/iamseeley",
+    "https://codeberg.org/iamseeley",
+    "https://bsky.app/profile/tseeley.com",
+    "https://mastodon.social/@iamseeley",
+    "https://x.com/iamseeley",
+    "https://tangled.org/tseeley.com",
+]
+
+# Footer social links shown after each post (and in feed entries).
+[[post_socials]]
+label = "@tseeley.com on Bluesky"
+url = "https://bsky.app/profile/tseeley.com"
+
+[[post_socials]]
+label = "@iamseeley on Mastodon"
+url = "https://mastodon.social/@iamseeley"
+
+[license]
+name = "By-NC-SA 4.0"
+url = "https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1"
+
+[analytics]
+umami_url = "https://stats.seeley.me/script.js"
+umami_id = "dd40336f-ce39-443f-ba41-962bc58ad386"

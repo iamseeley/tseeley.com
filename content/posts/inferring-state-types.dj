@@ -1,0 +1,163 @@
++++
+title = "Inferring types from usage"
+date = "2025-04-01"
+tags = ["typescript", "membrane"]
++++
+
+Membrane programs have a [persistent `state` object](https://docs.membrane.io/guides/state) that survives across deploys. You import it and use it like a regular JavaScript object:
+
+```typescript
+import { state } from "membrane";
+
+state.count ??= 0;
+
+export function increment() {
+  return ++state.count;
+}
+```
+
+The entire JS heap is durable, but `state` is the conventional way to pass data between code versions. The question is: what type is `state`?
+
+We could make developers define a `State` type for every program. But that's boilerplate, and for quick scripts and prototypes it slows you down. We already had a TypeScript language service plugin for Membrane's graph types, so I added state type inference to it.
+
+{#idea}
+## The Idea
+
+If you write `state.count ??= 0`, we know `state.count` is a `number`. If you write `state.apiKey = args.apiKey` and `args.apiKey` is a `string`, we know `state.apiKey` is a `string`. Walk the abstract syntax tree[^ast], find every assignment to a `state` property, extract the type from the right-hand side, and generate a type declaration.
+
+[^ast]: [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) — a tree representation of source code structure.
+
+The generated type looks like this:
+
+```typescript
+type State = {
+  count: number;
+  apiKey: string;
+  [key: string]: any;
+};
+```
+
+That gets injected into the generated `membrane.d.ts` file. You get autocomplete and type checking on `state` without writing any type annotations. If you do want to define the type explicitly, export a `State` type or interface from `index.ts` and the inference backs off.
+
+{#tricky}
+## The Tricky Parts
+
+The idea is simple, but as always implementation had more edge cases than expected.
+
+### Assignment Patterns
+
+Turns out people assign to `state` in a lot of different ways:
+
+```typescript
+state.count = 0; // direct assignment
+state.count ??= 0; // nullish coalescing assignment
+state.count ||= 0; // logical OR assignment
+state.count += 1; // compound assignment
+state.count = value as number; // type assertion
+```
+
+The AST visitor needs to catch all of these. Direct assignments and compound assignments (`+=`, `-=`, etc.) fall in a range of operator token kinds between `FirstAssignment` and `LastAssignment`, which makes them easy to handle together. Nullish coalescing assignment (`??=`) is its own token kind and needs a separate check:
+
+```typescript
+if (
+  ts.isBinaryExpression(node) &&
+  node.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
+  node.operatorToken.kind <= ts.SyntaxKind.LastAssignment
+) {
+  processStateAssignment(node.left, node.right);
+} else if (
+  ts.isBinaryExpression(node) &&
+  node.operatorToken.kind === ts.SyntaxKind.QuestionQuestionEqualsToken
+) {
+  processStateAssignment(node.left, node.right);
+}
+```
+
+### Nullish Coalescing and `any`
+
+`state.count ??= 0` is interesting because the right-hand side is a binary expression with `??`. The left side is `state.count`, which might be `any` if we haven't inferred a type for it yet. The right side is `0`, which is `number`.
+
+If we naively get the type of the whole expression, TypeScript might give us `any` because one side is `any`. So we check both sides individually:
+
+```typescript
+if (
+  node.operatorToken.kind === ts.SyntaxKind.QuestionQuestionToken ||
+  node.operatorToken.kind === ts.SyntaxKind.BarBarToken
+) {
+  const leftType = checker.getTypeAtLocation(node.left);
+  const rightType = checker.getTypeAtLocation(node.right);
+
+  const isLeftAny = (leftType.getFlags() & ts.TypeFlags.Any) !== 0;
+  const isRightAny = (rightType.getFlags() & ts.TypeFlags.Any) !== 0;
+
+  if (isLeftAny && !isRightAny) return rightType;
+  if (!isLeftAny && isRightAny) return leftType;
+
+  return checker.getTypeAtLocation(node);
+}
+```
+
+If one side is `any` and the other is concrete, use the concrete type. If both are concrete, use the union. This is what makes `state.count ??= 0` correctly infer `number` instead of `any`.
+
+### Explicit vs Inferred Priority
+
+Consider this:
+
+```typescript
+state.count ??= 0; // inferred: number
+state.count = getCount(); // explicit: number (from getCount's return type)
+```
+
+Both assignments tell us `state.count` is a `number`, but they have different confidence levels. A direct assignment (`=`) is explicit. A nullish coalescing assignment (`??=`) or logical OR assignment (`||=`) is inferred, because they're fallback patterns that might not represent the primary type.
+
+When we see a new assignment to a property we've already typed, explicit assignments override inferred ones. More specific types override `any`. This means the order of assignments in your code doesn't matter as much as the kind of assignment.
+
+### Type Assertions
+
+If you write `state.data = response as ApiResponse`, the type should be `ApiResponse`, not whatever TypeScript infers from `response`. The plugin checks for `as` expressions and type assertion expressions, unwrapping parenthesized expressions along the way:
+
+```typescript
+function getAssertedType(node: Expression): Type | undefined {
+  if (ts.isAsExpression(node) || ts.isTypeAssertionExpression(node)) {
+    return checker.getTypeAtLocation(node);
+  }
+  if (ts.isParenthesizedExpression(node)) {
+    return getAssertedType(node.expression);
+  }
+  // ...
+}
+```
+
+{#assembly}
+## How It Fits Together
+
+The inference hooks into `getSemanticDiagnostics`. Every time the editor updates diagnostics, the plugin walks the AST, collects `state` assignments, and generates the `State` type string. If it changed since last time, `membrane.d.ts` gets regenerated.
+
+If a developer exports their own `State` type:
+
+```typescript
+export interface State {
+  count: number;
+  apiKey: string;
+}
+```
+
+The plugin detects that and imports it instead of generating one. Explicit always wins.
+
+{#general}
+## The General Problem
+
+The technique here isn't specific to state. It's a general approach: infer the type of an untyped object by walking all the places it's assigned to across a codebase. You could apply the same pattern to config objects, environment variables, feature flags, or any global singleton that accumulates properties over time.
+
+TypeScript itself has [open issues](https://github.com/microsoft/TypeScript/issues/34738) requesting "infer type from usage" for implicit `any` parameters, but it's scoped to a single function body, not whole-program analysis. [Flow](https://flow.org/) does whole-program type inference, but that's an entire type system. [TypeStat](https://github.com/JoshuaKGoldberg/TypeStat) infers types from usage patterns and writes annotations back into source files, but it targets individual variables and parameters, not a shared object.
+
+The architecture closest to ours is [Volar](https://github.com/vuejs/language-tools) (Vue Language Tools), which generates virtual TypeScript files from `.vue` single-file components. The pattern is the same: take a non-standard source of type information, generate a `.d.ts` that the TypeScript language service can understand, and keep it updated as the source changes.
+
+We're doing a narrower version of that. Walk assignments to one object, build a type from what we find, inject it into a generated declaration file.
+
+{#takeaways}
+## What I Learned
+
+Working on this gave me a better feel for [TypeScript's compiler API](https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API) than anything else I've done. The `TypeChecker` is powerful but not always intuitive. `getTypeAtLocation` can return `any` in cases where you'd expect something more specific, especially when the thing you're checking is a property of an untyped object (which `state` is, until we infer its type). The `getBaseTypeOfLiteralType` call is important too. Without it, `state.count = 0` would infer the literal type `0` instead of `number`.
+
+The biggest takeaway: type inference is a game of priorities! You have multiple sources of type information (direct assignments, fallback patterns, type assertions, compound assignments) and you need rules for which one wins. Getting those priority rules right is what makes the experience feel natural instead of surprising.

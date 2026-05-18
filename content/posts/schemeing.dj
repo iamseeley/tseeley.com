@@ -1,0 +1,48 @@
++++
+title = "Scheme-ing"
+date = "2024-07-04"
+tags = ["scheme"]
++++
+
+I've been reading [SICP](https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/index.html) on and off. To be honest, I've only made it a few chapters in and I think that's as far as I'll go.
+
+Around the same time I read [_Wolf in White Van_](https://bookshop.org/books/wolf-in-white-van/9781250074713) by John Darnielle. It's a novel about a guy who runs a [text-based adventure game](https://en.wikipedia.org/wiki/Interactive_fiction) by mail. Players send in their moves, he sends back what happens. The game is called Trace Italian! The whole book is told in reverse, which gives it this strange gravity. You know where the story ends up before you know how it started.
+
+I thought it would be fun to build a text adventure in Scheme. So I did!
+
+## The Game
+
+It's small. Four rooms, directional movement, a game loop. No items, no puzzles, no win condition. Just the skeleton of a world you can walk around in.
+
+```scheme
+(define rooms
+  (list
+   (list 'living-room "You are in the living room. There is a door to the north and a kitchen to the west.")
+   (list 'kitchen "You are in the kitchen. There is a living room to the east.")
+   (list 'hallway "You are in the hallway. There is a living room to the south and a bedroom to the north.")
+   (list 'bedroom "You are in the bedroom. There is a hallway to the south.")))
+```
+
+Rooms are lists. Connections between rooms are lists. The game state is which room you're in.
+
+```scheme
+(define (game-loop)
+  (describe-current-room)
+  (let ((command (get-command)))
+    (cond ((eq? command 'north) (move 'north))
+          ((eq? command 'south) (move 'south))
+          ((eq? command 'east) (move 'east))
+          ((eq? command 'west) (move 'west))
+          ((eq? command 'quit) (display "Goodbye!")
+                                (newline)
+                                (exit))
+          (else (display "Invalid command.")
+                (newline)))
+    (game-loop)))
+```
+
+The game loop is a recursive function that describes where you are, reads a command, acts on it, then calls itself. No `while` loop, no mutable iterator. Just a function that calls itself forever until you quit.
+
+It's a good reminder that you don't need much to make something interactive. Four rooms and a prompt. That's a world you can walk around in.
+
+The [full source](https://github.com/iamseeley/just-scheme-things/blob/main/adventure.scm) is about 60 lines. There's also a [tic-tac-toe](https://github.com/iamseeley/just-scheme-things/blob/main/tic-tac-toe.scm) in the same repo from the same weekend.

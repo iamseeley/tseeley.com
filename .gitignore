@@ -1,0 +1,5 @@
+/target
+/public
+.env
+/tests/fixture/public
+*.snap.new

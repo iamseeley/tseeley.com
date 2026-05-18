@@ -1,0 +1,62 @@
++++
+title = "Hello, Membrane"
+date = "2024-11-10"
+tags = ["membrane", "javascript"]
++++
+
+It's been a busy, exciting past few months. I joined [membrane.io](http://membrane.io/) as an intern in September, and I'm having a great time making improvements to the platform and building things in user space.
+
+## What's Membrane?
+
+Membrane is a serverless platform for developing JavaScript/TypeScript programs.
+
+Every program you create in your Membrane workspace becomes part of your graph, and the programs can connect to each other through this graph.
+
+```=html
+<video controls width="100%" src="https://docs.membrane.io/videos/add-connections.mp4#t=0.1"></video>
+```
+
+There are a few key things that set Membrane apart from other serverless platforms:
+
+- Programs have built-in state - no need to set up a database
+- Everything gets logged before it happens - if it's not in the logs, it didn't happen
+- Each program gets an email address - handle incoming emails by exporting an `email` function
+- Each program gets its own endpoint - handle HTTP requests by exporting an `endpoint` function
+- Programs can use other programs as building blocks through graph connections
+
+## What I've Been Working On.
+
+Most of my time has been spent on Membrane's API drivers. Drivers let you interact with external APIs through Membrane's graph.
+
+I’ve been improving existing drivers like [Discord](https://www.membrane.io/share/membrane/discord) and [Anthropic](https://www.membrane.io/share/membrane/anthropic) and building a [tool](https://membrane.io/share/iamseeley/driver-generator) to generate new ones. The more drivers on Membrane, the more useful tools and automations we can build!
+
+A driver exposes API endpoints as nodes (fields, actions, events) that you can reference in your graph with a simple syntax.
+
+For example, `github:users.one(name:"membrane-io")` tells Membrane to get a specific GitHub user - but here's what's cool: even though that API call returns all of the user's data, you can selectively reference just the pieces you need in other programs, like if we want to get their avatar: `github:users.one(name:"membrane-io").avatar_url`.
+
+**Other Projects and Improvements:**
+
+1. Implemented type inference for Membrane `state`
+2. Dynamic OG images for the changelog, packages, and docs
+3. Made a driver for the Membrane API: [mem](https://www.membrane.io/share/iamseeley/mem)
+
+I’m excited to start building more drivers and example tools/automations :).
+
+If you’d like to learn more about Membrane check these out:
+
+- [Justin Bennett: Membrane, A Living Computational Environment](https://notes.just-be.dev/Membrane%2C+A+Living+Computational+Environment)
+- [Juan Campa - devtoolsFM episode](https://www.devtools.fm/episode/46)
+- [Membrane Changelog](https://www.membrane.io/blog/changelog-0.9)
+- [Membrane Docs](https://docs.membrane.io/getting-started/intro/)
+
+And join the [Discord](https://discord.gg/gBK9xP3z)!
+
+## Want to Help Shape Membrane?
+
+We're looking for developers to try out Membrane and share their feedback!
+
+If you're interested in participating in user interviews, reach out to me at [thomas@membrane.io](mailto:thomas@membrane.io). We’d love to hear your thoughts and help you get started building tools for yourself or for your company.
+
+```=html
+<aside>Be on the lookout for some updates coming to Membrane...soon you'll be able to create UIs with the programs on your graph!</aside>
+```

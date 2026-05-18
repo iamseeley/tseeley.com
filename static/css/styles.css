@@ -1,0 +1,436 @@
+@font-face {
+    font-family: "Lilex";
+    src: url("/fonts/lilex-regular.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "tseeley-icons";
+    src: url("/fonts/tseeley-icons.woff2") format("woff2");
+    font-display: block;
+}
+
+:root {
+    --base: 20px;
+    --bg: #1e1e1e;
+    --gray-800: #2a2a2a;
+    --gray-700: #333333;
+    --gray-600: #444444;
+    --gray-500: #666666;
+    --gray-400: #888888;
+    --gray-100: #eeeeee;
+    --body-font: "Verdana", sans-serif;
+    --header-font: Georgia, serif;
+    --max-width: 45em;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+::selection {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+html {
+    background-color: var(--bg);
+    color: white;
+    font-size: 14px;
+    line-height: 1.7;
+    font-family: var(--body-font);
+}
+
+body {
+    margin: 0 auto;
+    padding: 0;
+    max-width: var(--max-width);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--header-font);
+    line-height: 1.3;
+    margin-top: calc(var(--base) * 2);
+    margin-bottom: var(--base);
+}
+
+h1 { font-size: 1.8rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.2rem; }
+h4, h5, h6 { font-size: 1rem; }
+
+.title {
+    font-size: 1.8rem;
+    font-family: var(--header-font);
+    margin-top: 0;
+    margin-bottom: var(--base);
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: var(--base);
+}
+
+strong, b { font-weight: bold; }
+
+a { color: white; }
+
+a:hover { opacity: 0.8; }
+
+a[href^="/"]:not([href^="//"]),
+a[href*="//tseeley.com"],
+a[href*="//www.tseeley.com"],
+a[href*="127.0.0.1"],
+a[href*="localhost"] {
+    text-decoration: underline solid 1.5px;
+}
+
+a[href^="http"]:not([href*="//tseeley.com"]):not([href*="//www.tseeley.com"]):not([href*="127.0.0.1"]):not([href*="localhost"]),
+a[href^="mailto:"] {
+    text-decoration: none;
+    background-image: linear-gradient(to right, currentColor 50%, transparent 50%);
+    background-size: 4px 1.5px;
+    background-position: 0 100%;
+    background-repeat: repeat-x;
+}
+
+a[role="doc-noteref"] {
+    text-decoration: none;
+}
+a[role="doc-noteref"] sup {
+    text-decoration: underline 1px;
+}
+
+:is(h1, h2, h3, h4, h5, h6) a.heading-anchor {
+    text-decoration: none;
+}
+:is(h1, h2, h3, h4, h5, h6) a.heading-anchor:hover {
+    text-decoration: underline solid 1.5px;
+    text-underline-offset: 0.25em;
+    opacity: 1;
+}
+
+nav a,
+.list a,
+code a {
+    text-decoration: none !important;
+    background-image: none !important;
+}
+
+main, article {
+    min-width: 0;
+}
+
+main {
+    padding: var(--base);
+}
+
+footer {
+    padding: var(--base);
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+    padding: var(--base);
+}
+
+nav a:first-child {
+    white-space: nowrap;
+}
+
+.nav-sep {
+    color: var(--gray-500);
+}
+
+nav a:not(:first-child):hover {
+    opacity: 0.8;
+}
+
+:where(ul) {
+    padding: 0;
+    list-style-type: none;
+    margin-top: 0;
+}
+
+:where(ol) { margin-top: 0; }
+
+article ul:not(.list),
+main ul:not(.list) {
+    padding-left: 40px;
+}
+
+article ul:not(.list) li,
+main ul:not(.list) li {
+    list-style-type: square;
+}
+
+article ol,
+main ol {
+    padding-left: 40px;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.list li { display: block; }
+
+.list p {
+    margin-bottom: 2px;
+    margin-top: 2px;
+}
+
+.list time,
+.list .count {
+    margin-left: 4px;
+}
+
+time,
+.description {
+    font-style: italic;
+    color: var(--gray-400);
+}
+
+.count {
+    font-style: italic;
+    color: var(--gray-400);
+}
+
+.subtitle {
+    margin-top: 0;
+    margin-bottom: calc(var(--base) * 1.2);
+    display: flex;
+    gap: var(--base);
+}
+
+.subtitle time { margin: 0; }
+
+.post-footer {
+    margin: calc(var(--base) * 2) 0 var(--base);
+    padding: var(--base) 0 0;
+    border-top: solid 1px var(--gray-600);
+}
+
+.post-footer p:last-child {
+    margin-bottom: 0;
+}
+
+.tags { margin-top: 8px; }
+
+.post-footer .p-category {
+    color: var(--gray-400);
+    text-decoration: none !important;
+}
+
+.post-footer .p-category:hover {
+    opacity: 0.8;
+}
+
+.tags::before {
+    content: "* * *";
+    display: block;
+    color: var(--gray-600);
+    font-size: 1.5em;
+    margin: calc(var(--base) * 1.2) 0 8px 0;
+}
+
+hr {
+    border: none;
+    text-align: center;
+    color: var(--gray-400);
+    font-size: 1.5em;
+    margin: calc(var(--base) * 1.2) 0;
+}
+
+hr::after {
+    content: "* * *";
+}
+
+code, pre {
+    font-family: "Lilex", monospace;
+    font-size: 13px;
+}
+
+:not(pre) > code {
+    background-color: var(--gray-800);
+    box-shadow: inset 0 0 0 1px var(--gray-700);
+    padding: 2px 0.4em;
+    font-size: 0.9em;
+}
+
+
+a > code {
+    padding: 0;
+}
+
+pre {
+    max-width: 100%;
+    position: relative;
+    background-color: var(--gray-800) !important;
+    border: solid 1px var(--gray-700);
+}
+
+pre > code {
+    display: block;
+    overflow-x: auto;
+    padding: var(--base);
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-600) transparent;
+}
+
+
+pre:has(> code[data-lang])::after {
+    content: attr(data-lang);
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-family: "Lilex", monospace;
+    font-size: 11px;
+    color: var(--gray-100);
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+pre:has(> code[data-lang="javascript"])::after { content: "js"; }
+pre:has(> code[data-lang="typescript"])::after { content: "ts"; }
+pre:has(> code[data-lang="bash"])::after,
+pre:has(> code[data-lang="sh"])::after,
+pre:has(> code[data-lang="shell"])::after,
+pre:has(> code[data-lang="shellscript"])::after { content: "sh"; }
+pre:has(> code[data-lang="rust"])::after,
+pre:has(> code[data-lang="rs"])::after { content: "rs"; }
+pre:has(> code[data-lang="python"])::after,
+pre:has(> code[data-lang="py"])::after { content: "py"; }
+pre:has(> code[data-lang="jsx"])::after { content: "jsx"; }
+pre:has(> code[data-lang="scheme"])::after { content: "scm"; }
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: var(--base);
+}
+
+th, td {
+    border: solid 1px var(--gray-600);
+    padding: 6px 12px;
+    text-align: left;
+}
+
+th {
+    background-color: var(--gray-800);
+    color: var(--gray-100);
+}
+
+tr:nth-child(even) { background-color: var(--gray-800); }
+
+aside {
+    margin: var(--base) 0;
+    padding: 8px 0 8px 16px;
+    border-left: 3px solid var(--gray-600);
+}
+
+blockquote {
+    margin: var(--base) 0;
+    padding: 8px 0 8px 16px;
+}
+
+aside > *:last-child { margin-bottom: 0; }
+
+blockquote q {
+    display: block;
+    font-style: italic;
+    quotes: none;
+}
+
+blockquote q::before,
+blockquote q::after { content: none; }
+
+blockquote cite {
+    display: block;
+    margin-top: 8px;
+    color: var(--gray-400);
+    font-style: normal;
+}
+
+blockquote cite::before { content: "\2014\00a0"; }
+
+figure {
+    margin: var(--base) 0;
+    padding: 0;
+}
+
+figure img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+figcaption {
+    margin-top: 8px;
+    font-style: italic;
+    color: var(--gray-400);
+    font-size: 0.9em;
+}
+
+.intro {
+    margin-bottom: calc(var(--base) * 2);
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    margin-bottom: 8px;
+}
+
+.symbol {
+    font-family: Arial, sans-serif;
+}
+
+.post-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--base);
+    margin-top: var(--base);
+}
+
+.dither-compare {
+    margin: var(--base) 0;
+    padding: 0;
+}
+
+.dither-compare-wrap {
+    position: relative;
+    line-height: 0;
+}
+
+.dither-compare-wrap img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    image-rendering: pixelated;
+}
+
+.dither-compare-original {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    image-rendering: auto;
+}
+
+.dither-compare-wrap:hover .dither-compare-original {
+    opacity: 1;
+}
