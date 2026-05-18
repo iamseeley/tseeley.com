@@ -6,7 +6,7 @@ title = "Site Notes"
 <aside>Also known as a <a href="https://indieweb.org/colophon" target="_blank" rel="noopener">colophon</a> or <a href="https://en.wikipedia.org/wiki/Style_guide" target="_blank" rel="noopener">style guide</a>.</aside>
 ```
 
-Built with my own [static site generator](https://github.com/iamseeley/tseeley.com), written in Rust. It uses [jotdown](https://crates.io/crates/jotdown) for content, [maud](https://crates.io/crates/maud) for templates, and [axum](https://crates.io/crates/axum) for the dev server. Hosted on [Cloudflare Pages](https://pages.cloudflare.com/).
+Built with my own [static site generator](https://github.com/iamseeley/tseeley.com), written in Rust. It uses [jotdown](https://crates.io/crates/jotdown) for content, [maud](https://crates.io/crates/maud) for templates, and [axum](https://crates.io/crates/axum) for the dev server. Served by [Caddy](https://caddyserver.com/) on a [Hetzner](https://www.hetzner.com/) VPS.
 
 ## Design
 
