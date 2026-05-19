@@ -51,7 +51,7 @@ The main [posts feed](/atom.xml) includes the full post content. Each [tag page]
 
 ### Layout
 
-Single column on small screens. On wider viewports the nav moves to a sidebar column on the right. The content area is capped at 640px.
+A single centered column at every viewport size, capped at 45em (~630px). The nav sits as a horizontal row at the top.
 
 ### Elements
 

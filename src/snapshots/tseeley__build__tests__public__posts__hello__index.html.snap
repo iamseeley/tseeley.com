@@ -7,7 +7,7 @@ expression: content
 <section id="A-section">
 <h2><a class="heading-anchor" href="#A-section">A section</a></h2>
 <pre><code data-lang="rust"><span style="color:#888888;">fn </span><span style="font-weight:bold;color:#eeeeee;">main</span><span style="color:#888888;">() {
-</span><span style="color:#e2e2e5;">    println!</span><span style="color:#888888;">(&quot;</span><span style="font-style:italic;color:#daa520;">hello</span><span style="color:#888888;">&quot;);
+</span><span style="color:#e2e2e5;">    println!</span><span style="color:#888888;">(&quot;</span><span style="font-style:italic;color:#e0c020;">hello</span><span style="color:#888888;">&quot;);
 </span><span style="color:#888888;">}
 </span></code></pre>
 <p>A <a href="/about/">local link</a> and an <a href="https://example.com">external link</a>.</p>
