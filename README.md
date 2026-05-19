@@ -1,6 +1,6 @@
 # tseeley.com
 
-Source for [tseeley.com](https://tseeley.com), my personal weblog. I write about software and making things.
+Source for [tseeley.com](https://tseeley.com), my personal weblog.
 
 Content in [djot](https://djot.net/), a stricter cousin of markdown.
 Templates as compile-time Rust via [maud](https://maud.lambda.xyz/).

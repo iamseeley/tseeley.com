@@ -102,7 +102,9 @@ pub fn base(config: &Config, meta: Meta, body: Markup) -> Markup {
                         (config.license.name)
                     }
                 }
-                script { (PreEscaped(LIVE_RELOAD_JS)) }
+                @if cfg!(feature = "serve") {
+                    script { (PreEscaped(LIVE_RELOAD_JS)) }
+                }
             }
         }
     }
