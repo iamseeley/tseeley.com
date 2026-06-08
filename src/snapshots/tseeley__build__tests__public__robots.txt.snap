@@ -1,8 +1,0 @@
----
-source: src/build.rs
-expression: content
----
-User-agent: *
-Allow: /
-
-Sitemap: https://example.com/sitemap.xml

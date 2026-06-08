@@ -7,43 +7,36 @@ feed_url = "https://acko.net/atom.xml"
 name = "Alexander Obenauer"
 url = "https://alexanderobenauer.com"
 feed_url = "https://alexanderobenauer.com/assets/feed/rss.xml"
-description = "Research into the future of personal computing and more."
 
 [[entries]]
 name = "Andrew Healey's Blog"
 url = "https://healeycodes.com"
 feed_url = "https://healeycodes.com/feed.xml"
-description = "Andrew Healey's blog and personal website. Software engineer, writer, creator."
 
 [[entries]]
 name = "apenwarr"
 url = "https://apenwarr.ca/log"
 feed_url = "https://apenwarr.ca/log/rss.php"
-description = "apenwarr - NITLog"
 
 [[entries]]
 name = "Armin Ronacher's Thoughts and Writings"
 url = "https://lucumr.pocoo.org"
 feed_url = "https://lucumr.pocoo.org/feed.xml"
-description = "Armin Ronacher's personal blog about programming, games and random thoughts that come to his mind."
 
 [[entries]]
 name = "ava's blog"
 url = "https://blog.avas.space"
 feed_url = "https://blog.avas.space/feed/"
-description = "ava's blog documenting life, little projects, tech adventures and more."
 
 [[entries]]
 name = "Chase McCoy"
 url = "https://chsmc.org"
 feed_url = "https://chsmc.org/feed.xml"
-description = "Chase McCoy explores, builds, & writes about the web"
 
 [[entries]]
 name = "Computer, Enhance!"
 url = "https://www.computerenhance.com"
 feed_url = "https://www.computerenhance.com/feed"
-description = "Programming courses, interviews, commentary."
 
 [[entries]]
 name = "Dan Luu"
@@ -54,7 +47,6 @@ feed_url = "https://danluu.com/atom.xml"
 name = "dbushell.com (all feeds)"
 url = "https://dbushell.com"
 feed_url = "https://dbushell.com/merge/rss.xml"
-description = "David Bushell’s Blog + Notes combined feed"
 
 [[entries]]
 name = "Derek Sivers blog"
@@ -70,13 +62,11 @@ feed_url = "https://journal.miso.town/atom?url=https://wiki.xxiivv.com/site/now.
 name = "Digital Grove"
 url = "https://www.dgtlgrove.com"
 feed_url = "https://www.dgtlgrove.com/feed"
-description = "Towards better computers."
 
 [[entries]]
 name = "Domenic Denicola"
 url = "https://domenic.me"
 feed_url = "https://domenic.me/feed.xml"
-description = "Domenic Denicola's website"
 
 [[entries]]
 name = "Educated Guesswork"
@@ -87,7 +77,6 @@ feed_url = "https://educatedguesswork.org/feed/feed.xml"
 name = "fasterthanli.me"
 url = "https://fasterthanli.me"
 feed_url = "https://fasterthanli.me/index.xml"
-description = "amos likes to tinker"
 
 [[entries]]
 name = "Geoffrey Litt"
@@ -98,7 +87,6 @@ feed_url = "https://www.geoffreylitt.com/feed.xml"
 name = "Ink & Switch"
 url = "https://www.inkandswitch.com"
 feed_url = "https://www.inkandswitch.com/index.xml"
-description = "This feed includes every essay, event, newsletter, lab note, project, and page published on our website. This is the full fire hose — the most comprehensive way to stay up-to-date on our work."
 
 [[entries]]
 name = "Julia Evans"
@@ -114,19 +102,16 @@ feed_url = "https://kevinlynagh.com/feed.xml"
 name = "macwright.com"
 url = "https://macwright.com"
 feed_url = "https://macwright.com/rss.xml"
-description = "JavaScript, math, maps, etc"
 
 [[entries]]
 name = "Maggie Appleton"
 url = "https://maggieappleton.com"
 feed_url = "https://maggieappleton.com/rss.xml"
-description = "Essays on programming, design, and anthropology"
 
 [[entries]]
 name = "matklad"
 url = "https://matklad.github.io"
 feed_url = "https://matklad.github.io/feed.xml"
-description = "matklad's Arts&Crafts"
 
 [[entries]]
 name = "Michael Stapelbergs Website"
@@ -137,31 +122,26 @@ feed_url = "https://michael.stapelberg.ch/feed.xml"
 name = "Mitchell Hashimoto"
 url = "https://mitchellh.com"
 feed_url = "https://mitchellh.com/feed.xml"
-description = "Mitchell Hashimoto's personal website."
 
 [[entries]]
 name = "Notes on software development"
 url = "http://notes.eatonphil.com"
 feed_url = "https://notes.eatonphil.com/rss.xml"
-description = "Notes on software development"
 
 [[entries]]
 name = "samwho.dev"
 url = "https://samwho.dev"
 feed_url = "https://samwho.dev/rss.xml"
-description = "Personal website of Sam Rose."
 
 [[entries]]
 name = "seangoedecke.com RSS feed"
 url = "https://seangoedecke.com"
 feed_url = "https://www.seangoedecke.com/rss.xml"
-description = "Sean Goedecke's personal blog"
 
 [[entries]]
 name = "thesephist"
 url = "https://thesephist.com"
 feed_url = "https://thesephist.com/index.xml"
-description = "Recent content on thesephist"
 
 [[entries]]
 name = "Unsung"

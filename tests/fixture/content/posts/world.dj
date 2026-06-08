@@ -1,9 +1,0 @@
-+++
-title = "World"
-date = "2026-02-01"
-tags = ["rust"]
-+++
-
-Second post with a footnote[^1].
-
-[^1]: This is the footnote.

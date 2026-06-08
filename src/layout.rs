@@ -258,12 +258,12 @@ pub fn post(config: &Config, post: &Post, newer: Option<&Post>, older: Option<&P
                 @if newer.is_some() || older.is_some() {
                     div.post-nav {
                         @if let Some(n) = newer {
-                            a href={ "/posts/" (n.slug) "/" } {
+                            a.prev href={ "/posts/" (n.slug) "/" } {
                                 (PreEscaped("&larr; ")) (n.meta.title)
                             }
                         }
                         @if let Some(o) = older {
-                            a href={ "/posts/" (o.slug) "/" } {
+                            a.next href={ "/posts/" (o.slug) "/" } {
                                 (o.meta.title) (PreEscaped(" &rarr;"))
                             }
                         }
@@ -320,9 +320,6 @@ pub fn blogroll(config: &Config, current: &Page, entries: &[BlogrollEntry]) -> M
                                     " ("
                                     a href=(entry.feed_url) target="_blank" rel="noopener" { "feed" }
                                     ")"
-                                }
-                                @if let Some(desc) = &entry.description {
-                                    " " span.description { (desc) }
                                 }
                             }
                         }

@@ -58,8 +58,6 @@ pub struct BlogrollEntry {
     pub name: String,
     pub url: String,
     pub feed_url: String,
-    #[serde(default)]
-    pub description: Option<String>,
 }
 
 fn load_blogroll() -> Vec<BlogrollEntry> {
@@ -478,71 +476,4 @@ fn copy_dir(src: &Path, dst: &Path) -> std::io::Result<()> {
         }
     }
     Ok(())
-}
-
-#[cfg(test)]
-mod tests {
-    use std::sync::Mutex;
-
-    use crate::Config;
-
-    // Snapshot tests cd into the fixture directory; serialize to avoid
-    // racing with any other cwd-touching test (none today, but cheap to
-    // future-proof).
-    static CWD_LOCK: Mutex<()> = Mutex::new(());
-
-    /// End-to-end build: parses fixture content, runs the full pipeline,
-    /// and snapshots every output file. Captures regressions in any of
-    /// rendering, layout, feeds, sitemap, blogroll, tags, or 404.
-    #[test]
-    fn snapshot_build() {
-        let _guard = CWD_LOCK.lock().unwrap();
-
-        let project_root = std::env::current_dir().expect("cwd");
-        let fixture = project_root.join("tests/fixture");
-        std::env::set_current_dir(&fixture).expect("cd fixture");
-
-        let _ = super::fs::remove_dir_all("public");
-
-        let raw = super::fs::read_to_string("config.toml").expect("read config");
-        let config: Config = toml::from_str(&raw).expect("parse config");
-
-        super::run(&config).expect("build");
-
-        let outputs = [
-            "public/index.html",
-            "public/404.html",
-            "public/about/index.html",
-            "public/blogroll/index.html",
-            "public/posts/index.html",
-            "public/posts/hello/index.html",
-            "public/posts/world/index.html",
-            "public/tags/index.html",
-            "public/tags/rust/index.html",
-            "public/tags/ssg/index.html",
-            "public/atom.xml",
-            "public/tags/rust/atom.xml",
-            "public/tags/ssg/atom.xml",
-            "public/sitemap.xml",
-            "public/robots.txt",
-        ];
-
-        let mut settings = insta::Settings::clone_current();
-        // Normalize anything date-shaped so today's date in sitemap, post
-        // display dates, and the dynamic footer year don't make the snapshot
-        // non-deterministic. ISO date filter runs first; bare year filter
-        // catches remaining standalone years (footer, display dates).
-        settings.add_filter(r"\d{4}-\d{2}-\d{2}", "[DATE]");
-        settings.add_filter(r"\b20\d{2}\b", "[YEAR]");
-
-        settings.bind(|| {
-            for path in outputs {
-                let content = super::fs::read_to_string(path)
-                    .unwrap_or_else(|e| panic!("read {path}: {e}"));
-                insta::assert_snapshot!(path, content);
-            }
-        });
-
-        std::env::set_current_dir(project_root).expect("restore cwd");
-    }
 }

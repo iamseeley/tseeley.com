@@ -2,7 +2,7 @@
 title = "Maze Playground"
 date = "2024-08-22"
 draft = false
-tags = ["typescript", "algos"]
+tags = ["typescript", "algorithms"]
 +++
 
 I read Andrew Healey's [Generating Mazes](https://healeycodes.com/generating-mazes) and wanted to see the algorithms work. Not just the finished maze, but each step of the generation. Walls getting removed one at a time, the path carving through the grid.

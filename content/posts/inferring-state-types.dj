@@ -25,7 +25,7 @@ We could make developers define a `State` type for every program. But that's boi
 
 If you write `state.count ??= 0`, we know `state.count` is a `number`. If you write `state.apiKey = args.apiKey` and `args.apiKey` is a `string`, we know `state.apiKey` is a `string`. Walk the abstract syntax tree[^ast], find every assignment to a `state` property, extract the type from the right-hand side, and generate a type declaration.
 
-[^ast]: [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) — a tree representation of source code structure.
+[^ast]: [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree), a tree representation of source code structure.
 
 The generated type looks like this:
 
