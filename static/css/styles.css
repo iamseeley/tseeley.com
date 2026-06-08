@@ -1,7 +1,7 @@
 @font-face {
     font-family: "Lilex";
-    src: url("/fonts/lilex-regular.woff2") format("woff2");
-    font-weight: normal;
+    src: url("/fonts/lilex-variable.woff2") format("woff2-variations");
+    font-weight: 100 700;
     font-style: normal;
     font-display: swap;
 }
@@ -26,7 +26,6 @@
     --max-width: 45em;
     --weight-normal: 400;
     --weight-bold: 700;
-    --weight-black: 800;
 }
 
 *, *::before, *::after {
@@ -301,7 +300,7 @@ pre:has(> code[data-lang])::after {
     background-color: var(--bg);
     font-family: "Lilex", monospace;
     font-size: 11px;
-    font-weight: var(--weight-black);
+    font-weight: var(--weight-bold);
     text-transform: uppercase;
     color: var(--gray-600);
     pointer-events: none;
