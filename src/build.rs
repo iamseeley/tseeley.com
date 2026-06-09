@@ -298,9 +298,9 @@ fn highlight_code_blocks(html: &str) -> String {
         let decoded = html_decode(&html[content_start..content_end]);
         let highlighted = highlight(&decoded, lang, syntaxes, theme);
 
-        out.push_str("<pre><code data-lang=\"");
+        out.push_str("<pre data-lang=\"");
         out.push_str(lang);
-        out.push_str("\">");
+        out.push_str("\"><code>");
         out.push_str(&highlighted);
         out.push_str(close);
 
