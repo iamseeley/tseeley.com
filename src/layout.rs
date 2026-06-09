@@ -224,17 +224,6 @@ pub fn post(config: &Config, post: &Post, newer: Option<&Post>, older: Option<&P
                 a.u-url href={ "/posts/" (post.slug) "/" } style="display: none" {}
                 div.e-content { (PreEscaped(&post.body_html)) }
                 footer.post-footer {
-                    @if !post.meta.syndication.is_empty() {
-                        p.syndication {
-                            "Also on"
-                            @for (i, url) in post.meta.syndication.iter().enumerate() {
-                                @if i > 0 { ", " } @else { " " }
-                                a.u-syndication rel="syndication" href=(url) {
-                                    (syndication_label(url))
-                                }
-                            }
-                        }
-                    }
                     @if !post.meta.tags.is_empty() {
                         p {
                             @for (i, tag) in post.meta.tags.iter().enumerate() {
@@ -421,18 +410,6 @@ pub fn tag_page(config: &Config, tag: &str, posts: &[&Post]) -> Markup {
 
 fn reading_minutes(words: usize) -> usize {
     ((words as f64 / 225.0).ceil() as usize).max(1)
-}
-
-fn syndication_label(url: &str) -> &'static str {
-    if url.contains("bsky.app") {
-        "Bluesky"
-    } else if url.contains("mastodon") {
-        "Mastodon"
-    } else if url.contains("x.com") || url.contains("twitter.com") {
-        "X"
-    } else {
-        "link"
-    }
 }
 
 fn format_date(iso: &str) -> String {

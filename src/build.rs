@@ -23,8 +23,6 @@ pub struct Frontmatter {
     #[serde(default)]
     pub draft: bool,
     #[serde(default)]
-    pub syndication: Vec<String>,
-    #[serde(default)]
     pub description: Option<String>,
 }
 
