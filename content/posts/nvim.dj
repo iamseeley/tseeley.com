@@ -1,0 +1,179 @@
++++
+title = "Neovim Cheatsheet"
+date = "2024-10-15"
+draft = false
+tags = ["cheatsheet"]
++++
+
+# Basic Navigation
+
+### Movement
+- `h` `j` `k` `l` - Left, Down, Up, Right
+- `w` - Next word start
+- `b` - Previous word start
+- `e` - End of word
+- `0` - Start of line
+- `^` - First non-blank character
+- `$` - End of line
+- `gg` - Start of file
+- `G` - End of file
+- `{number}G` - Go to line number
+- `%` - Jump to matching bracket
+
+### Scrolling
+- `Ctrl-d` - Half page down
+- `Ctrl-u` - Half page up
+- `Ctrl-f` - Page down
+- `Ctrl-b` - Page up
+- `zz` - Center cursor on screen
+
+## Editing
+
+### Insert Mode
+- `i` - Insert before cursor
+- `I` - Insert at start of line
+- `a` - Append after cursor
+- `A` - Append at end of line
+- `o` - Open new line below
+- `O` - Open new line above
+- `Esc` - Exit insert mode
+
+### Deletion
+- `x` - Delete character under cursor
+- `dd` - Delete [line](line)
+- `dw` - Delete word
+- `d$` - Delete to end of line
+- `d0` - Delete to start of line
+- `{number}dd` - Delete N lines
+
+### Copy/Paste
+- `yy` - Yank (copy) line
+- `yw` - Yank word
+- `y$` - Yank to end of line
+- `p` - Paste after cursor
+- `P` - Paste before cursor
+- `"+y` - Copy to system clipboard
+- `"+p` - Paste from system clipboard
+
+### Undo/Redo
+- `u` - Undo
+- `Ctrl-r` - Redo
+- `.` - Repeat last command
+
+### Visual Mode
+- `v` - Character-wise visual
+- `V` - Line-wise visual
+- `Ctrl-v` - Block visual
+- Select then `d` to delete, `y` to copy
+
+## Search & Replace
+
+- `/pattern` - Search forward
+- `?pattern` - Search backward
+- `n` - Next match
+- `N` - Previous match
+- `*` - Search word under cursor
+- `:%s/old/new/g` - Replace all in file
+- `:%s/old/new/gc` - Replace with confirmation
+
+## File Operations
+
+- `:w` - Save file
+- `:wq` or `:x` - Save and quit
+- `:q` - Quit
+- `:q!` - Quit without saving
+- `:e filename` - Open file
+- `:bn` - Next buffer
+- `:bp` - Previous buffer
+
+## My Custom Keymaps
+
+### Leader Key: `<Space>`
+
+### File Navigation
+- `-` - Open oil.nvim file explorer
+- `<Space>ff` - Find files (Telescope)
+- `<Space>fg` - Live grep (search in files)
+- `<Space>fb` - List buffers
+- `<Space>fh` - Help tags
+
+### Wiki Navigation
+- `<Space>ni` - Wiki index
+- `<Space>nd` - Today's daily note
+- `<Space>nD` - Daily notes index
+- `<Space>nw` - Weekly notes
+- `<Space>nm` - Monthly notes
+- `<Space>ny` - Yearly notes
+
+### VimWiki Specific
+- `<Enter>` - Follow/create wiki link
+- `<Backspace>` - Go back
+- `<Tab>` - Next link
+- `<Shift-Tab>` - Previous link
+- `<Ctrl-Space>` - Toggle task checkbox
+
+### LSP
+- `K` - Hover documentation
+- `gd` - Go to definition
+- `gr` - Find references
+- `<Ctrl-Space>` - Trigger completion
+- `<CR>` - Confirm completion
+
+### Oil.nvim File Explorer
+- `-` - Open parent directory
+- `<Enter>` - Open file/directory
+- Edit text to rename
+- `dd` - Delete file
+- `o` - Create new file
+- `:w` - Save changes
+- `q` - Close oil
+
+## Window Management
+
+- `:split` or `:sp` - Horizontal split
+- `:vsplit` or `:vsp` - Vertical split
+- `Ctrl-w h/j/k/l` - Navigate between windows
+- `Ctrl-w =` - Equal window sizes
+- `Ctrl-w q` - Close window
+
+## Tips & Tricks
+
+### Multiple Cursors (Visual Block)
+1. `Ctrl-v` - Start visual block
+2. Select lines with `j`/`k`
+3. `I` - Insert at start of all lines
+4. Type text, press `Esc` twice
+
+### Macros
+- `q{letter}` - Start recording macro
+- Do actions
+- `q` - Stop recording
+- `@{letter}` - Replay macro
+- `@@` - Replay last macro
+
+### Marks
+- `m{letter}` - Set mark
+- `'{letter}` - Jump to mark
+- `''` - Jump back to previous position
+
+### Command Line
+- `:!command` - Run shell command
+- `:r !command` - Insert command output
+- `:%!command` - Filter file through command
+
+## VimWiki Tasks
+
+- `- [ ]` - Create task
+- `Ctrl-Space` - Toggle task state
+  - `[ ]` - Not done
+  - `[.]` - 0-33% done
+  - `[o]` - 34-66% done
+  - `[O]` - 67-99% done
+  - `[X]` - Done
+- Nested tasks auto-update parent status
+
+## Resources
+
+- `:help` - Neovim help
+- `:help {topic}` - Help on specific topic
+- `:Tutor` - Interactive Neovim tutorial
