@@ -10,7 +10,6 @@
     <outline type="rss" text="ava&#x27;s blog" xmlUrl="https://blog.avas.space/feed/" htmlUrl="https://blog.avas.space"/>
     <outline type="rss" text="Chase McCoy" xmlUrl="https://chsmc.org/feed.xml" htmlUrl="https://chsmc.org"/>
     <outline type="rss" text="Computer, Enhance!" xmlUrl="https://www.computerenhance.com/feed" htmlUrl="https://www.computerenhance.com"/>
-    <outline type="rss" text="Dan Luu" xmlUrl="https://danluu.com/atom.xml" htmlUrl="https://danluu.com"/>
     <outline type="rss" text="dbushell.com (all feeds)" xmlUrl="https://dbushell.com/merge/rss.xml" htmlUrl="https://dbushell.com"/>
     <outline type="rss" text="Derek Sivers blog" xmlUrl="https://sive.rs/en.atom" htmlUrl="https://sive.rs/en.atom"/>
     <outline type="rss" text="Devine Lu Linvega&#x27;s journal" xmlUrl="https://journal.miso.town/atom?url=https://wiki.xxiivv.com/site/now.html" htmlUrl="https://wiki.xxiivv.com/site/now.html"/>
@@ -19,6 +18,7 @@
     <outline type="rss" text="Educated Guesswork" xmlUrl="https://educatedguesswork.org/feed/feed.xml" htmlUrl="https://educatedguesswork.org"/>
     <outline type="rss" text="fasterthanli.me" xmlUrl="https://fasterthanli.me/index.xml" htmlUrl="https://fasterthanli.me"/>
     <outline type="rss" text="Geoffrey Litt" xmlUrl="https://www.geoffreylitt.com/feed.xml" htmlUrl="https://geoffreylitt.com"/>
+    <outline type="rss" text="https://danluu.com/atom/index.xml" xmlUrl="https://danluu.com/atom.xml" htmlUrl="https://danluu.com/atom/index.xml"/>
     <outline type="rss" text="Ink &amp; Switch" xmlUrl="https://www.inkandswitch.com/index.xml" htmlUrl="https://www.inkandswitch.com"/>
     <outline type="rss" text="Julia Evans" xmlUrl="https://jvns.ca/atom.xml" htmlUrl="https://jvns.ca"/>
     <outline type="rss" text="Kevin Lynagh&#x27;s website" xmlUrl="https://kevinlynagh.com/feed.xml" htmlUrl="https://kevinlynagh.com"/>
@@ -28,8 +28,10 @@
     <outline type="rss" text="Michael Stapelbergs Website" xmlUrl="https://michael.stapelberg.ch/feed.xml" htmlUrl="https://michael.stapelberg.ch"/>
     <outline type="rss" text="Mitchell Hashimoto" xmlUrl="https://mitchellh.com/feed.xml" htmlUrl="https://mitchellh.com"/>
     <outline type="rss" text="Notes on software development" xmlUrl="https://notes.eatonphil.com/rss.xml" htmlUrl="http://notes.eatonphil.com"/>
+    <outline type="rss" text="Pete Millspaugh" xmlUrl="https://www.petemillspaugh.com/rss.xml" htmlUrl="https://petemillspaugh.com"/>
     <outline type="rss" text="samwho.dev" xmlUrl="https://samwho.dev/rss.xml" htmlUrl="https://samwho.dev"/>
     <outline type="rss" text="seangoedecke.com RSS feed" xmlUrl="https://www.seangoedecke.com/rss.xml" htmlUrl="https://seangoedecke.com"/>
+    <outline type="rss" text="Ted Kaminski" xmlUrl="https://www.tedinski.com/feed.xml" htmlUrl="http://www.tedinski.com"/>
     <outline type="rss" text="thesephist" xmlUrl="https://thesephist.com/index.xml" htmlUrl="https://thesephist.com"/>
     <outline type="rss" text="Unsung" xmlUrl="https://unsung.aresluna.org/feed.xml" htmlUrl="https://unsung.aresluna.org"/>
   </body>

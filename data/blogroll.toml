@@ -39,11 +39,6 @@ url = "https://www.computerenhance.com"
 feed_url = "https://www.computerenhance.com/feed"
 
 [[entries]]
-name = "Dan Luu"
-url = "https://danluu.com"
-feed_url = "https://danluu.com/atom.xml"
-
-[[entries]]
 name = "dbushell.com (all feeds)"
 url = "https://dbushell.com"
 feed_url = "https://dbushell.com/merge/rss.xml"
@@ -82,6 +77,11 @@ feed_url = "https://fasterthanli.me/index.xml"
 name = "Geoffrey Litt"
 url = "https://geoffreylitt.com"
 feed_url = "https://www.geoffreylitt.com/feed.xml"
+
+[[entries]]
+name = "https://danluu.com/atom/index.xml"
+url = "https://danluu.com/atom/index.xml"
+feed_url = "https://danluu.com/atom.xml"
 
 [[entries]]
 name = "Ink & Switch"
@@ -129,6 +129,11 @@ url = "http://notes.eatonphil.com"
 feed_url = "https://notes.eatonphil.com/rss.xml"
 
 [[entries]]
+name = "Pete Millspaugh"
+url = "https://petemillspaugh.com"
+feed_url = "https://www.petemillspaugh.com/rss.xml"
+
+[[entries]]
 name = "samwho.dev"
 url = "https://samwho.dev"
 feed_url = "https://samwho.dev/rss.xml"
@@ -137,6 +142,11 @@ feed_url = "https://samwho.dev/rss.xml"
 name = "seangoedecke.com RSS feed"
 url = "https://seangoedecke.com"
 feed_url = "https://www.seangoedecke.com/rss.xml"
+
+[[entries]]
+name = "Ted Kaminski"
+url = "http://www.tedinski.com"
+feed_url = "https://www.tedinski.com/feed.xml"
 
 [[entries]]
 name = "thesephist"
