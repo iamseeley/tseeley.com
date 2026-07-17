@@ -108,6 +108,12 @@ enum ChangeKind {
 }
 
 fn classify(paths: &[PathBuf]) -> ChangeKind {
+    let touches_css = paths
+        .iter()
+        .any(|p| p.extension().is_some_and(|e| e == "css"));
+    if touches_css {
+        return ChangeKind::Full;
+    }
     let only_static = !paths.is_empty()
         && paths
             .iter()

@@ -3,6 +3,21 @@ use crate::build::{BlogrollEntry, Page, Post, tag_slug};
 use chrono::Datelike;
 use maud::{DOCTYPE, Markup, PreEscaped, html};
 use std::collections::BTreeMap;
+use std::sync::{Arc, RwLock};
+
+static STYLES: RwLock<Option<Arc<str>>> = RwLock::new(None);
+
+pub fn set_styles(css: String) {
+    *STYLES.write().unwrap() = Some(Arc::from(css));
+}
+
+fn styles() -> Arc<str> {
+    STYLES
+        .read()
+        .unwrap()
+        .clone()
+        .unwrap_or_else(|| Arc::from(""))
+}
 
 #[derive(Clone, Copy)]
 pub enum OgType {
@@ -38,6 +53,7 @@ pub fn base(config: &Config, meta: Meta, body: Markup) -> Markup {
     let og_image = format!("{}{}", config.base_url, config.og_image);
     let published_iso = meta.published_time.map(|d| format!("{d}T00:00:00Z"));
     let year = chrono::Utc::now().year();
+    let styles_css = styles();
 
     html! {
         (DOCTYPE)
@@ -51,7 +67,7 @@ pub fn base(config: &Config, meta: Meta, body: Markup) -> Markup {
                 meta name="description" content=(description);
                 meta name="author" content=(config.author);
                 link rel="canonical" href=(canonical);
-                link href="/css/styles.css" rel="stylesheet";
+                style { (PreEscaped(&*styles_css)) }
                 link rel="alternate" type="application/atom+xml" href="/atom.xml" title=(config.author);
                 @for url in &config.rel_me {
                     link rel="me" href=(url);

@@ -11,6 +11,7 @@ serve = ["dep:axum", "dep:notify", "dep:tokio", "dep:tokio-stream"]
 atom_syndication = "0.12"
 chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
 jotdown = "0.10.0"
+lightningcss = "1.0.0-alpha.71"
 maud = "0.27.0"
 serde = { version = "1.0.228", features = ["derive"] }
 syntect = { version = "5", default-features = false, features = ["default-syntaxes", "default-fancy", "html"] }

@@ -78,6 +78,8 @@ pub fn run_static_only() -> Result<(), Box<dyn Error>> {
 }
 
 pub fn run(config: &Config) -> Result<(), Box<dyn Error>> {
+    layout::set_styles(load_styles()?);
+
     let post_paths = walk(Path::new("content/posts"), "dj")?;
     let mut posts: Vec<Post> = post_paths
         .iter()
@@ -416,6 +418,23 @@ fn linkify_headings(html: &str) -> String {
     }
     out.push_str(&html[pos..]);
     out
+}
+
+fn load_styles() -> Result<String, Box<dyn Error>> {
+    use lightningcss::stylesheet::{MinifyOptions, ParserOptions, PrinterOptions, StyleSheet};
+
+    let src = fs::read_to_string("static/css/styles.css")?;
+    let mut ss = StyleSheet::parse(&src, ParserOptions::default())
+        .map_err(|e| format!("css parse: {e}"))?;
+    ss.minify(MinifyOptions::default())
+        .map_err(|e| format!("css minify: {e}"))?;
+    let out = ss
+        .to_css(PrinterOptions {
+            minify: true,
+            ..PrinterOptions::default()
+        })
+        .map_err(|e| format!("css print: {e}"))?;
+    Ok(out.code)
 }
 
 fn walk(root: &Path, ext: &str) -> std::io::Result<Vec<PathBuf>> {
