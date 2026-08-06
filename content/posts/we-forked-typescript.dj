@@ -1,0 +1,233 @@
++++
+title = "We forked TypeScript"
+date = "2025-03-10"
+tags = ["typescript", "membrane"]
++++
+
+At [Membrane](https://membrane.io), we forked TypeScript to extend contextual typing so our programming model gets type inference for free.
+
+The changes were made by [Juan Campa](https://x.com/juancampa). I went through them recently while updating our fork to the latest TypeScript version. What I found was surprisingly small and worth explaining.
+
+## What Is Contextual Typing
+
+Most type inference works bottom-up. You write `let x = 42` and the compiler infers `number` from the value. [Contextual typing](https://www.typescriptlang.org/docs/handbook/type-inference.html#contextual-typing) works top-down. The compiler looks at where an expression appears and infers types from the surrounding context.
+
+You've seen this in TypeScript even if you didn't know the name:
+
+```typescript
+// TypeScript knows `e` is MouseEvent from addEventListener's signature
+window.addEventListener("click", (e) => {
+  console.log(e.clientX);
+});
+
+// TypeScript knows `x` is a string from the array type
+["a", "b", "c"].map((x) => x.toUpperCase());
+```
+
+The type flows down from the context into the expression. You don't annotate the callback parameters because the compiler already knows what they should be.
+
+This isn't unique to TypeScript. [Swift](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/closures/) does it for closures. [Kotlin](https://kotlinlang.org/docs/lambdas.html) infers lambda parameter types from the expected function type. [C#](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/new-operator#target-typed-new) has target-typed `new` expressions and lambda inference. Scala has its own flavor called "colored local type inference." The theoretical foundation is [bidirectional typing](https://arxiv.org/abs/1908.05839), which combines bottom-up synthesis with top-down checking.
+
+## Where TypeScript's Contextual Typing Stops
+
+Contextual typing in TypeScript works for callbacks, assignment right-hand sides, object literal members, array elements, and return statements. It does not work for top-level exported function declarations or variable declarations against an external type.
+
+This means if you have a type somewhere that describes the shape of a function, and you write a top-level `export function` that should match it, TypeScript won't infer the parameter types. You have to annotate them manually.
+
+```typescript
+// These types exist somewhere
+type ConfigureArgs = { schema: Schema };
+type Configure = (args: ConfigureArgs) => void;
+
+// TypeScript does NOT infer `args` here
+export function configure(args) {
+  // args is implicitly `any`
+}
+
+// You have to do this instead
+export function configure(args: ConfigureArgs) {
+  // now args is typed
+}
+```
+
+For most codebases this is fine. For Membrane, it's the core of the developer experience.
+
+## Membrane's Programming Model
+
+Membrane programs are durable TypeScript programs that expose their data and functionality through a [type-safe graph](https://docs.membrane.io/concepts/the-graph). Each program has a schema (defined in `memconfig.json`) that declares its node types with fields, actions, and events. Think of it like a GraphQL schema for your program's API.
+
+Every program has an `index.ts` that exports **resolvers**: functions and objects that implement the schema. When someone queries a node in the graph, Membrane invokes the corresponding resolver to produce the value.
+
+A typical `index.ts` looks like this:
+
+```typescript
+import { state, nodes, root } from "membrane";
+
+export const Root = {
+  status() {
+    return "ready";
+  },
+  configure,
+  emails: () => ({}),
+};
+
+export const EmailCollection = {
+  async one({ id }) {
+    return await api("GET", `emails/${id}`);
+  },
+  async page() {
+    const result = await api("GET", "emails");
+    return { items: result.data };
+  },
+};
+
+export const Email = {
+  gref(_, { obj }) {
+    return root.emails.one({ id: obj.id });
+  },
+  async cancel(_, { self }) {
+    const { id } = self.$argsAt(root.emails.one);
+    return api("POST", `emails/${id}/cancel`);
+  },
+};
+```
+
+Every one of those exported objects and functions needs to match the schema's type definitions. The types are generated into a `membrane.d.ts` file and live in a global `resolvers` namespace. Without the fork, every resolver would need explicit type annotations. With dozens of resolvers per program, that's a lot of boilerplate. And if the schema changes, every annotation needs updating.
+
+We wanted the types to flow automatically: define the schema once, and the implementations get typed from context.
+
+## The Fork
+
+The entire fork is about 70 lines of changes in `src/compiler/checker.ts`. No parser changes, no new syntax, no emitter modifications. Three commits, all by Juan.
+
+The changes do three things:
+
+**1. Identify Membrane resolvers.** Three helper functions check whether a declaration is an exported, top-level, named function or variable in an `index.ts` file:
+
+```typescript
+function isMembraneFunctionResolver(node: FunctionDeclaration) {
+  return (
+    isInIndexTs(node) &&
+    isInTopLevelContext(node) &&
+    hasSyntacticModifier(node, ModifierFlags.Export) &&
+    node.name &&
+    isIdentifier(node.name)
+  );
+}
+
+function isInIndexTs(node: Node): boolean {
+  const sourceFile = getSourceFileOfNode(node);
+  return !!sourceFile && /\/[^/]+\/index\.ts$/.test(sourceFile.fileName);
+}
+```
+
+**2. Look up the contextual type.** When the checker encounters a qualifying declaration, it looks up the function or variable name in the global `resolvers` namespace and uses the matching type:
+
+```typescript
+// For variable declarations like: export const Root = { ... }
+const ns = globals.get(escapeLeadingUnderscores("resolvers"));
+const exports = ns && getExportsOfSymbol(ns);
+const exportSymbol = exports?.get(declaration.name.escapedText);
+const typeAlias = exportSymbol && exportSymbol.declarations![0];
+const type = typeAlias && getTypeFromTypeNode(typeAlias.type);
+return type;
+```
+
+**3. Mark exported functions as context-sensitive.** Standard TypeScript only considers function expressions, arrow functions, and object literal methods as context-sensitive. The fork adds exported functions in `index.ts` to that set, which is what makes the checker attempt contextual typing for them at all:
+
+```typescript
+function isContextSensitiveFunctionOrObjectLiteralMethod(func) {
+  const isMembraneExport =
+    hasSyntacticModifier(func, ModifierFlags.Export) && isInIndexTs(func);
+  return (
+    isMembraneExport ||
+    ((isFunctionExpressionOrArrowFunction(func) ||
+      isObjectLiteralMethod(func)) &&
+      isContextSensitiveFunctionLikeDeclaration(func))
+  );
+}
+```
+
+That's it. If there's no global `resolvers` namespace, all the guards return early and standard TypeScript behavior applies. The changes are purely additive.
+
+## What It Looks Like
+
+Before the fork, a Membrane `index.ts` would need explicit annotations everywhere:
+
+```typescript
+import { state, nodes, root } from "membrane";
+
+export function configure(args: ConfigureArgs): void {
+  state.apiKey = args.apiKey;
+}
+
+export const Root: RootResolvers = {
+  status(): string {
+    return state.apiKey ? "ready" : "not configured";
+  },
+  emails: () => ({}),
+};
+
+export const EmailCollection: EmailCollectionResolvers = {
+  async one({ id }: { id: string }) {
+    return await api("GET", `emails/${id}`);
+  },
+};
+
+export const Email: EmailResolvers = {
+  gref(_, { obj }: { obj: any }) {
+    return root.emails.one({ id: obj.id });
+  },
+};
+```
+
+After the fork:
+
+```typescript
+import { state, nodes, root } from "membrane";
+
+export function configure(args) {
+  state.apiKey = args.apiKey;
+}
+
+export const Root = {
+  status() {
+    return state.apiKey ? "ready" : "not configured";
+  },
+  emails: () => ({}),
+};
+
+export const EmailCollection = {
+  async one({ id }) {
+    return await api("GET", `emails/${id}`);
+  },
+};
+
+export const Email = {
+  gref(_, { obj }) {
+    return root.emails.one({ id: obj.id });
+  },
+};
+```
+
+Same code, no annotations. The types are inferred from the schema. You get autocomplete, error checking, and hover information. If the schema changes (say you add a `subject` field to `Email`), the resolver types update automatically. No manual syncing.
+
+## Why Fork Instead of...
+
+The obvious question: why not use `satisfies`, explicit annotations, or a code generation step?
+
+`satisfies` works for objects (`export const Root = { ... } satisfies RootResolvers`) but not for function declarations. It also requires the developer to remember to add it. We wanted types to flow automatically from the schema with no ceremony.
+
+Code generation (generating annotated stubs from the schema) adds a build step and creates files the developer has to maintain alongside the schema. We wanted the source of truth to be the schema alone.
+
+A TypeScript language service plugin could provide autocomplete but can't add real type checking. We wanted both.
+
+Forking the compiler was the cleanest path. ~70 lines, scoped to `index.ts` files in the presence of a `resolvers` namespace, no impact on non-Membrane code. The tradeoff is maintaining the fork across TypeScript releases, which is what I was doing when I decided to write this post.
+
+## Maintaining the Fork
+
+Updating the fork means rebasing our changes onto the latest TypeScript release. Since the changes are small and concentrated in one file, this has been straightforward so far. The checker's internal API does change between versions, so some adaptation is needed, but the core pattern (look up a name in a namespace, return its type) stays stable.
+
+The bigger risk is if TypeScript ever adds native support for this kind of module-level contextual typing. That would be great, actually. We'd happily drop the fork. There are [open issues](https://github.com/microsoft/TypeScript/issues/53701) requesting more contextual typing for function return values, and the general direction of TypeScript's inference has been to expand where context flows. But top-level declarations against a global type namespace isn't on the roadmap as far as I know.
+
+Until then, ~70 lines in the checker gets us what we need.
