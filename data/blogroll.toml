@@ -29,6 +29,11 @@ url = "https://blog.avas.space"
 feed_url = "https://blog.avas.space/feed/"
 
 [[entries]]
+name = "bellingcat"
+url = "https://www.bellingcat.com"
+feed_url = "https://www.bellingcat.com/rss/"
+
+[[entries]]
 name = "Chase McCoy"
 url = "https://chsmc.org"
 feed_url = "https://chsmc.org/feed.xml"
@@ -84,9 +89,19 @@ url = "https://danluu.com/atom/index.xml"
 feed_url = "https://danluu.com/atom.xml"
 
 [[entries]]
+name = "Idle Words"
+url = "http://idlewords.com"
+feed_url = "https://idlewords.com/index.xml"
+
+[[entries]]
 name = "Ink & Switch"
 url = "https://www.inkandswitch.com"
 feed_url = "https://www.inkandswitch.com/index.xml"
+
+[[entries]]
+name = "interfluidity, all blogs"
+url = "https://www.interfluidity.com/unify-rss/all-blogs.html"
+feed_url = "https://www.interfluidity.com/unify-rss/all-blogs.rss"
 
 [[entries]]
 name = "Julia Evans"
@@ -139,9 +154,19 @@ url = "https://samwho.dev"
 feed_url = "https://samwho.dev/rss.xml"
 
 [[entries]]
+name = "Scripting News"
+url = "http://scripting.com"
+feed_url = "http://scripting.com/rss.xml"
+
+[[entries]]
 name = "seangoedecke.com RSS feed"
 url = "https://seangoedecke.com"
 feed_url = "https://www.seangoedecke.com/rss.xml"
+
+[[entries]]
+name = "taylor.town"
+url = "https://taylor.town"
+feed_url = "https://taylor.town/feed.xml"
 
 [[entries]]
 name = "Ted Kaminski"

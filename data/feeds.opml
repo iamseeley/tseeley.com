@@ -2,7 +2,7 @@
 <opml version="2.0">
     <head>
         <title>Miniflux</title>
-        <dateCreated>Tue, 23 Jun 2026 20:33:10 UTC</dateCreated>
+        <dateCreated>Thu, 23 Jul 2026 20:33:53 UTC</dateCreated>
     </head>
     <body>
         <outline text="All">
@@ -16,6 +16,7 @@
             <outline title="apenwarr" text="apenwarr" xmlUrl="https://apenwarr.ca/log/rss.php" htmlUrl="https://apenwarr.ca/log/" description="apenwarr - NITLog" type="rss"></outline>
             <outline title="Armin Ronacher&#39;s Thoughts and Writings" text="Armin Ronacher&#39;s Thoughts and Writings" xmlUrl="https://lucumr.pocoo.org/feed.xml" htmlUrl="https://lucumr.pocoo.org/" description="Armin Ronacher&#39;s personal blog about programming, games and random thoughts that come to his mind." type="rss"></outline>
             <outline title="ava&#39;s blog" text="ava&#39;s blog" xmlUrl="https://blog.avas.space/feed/" htmlUrl="https://blog.avas.space/" description="ava&#39;s blog documenting life, little projects, tech adventures and more." type="rss"></outline>
+            <outline title="bellingcat" text="bellingcat" xmlUrl="https://www.bellingcat.com/rss/" htmlUrl="https://www.bellingcat.com/" description="the home of online investigations" type="rss"></outline>
             <outline title="Chase McCoy" text="Chase McCoy" xmlUrl="https://chsmc.org/feed.xml" htmlUrl="https://chsmc.org" description="Chase McCoy explores, builds, &amp; writes about the web" type="rss"></outline>
             <outline title="Computer, Enhance!" text="Computer, Enhance!" xmlUrl="https://www.computerenhance.com/feed" htmlUrl="https://www.computerenhance.com" description="Programming courses, interviews, commentary." type="rss"></outline>
             <outline title="dbushell.com (all feeds)" text="dbushell.com (all feeds)" xmlUrl="https://dbushell.com/merge/rss.xml" htmlUrl="https://dbushell.com" description="David Bushell’s Blog + Notes combined feed" type="rss"></outline>
@@ -26,7 +27,9 @@
             <outline title="fasterthanli.me" text="fasterthanli.me" xmlUrl="https://fasterthanli.me/index.xml" htmlUrl="https://fasterthanli.me" description="amos likes to tinker" type="rss"></outline>
             <outline title="Geoffrey Litt" text="Geoffrey Litt" xmlUrl="https://www.geoffreylitt.com/feed.xml" htmlUrl="https://geoffreylitt.com" type="rss"></outline>
             <outline title="https://danluu.com/atom/index.xml" text="https://danluu.com/atom/index.xml" xmlUrl="https://danluu.com/atom.xml" htmlUrl="https://danluu.com/atom/index.xml" description="Recent content on" type="rss"></outline>
+            <outline title="Idle Words" text="Idle Words" xmlUrl="https://idlewords.com/index.xml" htmlUrl="http://idlewords.com" description="Brevity is for the weak" type="rss"></outline>
             <outline title="Ink &amp; Switch" text="Ink &amp; Switch" xmlUrl="https://www.inkandswitch.com/index.xml" htmlUrl="https://www.inkandswitch.com/" description="This feed includes every essay, event, newsletter, lab note, project, and page published on our website. This is the full fire hose — the most comprehensive way to stay up-to-date on our work." type="rss"></outline>
+            <outline title="interfluidity, all blogs" text="interfluidity, all blogs" xmlUrl="https://www.interfluidity.com/unify-rss/all-blogs.rss" htmlUrl="https://www.interfluidity.com/unify-rss/all-blogs.html" description="Collects posts to all blogs (including the main interfluidity.com, as well as drafts.interfluidity.com and tech.interfluiduty.com) by Steve Randy Waldman" type="rss"></outline>
             <outline title="Julia Evans" text="Julia Evans" xmlUrl="https://jvns.ca/atom.xml" htmlUrl="https://jvns.ca" type="rss"></outline>
             <outline title="Kevin Lynagh&#39;s website" text="Kevin Lynagh&#39;s website" xmlUrl="https://kevinlynagh.com/feed.xml" htmlUrl="https://kevinlynagh.com/" type="rss"></outline>
             <outline title="macwright.com" text="macwright.com" xmlUrl="https://macwright.com/rss.xml" htmlUrl="https://macwright.com" description="JavaScript, math, maps, etc" type="rss"></outline>
@@ -37,7 +40,9 @@
             <outline title="Notes on software development" text="Notes on software development" xmlUrl="https://notes.eatonphil.com/rss.xml" htmlUrl="http://notes.eatonphil.com/" description="Notes on software development" type="rss"></outline>
             <outline title="Pete Millspaugh" text="Pete Millspaugh" xmlUrl="https://www.petemillspaugh.com/rss.xml" htmlUrl="https://petemillspaugh.com" description="Digital gardener, mostly writing about frontend-y Web stuff." type="rss"></outline>
             <outline title="samwho.dev" text="samwho.dev" xmlUrl="https://samwho.dev/rss.xml" htmlUrl="https://samwho.dev/" description="Personal website of Sam Rose." type="rss"></outline>
+            <outline title="Scripting News" text="Scripting News" xmlUrl="http://scripting.com/rss.xml" htmlUrl="http://scripting.com/" description="Dave Winer, OG blogger, podcaster, developed first apps in many categories. Old enough to know better. It&#39;s even worse than it appears." type="rss"></outline>
             <outline title="seangoedecke.com RSS feed" text="seangoedecke.com RSS feed" xmlUrl="https://www.seangoedecke.com/rss.xml" htmlUrl="https://seangoedecke.com" description="Sean Goedecke&#39;s personal blog" type="rss"></outline>
+            <outline title="taylor.town" text="taylor.town" xmlUrl="https://taylor.town/feed.xml" htmlUrl="https://taylor.town" description="🐀🐀🐀🐀🐀🐀🐀🐀🐀" type="rss"></outline>
             <outline title="Ted Kaminski" text="Ted Kaminski" xmlUrl="https://www.tedinski.com/feed.xml" htmlUrl="http://www.tedinski.com/" description="Ted Kaminski&#39;s blog - a software design book writing project." type="rss"></outline>
             <outline title="thesephist" text="thesephist" xmlUrl="https://thesephist.com/index.xml" htmlUrl="https://thesephist.com/" description="Recent content on thesephist" type="rss"></outline>
             <outline title="Unsung" text="Unsung" xmlUrl="https://unsung.aresluna.org/feed.xml" htmlUrl="https://unsung.aresluna.org" type="rss"></outline>
@@ -46,6 +51,7 @@
             <outline title="Bits about Money" text="Bits about Money" xmlUrl="https://www.bitsaboutmoney.com/archive/rss/" htmlUrl="https://www.bitsaboutmoney.com/" description="About the modern financial infrastructure that the world sits atop of." type="rss"></outline>
             <outline title="Daring Fireball" text="Daring Fireball" xmlUrl="https://daringfireball.net/feeds/main" htmlUrl="https://daringfireball.net/" description="By John Gruber" type="rss"></outline>
             <outline title="Latent.Space: AINews: Weekday Roundups" text="Latent.Space: AINews: Weekday Roundups" xmlUrl="https://www.latent.space/feed?sectionId=327741" htmlUrl="https://www.latent.space/s/ainews" description="Every Weekday - human-curated, AI-summarized news recaps across all of AI Engineering. See https://www.youtube.com/watch?v=IHkyFhU6JEY for how it works" type="rss"></outline>
+            <outline title="Pixel Envy" text="Pixel Envy" xmlUrl="https://feedpress.me/pxlnv" htmlUrl="https://pxlnv.com/" type="rss"></outline>
             <outline title="TigerBeetle Newsletters" text="TigerBeetle Newsletters" xmlUrl="https://tigerbeetle.com/newsletters/atom.xml" htmlUrl="https://tigerbeetle.com/newsletters" description="The TigerBeetle Newsletter Archive." type="rss"></outline>
         </outline>
     </body>
