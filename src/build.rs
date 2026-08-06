@@ -36,6 +36,7 @@ pub struct PageMeta {
 pub struct Post {
     pub meta: Frontmatter,
     pub slug: String,
+    pub source_dir: PathBuf,
     pub body_html: String,
     pub word_count: usize,
 }
@@ -83,13 +84,13 @@ pub fn run(config: &Config) -> Result<(), Box<dyn Error>> {
     let post_paths = walk(Path::new("content/posts"), "dj")?;
     let mut posts: Vec<Post> = post_paths
         .iter()
-        .map(|p| parse_post(p))
-        .collect::<Result<_, _>>()?;
-    posts.sort_by(|a, b| b.meta.date.cmp(&a.meta.date));
-    let visible_posts: Vec<&Post> = posts
-        .iter()
-        .filter(|p| config.show_drafts || !p.meta.draft)
+        .map(|p| parse_post(p, config.show_drafts))
+        .collect::<Result<Vec<_>, _>>()?
+        .into_iter()
+        .flatten()
         .collect();
+    posts.sort_by(|a, b| b.meta.date.cmp(&a.meta.date));
+    let visible_posts: Vec<&Post> = posts.iter().collect();
 
     let page_paths = list_pages()?;
     let mut pages: Vec<Page> = page_paths
@@ -98,7 +99,7 @@ pub fn run(config: &Config) -> Result<(), Box<dyn Error>> {
         .collect::<Result<_, _>>()?;
     pages.sort_by(|a, b| a.meta.title.cmp(&b.meta.title));
 
-    fs::create_dir_all("public")?;
+    reset_public_dir()?;
 
     fs::write(
         "public/index.html",
@@ -124,6 +125,7 @@ pub fn run(config: &Config) -> Result<(), Box<dyn Error>> {
 
         let dir = posts_dir.join(&post.slug);
         fs::create_dir_all(&dir)?;
+        copy_post_assets(post, &dir)?;
         fs::write(
             dir.join("index.html"),
             layout::post(config, post, newer, older).into_string(),
@@ -181,7 +183,7 @@ pub fn run(config: &Config) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-fn parse_post(path: &Path) -> Result<Post, Box<dyn Error>> {
+fn parse_post(path: &Path, include_drafts: bool) -> Result<Option<Post>, Box<dyn Error>> {
     let raw = fs::read_to_string(path).map_err(|e| format!("reading {}: {e}", path.display()))?;
 
     let (fm_text, body_text) =
@@ -190,23 +192,56 @@ fn parse_post(path: &Path) -> Result<Post, Box<dyn Error>> {
     let meta: Frontmatter =
         toml::from_str(fm_text).map_err(|e| format!("frontmatter in {}: {e}", path.display()))?;
 
+    if meta.draft && !include_drafts {
+        return Ok(None);
+    }
+
     validate_date(&meta.date).map_err(|e| format!("date in {}: {e}", path.display()))?;
 
-    let slug = path
-        .file_stem()
-        .and_then(|s| s.to_str())
-        .ok_or_else(|| format!("bad filename: {}", path.display()))?
-        .to_string();
+    let slug = post_slug(path)?;
+    let source_dir = path.parent().unwrap_or_else(|| Path::new("")).to_path_buf();
 
     let body_html = render_djot(body_text);
     let word_count = body_text.split_whitespace().count();
 
-    Ok(Post {
+    Ok(Some(Post {
         meta,
         slug,
+        source_dir,
         body_html,
         word_count,
-    })
+    }))
+}
+
+fn post_slug(path: &Path) -> Result<String, Box<dyn Error>> {
+    if path.file_stem().is_some_and(|s| s == "index") {
+        let parent = path
+            .parent()
+            .and_then(|p| p.file_name())
+            .and_then(|s| s.to_str())
+            .ok_or_else(|| format!("bad nested post path: {}", path.display()))?;
+        Ok(parent.to_string())
+    } else {
+        path.file_stem()
+            .and_then(|s| s.to_str())
+            .map(str::to_string)
+            .ok_or_else(|| format!("bad filename: {}", path.display()).into())
+    }
+}
+
+fn copy_post_assets(post: &Post, target_dir: &Path) -> std::io::Result<()> {
+    if post.source_dir == Path::new("content/posts") {
+        return Ok(());
+    }
+
+    for entry in fs::read_dir(&post.source_dir)? {
+        let entry = entry?;
+        let path = entry.path();
+        if entry.file_type()?.is_file() && !path.extension().is_some_and(|e| e == "dj") {
+            fs::copy(&path, target_dir.join(entry.file_name()))?;
+        }
+    }
+    Ok(())
 }
 
 fn parse_page(path: &Path) -> Result<Page, Box<dyn Error>> {
@@ -424,8 +459,8 @@ fn load_styles() -> Result<String, Box<dyn Error>> {
     use lightningcss::stylesheet::{MinifyOptions, ParserOptions, PrinterOptions, StyleSheet};
 
     let src = fs::read_to_string("static/css/styles.css")?;
-    let mut ss = StyleSheet::parse(&src, ParserOptions::default())
-        .map_err(|e| format!("css parse: {e}"))?;
+    let mut ss =
+        StyleSheet::parse(&src, ParserOptions::default()).map_err(|e| format!("css parse: {e}"))?;
     ss.minify(MinifyOptions::default())
         .map_err(|e| format!("css minify: {e}"))?;
     let out = ss
@@ -475,6 +510,14 @@ fn list_pages() -> std::io::Result<Vec<PathBuf>> {
         }
     }
     Ok(out)
+}
+
+fn reset_public_dir() -> std::io::Result<()> {
+    let public = Path::new("public");
+    if public.exists() {
+        fs::remove_dir_all(public)?;
+    }
+    fs::create_dir_all(public)
 }
 
 fn copy_dir(src: &Path, dst: &Path) -> std::io::Result<()> {

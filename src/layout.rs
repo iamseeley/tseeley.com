@@ -118,6 +118,7 @@ pub fn base(config: &Config, meta: Meta, body: Markup) -> Markup {
                         (config.license.name)
                     }
                 }
+                script { (PreEscaped(KATEX_LOADER_JS)) }
                 @if cfg!(feature = "serve") {
                     script { (PreEscaped(LIVE_RELOAD_JS)) }
                 }
@@ -125,6 +126,36 @@ pub fn base(config: &Config, meta: Meta, body: Markup) -> Markup {
         }
     }
 }
+
+/// Loads KaTeX only on pages that contain jotdown math spans.
+const KATEX_LOADER_JS: &str = r#"
+(function () {
+  if (!document.querySelector(".math")) return;
+  var v = "0.16.21";
+  var base = "https://cdn.jsdelivr.net/npm/katex@" + v + "/dist/";
+  var link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = base + "katex.min.css";
+  document.head.appendChild(link);
+  function load(src, then) {
+    var s = document.createElement("script");
+    s.src = src;
+    s.onload = then;
+    document.head.appendChild(s);
+  }
+  load(base + "katex.min.js", function () {
+    load(base + "contrib/auto-render.min.js", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: "\\[", right: "\\]", display: true },
+          { left: "\\(", right: "\\)", display: false }
+        ],
+        throwOnError: false
+      });
+    });
+  });
+})();
+"#;
 
 pub fn home(config: &Config, posts: &[&Post]) -> Markup {
     let meta = Meta {
