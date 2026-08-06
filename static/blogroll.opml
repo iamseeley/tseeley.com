@@ -8,6 +8,7 @@
     <outline type="rss" text="apenwarr" xmlUrl="https://apenwarr.ca/log/rss.php" htmlUrl="https://apenwarr.ca/log"/>
     <outline type="rss" text="Armin Ronacher&#x27;s Thoughts and Writings" xmlUrl="https://lucumr.pocoo.org/feed.xml" htmlUrl="https://lucumr.pocoo.org"/>
     <outline type="rss" text="ava&#x27;s blog" xmlUrl="https://blog.avas.space/feed/" htmlUrl="https://blog.avas.space"/>
+    <outline type="rss" text="bellingcat" xmlUrl="https://www.bellingcat.com/rss/" htmlUrl="https://www.bellingcat.com"/>
     <outline type="rss" text="Chase McCoy" xmlUrl="https://chsmc.org/feed.xml" htmlUrl="https://chsmc.org"/>
     <outline type="rss" text="Computer, Enhance!" xmlUrl="https://www.computerenhance.com/feed" htmlUrl="https://www.computerenhance.com"/>
     <outline type="rss" text="dbushell.com (all feeds)" xmlUrl="https://dbushell.com/merge/rss.xml" htmlUrl="https://dbushell.com"/>
@@ -19,7 +20,9 @@
     <outline type="rss" text="fasterthanli.me" xmlUrl="https://fasterthanli.me/index.xml" htmlUrl="https://fasterthanli.me"/>
     <outline type="rss" text="Geoffrey Litt" xmlUrl="https://www.geoffreylitt.com/feed.xml" htmlUrl="https://geoffreylitt.com"/>
     <outline type="rss" text="https://danluu.com/atom/index.xml" xmlUrl="https://danluu.com/atom.xml" htmlUrl="https://danluu.com/atom/index.xml"/>
+    <outline type="rss" text="Idle Words" xmlUrl="https://idlewords.com/index.xml" htmlUrl="http://idlewords.com"/>
     <outline type="rss" text="Ink &amp; Switch" xmlUrl="https://www.inkandswitch.com/index.xml" htmlUrl="https://www.inkandswitch.com"/>
+    <outline type="rss" text="interfluidity, all blogs" xmlUrl="https://www.interfluidity.com/unify-rss/all-blogs.rss" htmlUrl="https://www.interfluidity.com/unify-rss/all-blogs.html"/>
     <outline type="rss" text="Julia Evans" xmlUrl="https://jvns.ca/atom.xml" htmlUrl="https://jvns.ca"/>
     <outline type="rss" text="Kevin Lynagh&#x27;s website" xmlUrl="https://kevinlynagh.com/feed.xml" htmlUrl="https://kevinlynagh.com"/>
     <outline type="rss" text="macwright.com" xmlUrl="https://macwright.com/rss.xml" htmlUrl="https://macwright.com"/>
@@ -30,7 +33,9 @@
     <outline type="rss" text="Notes on software development" xmlUrl="https://notes.eatonphil.com/rss.xml" htmlUrl="http://notes.eatonphil.com"/>
     <outline type="rss" text="Pete Millspaugh" xmlUrl="https://www.petemillspaugh.com/rss.xml" htmlUrl="https://petemillspaugh.com"/>
     <outline type="rss" text="samwho.dev" xmlUrl="https://samwho.dev/rss.xml" htmlUrl="https://samwho.dev"/>
+    <outline type="rss" text="Scripting News" xmlUrl="http://scripting.com/rss.xml" htmlUrl="http://scripting.com"/>
     <outline type="rss" text="seangoedecke.com RSS feed" xmlUrl="https://www.seangoedecke.com/rss.xml" htmlUrl="https://seangoedecke.com"/>
+    <outline type="rss" text="taylor.town" xmlUrl="https://taylor.town/feed.xml" htmlUrl="https://taylor.town"/>
     <outline type="rss" text="Ted Kaminski" xmlUrl="https://www.tedinski.com/feed.xml" htmlUrl="http://www.tedinski.com"/>
     <outline type="rss" text="thesephist" xmlUrl="https://thesephist.com/index.xml" htmlUrl="https://thesephist.com"/>
     <outline type="rss" text="Unsung" xmlUrl="https://unsung.aresluna.org/feed.xml" htmlUrl="https://unsung.aresluna.org"/>
