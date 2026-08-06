@@ -3,14 +3,14 @@ title = "About"
 +++
 
 ```=html
-<img src="/images/profile.jpg" width="100" height="89" style="margin-bottom: var(--base)">
+<img src="/images/profile-1.jpg" width="160" height="160" style="margin-bottom: var(--base)">
 ```
 
 I'm a software developer based in Western North Carolina, currently a Founding Engineer at [Membrane](https://membrane.io) where we're building a platform for programmable tools and automations.
 
 Most of my day-to-day is spent writing Rust and TypeScript. Lately, I've been having fun learning more about WASM, containers, and JS runtimes.
 
-Outside of programming I [climb](https://www.mountainproject.com/user/200179390/thomas-seeley), [backpack](/tags/trip-report/), and [travel](/tags/trip-report/) when I can.
+Outside of programming I [climb](https://www.mountainproject.com/user/200179390/thomas-seeley), [backpack](/tags/trip-report/), and travel when I can.
 
 You can find me on [GitHub][gh], [Codeberg][cb], [Bluesky][bs], [Mastodon][ms], and [X][x], or reach me at [hello@tseeley.com](mailto:hello@tseeley.com).
 

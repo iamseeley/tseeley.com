@@ -57,7 +57,7 @@ A single centered column at every viewport size, capped at 45em (~630px). The na
 
 The site uses a few recurring content patterns. Since djot doesn't pass raw HTML through by default, these are written as `` ```=html `` blocks.
 
-**Aside**: a callout with a left border, same style as blockquotes.
+**Aside**: a callout with a left border.
 
 ```=html
 <aside>This is what an aside looks like.</aside>
