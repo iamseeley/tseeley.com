@@ -120,6 +120,7 @@ a[href*="//www.tseeley.com"],
 a[href*="127.0.0.1"],
 a[href*="localhost"] {
   text-decoration: underline solid var(--sally-yellow) 1.5px;
+  text-decoration-skip-ink: none;
 }
 
 a[href^="http"]:not([href*="//tseeley.com"]):not(
