@@ -1,0 +1,34 @@
++++
+title = "My CSS Reset"
+date = "2025-08-11"
+draft = false
+tags = ["css"]
++++
+
+```css
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+}
+body {
+  line-height: 1.5;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+```
+This is the quick-and-dirty CSS reset I use to make my styles look more consistent across browsers. It serves as a nice starting point as I begin styling a new website.
+
+Inspired by [Josh Comeau's](https://www.joshwcomeau.com/) [CSS reset](https://www.joshwcomeau.com/css/custom-css-reset/).
+
+See the OG reset by Eric Meyer -> [CSS Tools: Reset CSS](https://meyerweb.com/eric/tools/css/reset/).
+
+That's all folks.
