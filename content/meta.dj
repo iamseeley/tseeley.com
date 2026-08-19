@@ -27,6 +27,8 @@ Links are styled to indicate their destination:
 - **Internal links** have solid underlines, like [this link to posts](/posts/)
 - **External links** have dashed underlines, like [this link to djot](https://djot.net/)
 
+Links in body copy use Sally yellow text. Navigation, headings, footers, and other structural links keep their normal text color so the decoration stays quieter.
+
 ### Code
 
 Inline code like `fn main()` and code blocks are set in [Lilex](https://github.com/mishamyrt/Lilex). Code blocks show a language label in the top right corner.

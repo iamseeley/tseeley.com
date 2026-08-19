@@ -102,7 +102,14 @@ b {
 
 a {
   color: white;
-  text-decoration-color: var(--sally-yellow);
+  text-decoration-color: currentColor;
+}
+
+.intro a,
+article
+  > :not(.title):not(.subtitle):not(.post-footer):not(.post-nav)
+  a:not(.heading-anchor) {
+  color: var(--sally-yellow);
 }
 
 a:hover {
@@ -119,8 +126,7 @@ a[href*="//tseeley.com"],
 a[href*="//www.tseeley.com"],
 a[href*="127.0.0.1"],
 a[href*="localhost"] {
-  text-decoration: underline solid var(--sally-yellow) 1.5px;
-  text-decoration-skip-ink: none;
+  text-decoration: underline solid currentColor 1.5px;
 }
 
 a[href^="http"]:not([href*="//tseeley.com"]):not(
@@ -130,7 +136,7 @@ a[href^="mailto:"] {
   text-decoration: none;
   background-image: linear-gradient(
     to right,
-    var(--sally-yellow) 50%,
+    currentColor 50%,
     transparent 50%
   );
   background-size: 4px 1.5px;
@@ -142,14 +148,15 @@ a[role="doc-noteref"] {
   text-decoration: none;
 }
 a[role="doc-noteref"] sup {
-  text-decoration: underline var(--sally-yellow) 1px;
+  text-decoration: underline currentColor 1px;
 }
 
 :is(h1, h2, h3, h4, h5, h6) a.heading-anchor {
+  color: inherit;
   text-decoration: none;
 }
 :is(h1, h2, h3, h4, h5, h6) a.heading-anchor:hover {
-  text-decoration: underline solid var(--sally-yellow) 1.5px;
+  text-decoration: underline solid currentColor 1.5px;
   text-underline-offset: 0.25em;
   opacity: 1;
 }
