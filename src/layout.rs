@@ -295,12 +295,12 @@ pub fn post(config: &Config, post: &Post, newer: Option<&Post>, older: Option<&P
                     div.post-nav {
                         @if let Some(n) = newer {
                             a.prev href={ "/posts/" (n.slug) "/" } {
-                                (PreEscaped("&larr; ")) (n.meta.title)
+                                (PreEscaped("&lsaquo; ")) (n.meta.title)
                             }
                         }
                         @if let Some(o) = older {
                             a.next href={ "/posts/" (o.slug) "/" } {
-                                (o.meta.title) (PreEscaped(" &rarr;"))
+                                (o.meta.title) (PreEscaped(" &rsaquo;"))
                             }
                         }
                     }

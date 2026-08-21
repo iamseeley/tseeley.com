@@ -18,16 +18,16 @@ The site's mascot is Sally, a [Yellow Spotted Salamander](https://auth1.dpr.ncpa
 
 ### Typography
 
-Headers are set in [Georgia](<https://en.wikipedia.org/wiki/Georgia_(typeface)>) and body copy is set in [Verdana](https://en.wikipedia.org/wiki/Verdana).
+Headers are set in [Georgia](https://en.wikipedia.org/wiki/Georgia_%28typeface%29) and body copy is set in [Verdana](https://en.wikipedia.org/wiki/Verdana). Two of my most favorite typefaces.
 
 ### Links
 
 Links are styled to indicate their destination:
 
-- **Internal links** have solid underlines, like [this link to posts](/posts/)
-- **External links** have dashed underlines, like [this link to djot](https://djot.net/)
+- **Internal links** show solid underlines on hover, like [this link to posts](/posts/)
+- **External links** show dashed underlines on hover, like [this link to djot](https://djot.net/)
 
-Links in body copy use Sally yellow text. Navigation, headings, footers, and other structural links keep their normal text color so the decoration stays quieter.
+Link underlines appear on hover. Links in body copy use Sally yellow text. Navigation, headings, footers, and other structural links keep their normal text color so the decoration stays quieter.
 
 ### Code
 
