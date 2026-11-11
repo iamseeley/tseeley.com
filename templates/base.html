@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="{{ get_url(path='css/styles.css', cachebust=true) }}">
 
   {% set analytics = config.extra.analytics %}
-  {% if analytics.umami_url %}
+  {% if analytics.umami_url and config.mode == "build" %}
   <script defer src="{{ analytics.umami_url }}" data-website-id="{{ analytics.umami_id }}"></script>
   {% endif %}
 </head>
