@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ section.title }}</h1>
+{{ section.content | safe }}
+
+{% if section.pages %}
+  <ul class="link-list">
+    {% for page in section.pages %}
+      <li>
+        <a href="{{ page.permalink }}">{{ page.title }}</a>
+        {% if page.date %}
+          <time class="link-list-desc" datetime="{{ page.date }}">{{ page.date | date(format="%B %-d, %Y") }}</time>
+        {% elif page.description %}
+          <span class="link-list-desc">{{ page.description }}</span>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+{% endblock content %}

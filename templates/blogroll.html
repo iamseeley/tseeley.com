@@ -1,0 +1,16 @@
+{% extends "base.html" %} {% block content %}
+<h1>{{ page.title }}</h1>
+{{ page.content | safe }}
+
+<ul class="link-list">
+  {% for site in page.extra.blogroll %}
+  <li>
+    <a rel="external" href="{{ site.url }}">{{ site.name }}</a>
+    {% if site.description %}
+    <span class="link-list-desc">{{ site.description }}</span>
+    <a rel="external" href="{{ site.feed_url }}">(feed)</a>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% endblock content %}

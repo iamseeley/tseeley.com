@@ -1,0 +1,18 @@
+{% extends "base.html" %} {% block content %}
+<h1>Tags</h1>
+<ul class="link-list">
+  {% for term in terms %}
+  <li>
+    <a href="{{ term.permalink }}">#{{ term.name }}</a> 
+
+
+    <span class="link-list-desc">{{ term.page_count }}     {% if term.page_count == 1 %}
+post
+    {% else %}
+posts
+    {% endif %}
+</span>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock content %}

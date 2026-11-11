@@ -1,0 +1,43 @@
+base_url = "https://tseeley.com"
+title = "Thomas Seeley"
+description = "Posts about software and making things"
+default_language = "en"
+author = "Thomas Seeley"
+
+compile_sass = false
+build_search_index = false
+minify_html = true
+generate_feeds = true
+feed_filenames = ["atom.xml"]
+generate_sitemap = true
+generate_robots_txt = true
+exclude_paginated_pages_in_sitemap = "none"
+taxonomies = [
+    { name = "tags", feed = true },
+]
+
+
+[markdown]
+smart_punctuation = true
+lazy_async_image = true
+bottom_footnotes = true
+insert_anchor_links = "heading"
+
+[markdown.highlighting]
+theme = "sally"
+extra_themes = ["themes/sally.json"]
+error_on_missing_language = true
+
+[extra]
+socials = [
+  { label = "@tseeley.com on Bluesky", url = "https://bsky.app/profile/tseeley.com" },
+  { label = "@iamseeley on Mastodon", url = "https://..." },
+]
+
+[extra.license]
+name = "By-NC-SA 4.0"
+url = "https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1"
+
+[extra.analytics]
+umami_url = "https://stats.seeley.me/script.js"
+umami_id = "dd40336f-ce39-443f-ba41-962bc58ad386"

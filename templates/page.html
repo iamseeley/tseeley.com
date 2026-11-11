@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1><a href="{{ page.permalink }}">{{ page.title }}</a></h1>
+  {{ page.content | safe }}
+{% endblock content %}

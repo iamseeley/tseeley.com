@@ -1,0 +1,143 @@
+{
+  "name": "sally",
+  "type": "dark",
+  "colors": {
+    "editor.background": "#1c1b1a",
+    "editor.foreground": "#e8e4dc"
+  },
+  "tokenColors": [
+    {
+      "name": "Comment",
+      "scope": ["comment", "punctuation.definition.comment"],
+      "settings": { "foreground": "#77726a", "fontStyle": "italic" }
+    },
+    {
+      "name": "String",
+      "scope": ["string"],
+      "settings": { "foreground": "#e0b84a", "fontStyle": "italic" }
+    },
+    {
+      "name": "Regexp",
+      "scope": ["string.regexp"],
+      "settings": { "foreground": "#e0b84a" }
+    },
+    {
+      "name": "Character escape",
+      "scope": ["constant.character.escape"],
+      "settings": { "foreground": "#e0b84a" }
+    },
+    {
+      "name": "Number",
+      "scope": ["constant.numeric"],
+      "settings": { "foreground": "#e0b84a" }
+    },
+    {
+      "name": "Language constant",
+      "scope": [
+        "constant.language",
+        "constant.language.boolean",
+        "constant.other"
+      ],
+      "settings": { "foreground": "#e0b84a" }
+    },
+    {
+      "name": "Enum member",
+      "scope": ["variable.other.enummember", "constant.other.enum"],
+      "settings": { "foreground": "#e0b84a" }
+    },
+    {
+      "name": "Keyword / storage",
+      "scope": ["keyword", "storage", "storage.type"],
+      "settings": { "foreground": "#e8e4dc" }
+    },
+    {
+      "name": "Operator",
+      "scope": ["keyword.operator"],
+      "settings": { "foreground": "#a8a196" }
+    },
+    {
+      "name": "Variable",
+      "scope": ["variable"],
+      "settings": { "foreground": "#e8e4dc" }
+    },
+    {
+      "name": "Variable language / parameter",
+      "scope": ["variable.language", "variable.parameter.function"],
+      "settings": { "foreground": "#a8a196", "fontStyle": "italic" }
+    },
+    {
+      "name": "Function",
+      "scope": ["entity.name.function", "support.function"],
+      "settings": { "foreground": "#e8e4dc", "fontStyle": "bold" }
+    },
+    {
+      "name": "Function call",
+      "scope": ["meta.function-call entity.name.function"],
+      "settings": { "foreground": "#e8e4dc", "fontStyle": "bold" }
+    },
+    {
+      "name": "Type / class",
+      "scope": ["entity.name.type", "entity.name.class", "support.class"],
+      "settings": { "foreground": "#e8e4dc", "fontStyle": "bold" }
+    },
+    {
+      "name": "Builtin type",
+      "scope": ["support.type", "support.type.builtin"],
+      "settings": { "foreground": "#e8e4dc", "fontStyle": "italic" }
+    },
+    {
+      "name": "HTML tag",
+      "scope": ["entity.name.tag", "meta.tag"],
+      "settings": { "foreground": "#e8e4dc", "fontStyle": "bold" }
+    },
+    {
+      "name": "Attribute",
+      "scope": ["entity.other.attribute-name"],
+      "settings": { "foreground": "#e8e4dc", "fontStyle": "italic" }
+    },
+    {
+      "name": "Property",
+      "scope": [
+        "support.type.property-name",
+        "variable.other.property",
+        "variable.other.object.property"
+      ],
+      "settings": { "foreground": "#e8e4dc", "fontStyle": "italic" }
+    },
+    {
+      "name": "Punctuation",
+      "scope": ["punctuation", "meta.brace", "punctuation.definition.string"],
+      "settings": { "foreground": "#77726a" }
+    },
+    {
+      "name": "Separator",
+      "scope": ["punctuation.separator", "punctuation.terminator"],
+      "settings": { "foreground": "#77726a" }
+    },
+    {
+      "name": "Markdown heading",
+      "scope": ["markup.heading", "entity.name.section"],
+      "settings": { "foreground": "#e8e4dc", "fontStyle": "bold" }
+    },
+    {
+      "name": "Markdown bold",
+      "scope": ["markup.bold"],
+      "settings": { "foreground": "#e8e4dc", "fontStyle": "bold" }
+    },
+    {
+      "name": "Markdown italic",
+      "scope": ["markup.italic"],
+      "settings": { "foreground": "#e8e4dc", "fontStyle": "italic" }
+    },
+    {
+      "name": "Markdown code",
+      "scope": ["markup.inline.raw", "markup.raw"],
+      "settings": { "foreground": "#e8e4dc" }
+    },
+    {
+      "name": "Markdown link",
+      "scope": ["markup.underline.link"],
+      "settings": { "foreground": "#e0b84a", "fontStyle": "italic" }
+    }
+  ]
+}
