@@ -21,6 +21,11 @@
   {% endblock head %}
 
   <link rel="stylesheet" href="{{ get_url(path='css/styles.css', cachebust=true) }}">
+
+  {% set analytics = config.extra.analytics %}
+  {% if analytics.umami_url %}
+  <script defer src="{{ analytics.umami_url }}" data-website-id="{{ analytics.umami_id }}"></script>
+  {% endif %}
 </head>
 
 
@@ -49,12 +54,10 @@
   <p>
     <a href="{{ get_url(path='@/about.md') }}">{{ config.author }}</a>
     © {{ now() | date(format="%Y") }} &ndash;
-    <a class="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license external">
-      {{<icon name="cc"/>}}
-      {{<icon name="by"/>}}
-      {{<icon name="nc"/>}}
-      {{<icon name="sa"/>}}
-      <!-- CC BY-NC-SA 4.0 -->
+    {% set license = config.extra.license %}
+    <a class="license" href="{{ license.url }}" rel="license external"
+       title="{{ license.name }}" aria-label="{{ license.name }}">
+      {% for i in license.icons %}{{<icon name={i}/>}}{% endfor %}
     </a>
   </p>
 </footer>

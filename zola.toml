@@ -31,12 +31,13 @@ error_on_missing_language = true
 [extra]
 socials = [
   { label = "@tseeley.com on Bluesky", url = "https://bsky.app/profile/tseeley.com" },
-  { label = "@iamseeley on Mastodon", url = "https://..." },
+  { label = "@iamseeley on Mastodon", url = "https://mastodon.social/@iamseeley" },
 ]
 
 [extra.license]
-name = "By-NC-SA 4.0"
-url = "https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1"
+name = "CC BY-NC-SA 4.0"
+url = "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+icons = ["cc", "by", "nc", "sa"]
 
 [extra.analytics]
 umami_url = "https://stats.seeley.me/script.js"
