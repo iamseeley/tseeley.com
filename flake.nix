@@ -1,9 +1,9 @@
 {
-  description = "Shell flake for tseeley.com development";
+  description = "tseeley.com";
 
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
   outputs =
-    { nixpkgs, ... }:
+    { self, nixpkgs, ... }:
     let
       forAll = nixpkgs.lib.genAttrs [
         "aarch64-darwin"
@@ -11,6 +11,22 @@
       ];
     in
     {
+      packages = forAll (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        {
+          default = pkgs.stdenvNoCC.mkDerivation {
+            name = "tseeley.com";
+            src = self;
+            nativeBuildInputs = [ pkgs.zola ];
+            buildPhase = "zola build --output-dir $out";
+            dontInstall = true;
+          };
+        }
+      );
+
       devShells = forAll (
         system:
         let
@@ -18,10 +34,7 @@
         in
         {
           default = pkgs.mkShell {
-            packages = [
-              pkgs.zola
-              pkgs.rsync
-            ];
+            packages = [ pkgs.zola ];
           };
         }
       );
