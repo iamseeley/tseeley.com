@@ -20,7 +20,12 @@
           default = pkgs.stdenvNoCC.mkDerivation {
             name = "tseeley.com";
             src = self;
-            nativeBuildInputs = [ pkgs.zola ];
+            # zola's load_data builds an https client even for local files,
+            # which panics without CA certificates in the sandbox
+            nativeBuildInputs = [
+              pkgs.zola
+              pkgs.cacert
+            ];
             buildPhase = "zola build --output-dir $out";
             dontInstall = true;
           };
