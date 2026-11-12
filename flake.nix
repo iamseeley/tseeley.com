@@ -39,8 +39,25 @@
         in
         {
           default = pkgs.mkShell {
-            packages = [ pkgs.zola ];
+            packages = [
+              pkgs.zola
+              pkgs.djlint
+            ];
           };
+        }
+      );
+
+      # `nix fmt` formats the templates; settings live in djlint.toml
+      formatter = forAll (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        pkgs.writeShellApplication {
+          name = "fmt";
+          runtimeInputs = [ pkgs.djlint ];
+          # ignore the paths `nix fmt` passes in; only templates/ is formatted
+          text = "djlint templates --reformat";
         }
       );
     };

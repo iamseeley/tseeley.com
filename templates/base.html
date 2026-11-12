@@ -1,68 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-
-  {% set meta_title = page?.title or section?.title or "" %}
-  {% set meta_desc  = page?.description or section?.description or config.description or "" %}
-  {% set meta_url   = page?.permalink or section?.permalink or config.base_url %}
-  {% set meta_type  = "article" if page else "website" %}
-  {% set og_image  = get_url(path="images/flying.jpg") %}
-
-  {{<meta title={meta_title} site={config.title} url={meta_url} image={og_image}
-         description={meta_desc} type={meta_type} />}}
-
-  {% block head %}
-  <link rel="alternate" type="application/atom+xml"
-        title="{{ config.title }}"
-        href="{{ get_url(path='atom.xml', trailing_slash=false) }}">
-  {% endblock head %}
-
-  <link rel="stylesheet" href="{{ get_url(path='css/styles.css', cachebust=true) }}">
-
-  {% set analytics = config.extra.analytics %}
-  {% if analytics.umami_url and config.mode == "build" %}
-  <script defer src="{{ analytics.umami_url }}" data-website-id="{{ analytics.umami_id }}"></script>
-  {% endif %}
-</head>
-
-
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    {% set meta_title = page?.title or section?.title or "" %}
+    {% set meta_desc = page?.description or section?.description or config.description or "" %}
+    {% set meta_url = page?.permalink or section?.permalink or config.base_url %}
+    {% set meta_type = "article" if page else "website" %}
+    {% set og_image = get_url(path="images/flying.jpg") %}
+    {{<meta title={meta_title} site={config.title} url={meta_url} image={og_image}
+      description={meta_desc} type={meta_type} />}}
+    {% block head %}
+      <link rel="alternate"
+            type="application/atom+xml"
+            title="{{ config.title }}"
+            href="{{ get_url(path='atom.xml', trailing_slash=false) }}">
+    {% endblock head %}
+    <link rel="stylesheet"
+          href="{{ get_url(path='css/styles.css', cachebust=true) }}">
+    {% set analytics = config.extra.analytics %}
+    {% if analytics.umami_url and config.mode == "build" %}
+      <script defer
+              src="{{ analytics.umami_url }}"
+              data-website-id="{{ analytics.umami_id }}"></script>
+    {% endif %}
+  </head>
   <body>
-  <header>
-<a class="site-name" href="{{ get_url(path='@/_index.md') }}">Thomas Seeley</a>
-  </header>
-
-{% set root = get_section(path="_index.md") %}
-<nav>
-  <ul>
-    {% for sub in root.subsections %}
-      {% set s = get_section(path=sub, metadata_only=true) %}
-      <li><a href="{{ s.redirect_to | default(value=s.permalink) }}">{{ s.title }}</a></li>
-    {% endfor %}
-    {% for page in root.pages %}
-      <li><a href="{{ page.permalink }}">{{ page.title }}</a></li>
-    {% endfor %}
-  </ul>
-</nav>
-
-
-  <main>{% block content %} {% endblock content %}</main>
-
-<footer>
-  <p>
-    <a href="{{ get_url(path='@/about.md') }}">{{ config.author }}</a>
-    © {{ now() | date(format="%Y") }} &ndash;
-    {% set license = config.extra.license %}
-    <a class="license" href="{{ license.url }}" rel="license external"
-       title="{{ license.name }}" aria-label="{{ license.name }}">
-      {% for i in license.icons %}{{<icon name={i}/>}}{% endfor %}
-    </a>
-  </p>
-</footer>
+    <header>
+      <a class="site-name" href="{{ get_url(path='@/_index.md') }}">Thomas Seeley</a>
+    </header>
+    {% set root = get_section(path="_index.md") %}
+    <nav>
+      <ul>
+        {% for sub in root.subsections %}
+          {% set s = get_section(path=sub, metadata_only=true) %}
+          <li><a href="{{ s.redirect_to | default(value=s.permalink) }}">{{ s.title }}</a></li>
+        {% endfor %}
+        {% for page in root.pages %}
+          <li><a href="{{ page.permalink }}">{{ page.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+    <main>
+      {% block content %}
+      {% endblock content %}
+    </main>
+    <footer>
+      <p>
+        <a href="{{ get_url(path='@/about.md') }}">{{ config.author }}</a>
+        © {{ now() | date(format="%Y") }} &ndash;
+        {% set license = config.extra.license %}
+        <a class="license"
+           href="{{ license.url }}"
+           rel="license external"
+           title="{{ license.name }}"
+           aria-label="{{ license.name }}">
+          {% for i in license.icons %}{{<icon name={i}/>}}{% endfor %}
+        </a>
+      </p>
+    </footer>
   </body>
-
-
-
 </html>
