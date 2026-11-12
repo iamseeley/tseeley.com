@@ -47,6 +47,19 @@
         }
       );
 
+      # `nix flake check` fails if the templates aren't formatted
+      checks = forAll (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        {
+          templates-formatted = pkgs.runCommand "templates-formatted" {
+            nativeBuildInputs = [ pkgs.djlint ];
+          } "cd ${self} && djlint templates --check && touch $out";
+        }
+      );
+
       # `nix fmt` formats the templates; settings live in djlint.toml
       formatter = forAll (
         system:
